@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "simulation.c"
-
+//Tamanho do vetor do scanf
+#define L 1000
 static GLfloat spin = 0.0;
 
 void init(void){
@@ -16,12 +16,13 @@ void init(void){
 
 void display(void){
   int i;
-  double color;
+  double color, value;
   //glClear(GL_COLOR_BUFFER_BIT);
   glPointSize(3);
   glBegin(GL_POINTS);
   for(i=0;i<L;i++){
-    color = (fi2[i]+1)/2;
+    scanf("%*lf %*lf %lf\n", &value);
+    color = (value+1)/2;
     glColor3f(color, color, color);
     glVertex2f(i*90.0/L - 45.0, fmod(spin-45,90));
   }
@@ -33,7 +34,7 @@ void display(void){
 }
 
 void spinDisplay(void){
-  spin=spin + 0.3;
+  spin=spin + 0.1;
   spin=fmod(spin,90);
   glutPostRedisplay();
 }
@@ -63,18 +64,6 @@ void mouse(int button, int state, int x, int y) {
 }
 
 int main(int argc, char** argv){
-  /*Inicializando os vetores*/
-  double *fi, *fi2,e;
-  int i,j;
-  fi = fftw_malloc(sizeof(double)*L);
-  fi2 = fftw_malloc(sizeof(double)*L);
-  vetores(fi);
-
-  srand (1983479);
-
-  for(i=0;i<L;i++)
-    fi[i] = 2.0*rand()/RAND_MAX - 1.0;
-
   /*CRIA A JANELA*/
   glutInit(&argc, argv);
   glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB);
@@ -82,14 +71,6 @@ int main(int argc, char** argv){
   glutInitWindowPosition (100, 100);
   glutCreateWindow (argv[0]);
   init();
-
-
-  /*SIMULAÇÃO*/
-  for(i=0;i<tprint;i++)
-    update(fi);
-   e = max(fi);
-  for (i=0; i<L; i++)
-    fi2[i] = fi[i]/e;
 
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
