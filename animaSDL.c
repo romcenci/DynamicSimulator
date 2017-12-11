@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <stdbool.h>
 
 //Tamanho do vetor do scanf
 #define L 200
@@ -41,7 +42,7 @@ bool init(){
   return success;
 }
 
-void close(){
+void closeS(){
   //Destroy window
   SDL_DestroyWindow( gWindow );
   gWindow = NULL;
@@ -94,6 +95,6 @@ int main(int argc, char **argv){
     //////////////////////////////////////////////////////////////////////
   }
   
-  close();
+  closeS();
   return 0;
 }
