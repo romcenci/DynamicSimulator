@@ -12,7 +12,7 @@
 #define num_cel 15
 #define dx (0.008*num_cel)
 
-#define M 900
+#define M 1000
 #define N 1
 #define dt 0.01f
 
