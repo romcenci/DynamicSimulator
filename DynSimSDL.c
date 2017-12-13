@@ -7,8 +7,8 @@
 #include <unistd.h>
 
 // Tamanho da tela
-const int SCREEN_WIDTH = 1000;
-const int SCREEN_HEIGHT = 800;
+int SCREEN_WIDTH = 1000;
+int SCREEN_HEIGHT = 600;
 
 #include "SDLfunc.h"
 
@@ -28,11 +28,14 @@ int main(int argc, char **argv){
     case 'm':
       MODE=atoi(argv[o]);
       break;
+    case 'h':
+      SCREEN_HEIGHT = atoi(argv[o]);
+      break;
     }
     o+=2;
   }
   /////////////////////////////////////////////
-  
+
   init();
   bool quit = false; SDL_Event e;
   while( !quit ){
@@ -54,14 +57,14 @@ int main(int argc, char **argv){
       t++;
     }
     //////////////////////////////////////////////////////////////////////
-    
+
     ////////////////////////////////////////////////////////////////////// MODE=2
     else if(MODE==2){
       rect(0, (int)(scale*t)%(SCREEN_HEIGHT), SCREEN_WIDTH, 10, 0);
 
       for(i=0;i<L;i++){
-	scanf("%*s %*d %lf\n", &x);
-	rect(i*SCREEN_WIDTH/L, (int)(scale*t)%(SCREEN_HEIGHT), SCREEN_WIDTH/L, 1, x*200);
+	scanf("%lf\n", &x);
+	rect(i*SCREEN_WIDTH/L, (int)(scale*t)%(SCREEN_HEIGHT), SCREEN_WIDTH/L, 1,(x+1.0)*120 + 14);
       }
 
       SDL_UpdateWindowSurface( gWindow );
@@ -69,7 +72,7 @@ int main(int argc, char **argv){
     }
     //////////////////////////////////////////////////////////////////////
   }
-  
+
   closeS();
   return 0;
 }
