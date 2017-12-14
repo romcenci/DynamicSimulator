@@ -45,6 +45,14 @@ int main(int argc, char **argv){
       if( e.type == SDL_QUIT ){
 	quit = true;
       }
+      else if( e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE ){ // Se uma tecla for press e for espaço
+	while(1){ // fica parado até que alguem break
+	  usleep(100000); // espera 0.1s até ler a próxima vez
+	  SDL_PollEvent( &e ); // le de novo
+	  if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE){break;} // se a tecla for espaço, break
+	}
+	break;
+      }
     }
     ////////////////////////////////////////////////////////////////////// MODE=1
     if(MODE==1){
