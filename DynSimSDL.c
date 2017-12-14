@@ -10,8 +10,6 @@
 int SCREEN_WIDTH = 1000;
 int SCREEN_HEIGHT = 600;
 
-#include "SDLfunc.h"
-
 #define scale 1 // Escala plot tempo
 
 int main(int argc, char **argv){
@@ -20,20 +18,24 @@ int main(int argc, char **argv){
 
   ///////////////////////////////////////////// MENU
   o=2;
-  while( (c = getopt(argc, argv, "lm")) != -1 ){
+  while( (c = getopt(argc, argv, "lmhw")) != -1 ){
     switch (c){
     case 'l':
-      L=atoi(argv[o]);
+      L = atoi(argv[o]);
       break;
     case 'm':
-      MODE=atoi(argv[o]);
+      MODE = atoi(argv[o]);
       break;
     case 'h':
       SCREEN_HEIGHT = atoi(argv[o]);
       break;
+    case 'w':
+      SCREEN_WIDTH = atoi(argv[o]);
+      break;
     }
     o+=2;
   }
+  #include "SDLfunc.h" // Chamar esse header só aqui pq determina tamanho da janela
   /////////////////////////////////////////////
 
   init();
@@ -50,7 +52,7 @@ int main(int argc, char **argv){
 
       for(i=0;i<L;i++){
 	scanf("%lf\n", &x);
-	put_pixel(SCREEN_WIDTH*x/5*0.8+100,(int)(scale*t)%(SCREEN_HEIGHT),0xFFFFFFFF);
+	put_pixel(SCREEN_WIDTH*x/5*0.8+SCREEN_WIDTH/10,(int)(scale*t)%(SCREEN_HEIGHT),0xFFFFFFFF);
       }
 
       SDL_UpdateWindowSurface( gWindow );
