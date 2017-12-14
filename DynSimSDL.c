@@ -52,7 +52,6 @@ int main(int argc, char **argv){
 	  if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE){break;} // se a tecla for espaço, break
 	  if(e.type == SDL_QUIT){quit=true; break;} // se quiser sair, saia
 	}
-	break;
       }
     }
     ////////////////////////////////////////////////////////////////////// MODE=1
