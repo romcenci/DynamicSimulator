@@ -9,12 +9,23 @@
 		- "gcc animaSDL.c -lSDL2 -o animaSDL"
 	
 * **Para rodar:**
-	* Se a.out imprime vetor de tamanho L que evolui no tempo:
-		- "./a.out | ./DynSim -l 100 -m MODE"
-	* MODE pode ser escolhido como 1 ou 2, onde:
-		- 1: Modo de posição variável;
-		- 2: Modo de rede fixa para plotar cor.
-		- 3: Modo 2d de rede fixa plotando cor.
+	* Se a.out imprime vetor de tamanho 100 que evolui no tempo:
+		- "./a.out | ./DynSim -OPÇÕES"
+		
+* **Outras opções**
+	* -m : Modo de plot
+		- 1: (1d) Posição variável
+		- 2: (1d) Rede fixa
+		- 3: (2d) Rede fixa
+		
+	* -l : (1d) Tamanho do vetor (quantidade de partículas)
+
+	* -x : (2d) Tamanho da rede horizontal
+	* -y : (2d) Tamanho da rede vertical
+	
+	* -h : Altura da janela
+	* -w : Largura da janela
+	
 
 * **Testar o 2d:**
-	"./a.out | ./DynSimSDL -m 3 -x 400 -y 400 -w 800 -h 800"
+	* "./a.out | ./DynSimSDL -m 3 -x 400 -y 400 -w 800 -h 800"
