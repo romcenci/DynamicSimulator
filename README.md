@@ -5,11 +5,10 @@
 		- "sudo apt-get install libsdl2-dev"
 	
 	* Para compilar usa:
-		- "g++ animaSDL.cpp -lSDL2 -o animaSDL"
-		- "gcc animaSDL.c -lSDL2 -o animaSDL"
+		- "gcc DynSimSDL.c -lSDL2 -o DynSimSDL"
 	
 * **Para rodar:**
-	* Se a.out imprime vetor de tamanho 100 que evolui no tempo:
+	* Se a.out imprime os dados:
 		- "./a.out | ./DynSim -OPÇÕES"
 		
 * **Outras opções**
