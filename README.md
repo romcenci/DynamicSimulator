@@ -14,3 +14,7 @@
 	* MODE pode ser escolhido como 1 ou 2, onde:
 		- 1: Modo de posição variável;
 		- 2: Modo de rede fixa para plotar cor.
+		- 3: Modo 2d de rede fixa plotando cor.
+
+* **Testar o 2d:**
+	"./a.out | ./DynSimSDL -m 3 -x 400 -y 400 -w 800 -h 800"
