@@ -14,7 +14,7 @@ int SCREEN_HEIGHT = 800;
 
 int main(int argc, char **argv){
   int t=0, L=500, i, j, c, MODE=1, o, Lx=100, Ly=100;
-  double x;
+  double x, y, raio;
 
   ///////////////////////////////////////////// MENU
   o=2;
@@ -60,14 +60,6 @@ int main(int argc, char **argv){
 	}
       }
     }
-    if( t*scale>=SCREEN_HEIGHT){
-      while(1){
-	usleep(100000);
-	SDL_PollEvent( &e );
-	if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE){break;}
-	if(e.type == SDL_QUIT){quit=true; break;}
-      }
-    }
     ////////////////////////////////////////////////////////////////////// MODE=1
     if(MODE==1){
       rect(0, (int)(scale*t)%(SCREEN_HEIGHT), SCREEN_WIDTH, 10, 0);
@@ -98,6 +90,18 @@ int main(int argc, char **argv){
 
     ////////////////////////////////////////////////////////////////////// MODE=3
     else if(MODE==3){
+      rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+      for(i=0;i<L;i++){
+	scanf("%lf %lf %lf\n", &x, &y, &raio);
+	rect((x-raio)*SCREEN_WIDTH/Lx, (y-raio)*SCREEN_HEIGHT/Ly, 2*raio, 2*raio, 255);
+      }
+
+      SDL_UpdateWindowSurface( gWindow );
+    }
+    //////////////////////////////////////////////////////////////////////
+    
+    ////////////////////////////////////////////////////////////////////// MODE=4
+    else if(MODE==4){
       for(j=0;j<Ly;j++){
 	for(i=0;i<Lx;i++){
 	  scanf("%lf\n", &x);

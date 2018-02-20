@@ -13,18 +13,19 @@
 		
 * **Outras opções**
 	* -m : Modo de plot
-		- 1: (1d) Posição variável
-		- 2: (1d) Rede fixa
-		- 3: (2d) Rede fixa
+		- 1: (1d) Posição variável (Granular. Ex: Quasicristal)
+		- 2: (1d) Rede fixa (Ex: dampedGKS)
+		- 3: (2d) Posição variável (Granular. Ex: Gás de bilhar)
+		- 4: (2d) Posição fixa (Ex: Ising 2d)
 		
-	* -l : (1d) Tamanho do vetor (quantidade de partículas)
+	* -l : Tamanho do vetor (quantidade de partículas)
 
-	* -x : (2d) Tamanho da rede horizontal
-	* -y : (2d) Tamanho da rede vertical
+	* -x :
+	** (-m 3) Tamanho horizontal
+	** (-m 4) Tamanho da rede horizontal
+	* -y : 
+	** (-m 3) Tamanho vertical
+	** (-m 4) Tamanho da rede vertical
 	
 	* -h : Altura da janela
 	* -w : Largura da janela
-	
-
-* **Testar o 2d:**
-	* "./a.out | ./DynSimSDL -m 3 -x 400 -y 400 -w 800 -h 800"
