@@ -80,7 +80,7 @@ int main(int argc, char **argv){
 
       for(i=0;i<L;i++){
 	scanf("%lf\n", &x);
-	rect(i*SCREEN_WIDTH/L, (int)(scale*t)%(SCREEN_HEIGHT), SCREEN_WIDTH/L, 1, (x+1.0)*120 + 14);
+	rect(i*SCREEN_WIDTH/L, (int)(scale*t)%(SCREEN_HEIGHT), SCREEN_WIDTH/L, 1, fmax(0,fmin(1,(1+x)/2)));
       }
 
       SDL_UpdateWindowSurface( gWindow );
