@@ -21,6 +21,6 @@ para rodar teste.cpp: gcc teste.cpp -lm -lglfw -lGLEW
 teste.c segue o tutorial:
 http://openglbook.com/chapter-1-getting-started.html
 
-para rodar teste.c: gcc teste.c -lm -lGL -lglfw -lGLEW -lglut
+para rodar teste.c: gcc teste.c -lm -lGL -lglfw -lGLEW -lglut -lGLU
 
 Vou tentar focar no segundo tutorial
