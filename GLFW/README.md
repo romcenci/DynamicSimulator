@@ -6,11 +6,21 @@ Para instalacao siga o tutorial abaixo:
 
 http://www.opengl-tutorial.org/beginners-tutorials/tutorial-1-opening-a-window/
 
-e tambem: sudo apt-get install libglfw3-dev libglm-dev libglew-dev
+Seção building on linux até o último item antes do Qt Creator
 
-Seção building on linux
+e tambem: sudo apt-get install libglfw3-dev libglm-dev libglew-dev freeglut3-dev
 
-os arquivos glad, linmath, etc têm que estar na mesma pasta do simulador;
+os arquivos glad, linmath, etc da pasta devs têm que estar na mesma pasta do simulador;
 
+
+teste.cpp segue o tutorial: 
+http://www.opengl-tutorial.org/beginners-tutorials/tutorial-1-opening-a-window/
 
 para rodar teste.cpp: gcc teste.cpp -lm -lglfw -lGLEW
+
+teste.c segue o tutorial:
+http://openglbook.com/chapter-1-getting-started.html
+
+para rodar teste.c: gcc teste.c -lm -lGL -lglfw -lGLEW -lglut
+
+Vou tentar focar no segundo tutorial
