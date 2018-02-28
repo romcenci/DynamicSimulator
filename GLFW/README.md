@@ -28,3 +28,12 @@ http://openglbook.com/chapter-1-getting-started.html
 para rodar teste.c: gcc teste.c -lm -lGL -lglfw -lGLEW -lglut -lGLU
 
 Vou tentar focar no segundo tutorial
+
+
+
+
+* Cuidado com a versão do OpenGL:
+
+"X Error of failed request:  GLXBadFBConfig"
+
+Conserta mudando função "glutInitContextVersion(4, 0);" de 4 pra 3 ou qualquer outra versão disponível.
