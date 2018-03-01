@@ -27,10 +27,11 @@ http://openglbook.com/chapter-1-getting-started.html
 
 para rodar teste.c: gcc teste.c -lm -lGL -lglfw -lGLEW -lglut -lGLU
 
-Vou tentar focar no segundo tutorial
+*** Seguindo o tutorial do OpenGL Data Visualization Cookbook (libgen)
 
+para rodar testeglfw.c: gcc testeglfw.c -lm -lGL -lglfw
 
-
+*** Não esquecer de seguir as intruções de instalação do livro.
 
 * Cuidado com a versão do OpenGL:
 
