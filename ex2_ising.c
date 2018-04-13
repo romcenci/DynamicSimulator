@@ -1,6 +1,5 @@
 /***************************************************************/
 /* 1Ising2d-Simulação.c					       */
-/* Rômulo Cenci						       */
 /* 							       */
 /* Realiza a simulação do modelo de Ising 2d, medindo a	       */
 /* evolução da energia e magnetização, ou anima a simulação    */

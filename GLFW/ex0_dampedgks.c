@@ -5,15 +5,19 @@
 #include <time.h>
 
 
-#define alpha (0.1f)
-#define waveq (.86f)
+#define alpha (0.05f)
+#define waveq 0.8f
 #define timeprinter 600
-#define maxwindows 15
-#define num_cel 15
-#define dx (0.008*num_cel)
-
-#define M 1000
+#define maxwindows 1000000
+#define num_cel 10
+#define M 800
 #define N 1
+#define L  (M*N)
+#define X (L/sqrt(2)/2/num_cel)
+#define dx M_PI/X
+// #define dx 0.088
+
+
 #define dt 0.01f
 
 #define tmax timeprinter*maxwindows
@@ -21,7 +25,6 @@
 
 #define pi M_PI
 #define k0 (pi/M)
-#define L  (M*N)
 #define Lk  (L/2+1)
 
 
@@ -70,7 +73,7 @@ void vetores(double *fi)
   fnxc2r = fftw_plan_dft_c2r_1d(L,fi3k,fi3,FFTW_PATIENT);
 
   for(i=0;i<L/2+1;i++){
-    k[i]=(i)*2.0*pi/L/dx;
+    k[i]=(i)*2.0*pi/(L*dx);
     k2[i]= powf(k[i],2);
   }
 
@@ -88,46 +91,11 @@ void vetores(double *fi)
   return;
 }
 
-void diretork(double *fi)
-{
-  int ii,i,j;
-  double fac;
-
-  fac = 1.0f/ (double) L;
-
-  fftw_execute(fr2c);
-  for(i=0;i<Lk;i++){
-    fnxk[i][0]= -k[i]*fik[i][1]*fac;
-    fnxk[i][1]=  k[i]*fik[i][0]*fac;
-
-    fik[i][0]= fik[i][0]*fac;
-    fik[i][1]= fik[i][1]*fac;
-  }
-
-  fftw_execute(fnxc2r);
-  fftw_execute(fc2r);
-
-  return;
-}
-
-void diretor(double *fi)
-{
-  int ii,i,j;
-  double fac;
-
-  for(i=0;i<L;i++){
-    fnx [i] = ( fi[(i+1)%L] - fi[(i-1+L)%L] )/2.0f;
-  }
-
-  return;
-}
-
-
 void update(double *fi)
 {
   int i;
 
-  diretor(fi);
+  // diretor(fi);
 
   for(i=0;i<L;i++)
   fi3[i] = fi[i]*fi[i];
@@ -141,8 +109,8 @@ void update(double *fi)
 
   /*atualiza:*/
   for(i=0;i<Lk;i++){
-    fik[i][0] =  F[i]*fik[i][0] -  fi3k[i][1]*I[i];
-    fik[i][1] =  F[i]*fik[i][1] +  fi3k[i][0]*I[i];
+    fik[i][0] =  F[i]*fik[i][0] +  fi3k[i][1]*I[i];
+    fik[i][1] =  F[i]*fik[i][1] -  fi3k[i][0]*I[i];
   }
 
   /*anti-transforma*/
@@ -173,13 +141,13 @@ int main(void)
   fi = fftw_malloc(sizeof(double)*L);
   vetores(fi);
 
-  srand (1983479);
+  srand (time(NULL));
 
   for(i=0;i<L;i++)
+  // fi[i] = sin(num_cel*2*M_PI*i/((double) L)) ;
     fi[i] = 2.0*rand()/RAND_MAX - 1.0;
-    // fi[i] = sin(waveq*dx*i/((double) L));
+    //  fi[i] = sin(waveq*i/((double) L));
     //Condição inicial para as drifting
-    // fi[i] = sin(waveq/dx*i/((double) L)) + 0.5*sin(waveq/dx*i/((double) L) + 0.5);
   start = clock();
 
 
@@ -197,7 +165,7 @@ int main(void)
     //
      e = max(fi);
      for(i=0;i<L;i++)
-       printf("%d %d %f \n",i,j%timeprinter,fi[i]/e);
+       printf("%f\n",fi[i]/e);
      //printf("#draw\n");
 
   }
