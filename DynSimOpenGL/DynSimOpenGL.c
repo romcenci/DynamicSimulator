@@ -214,23 +214,21 @@ void grid2dMode(int tempo){
 }
 
 void particle2dMode(int tempo){
-  int i,j;
-  double cor, L=400;
+  int i;
+  double cor, L=300, xx, yy, r;
   Vertex v;
 
-  for(j=0; j<L; j++){
-    for(i=0; i<L; i++){
-      scanf("%lf\n", &cor);
-      cor = (cor+1.0)/2.0;
-      //cor = 1.0f;
-      v.x = (i - L/2)/440.0*(600/L);
-      v.y = (j - L/2)/330.0*(600/L);
-      v.z = 0.0f;
-      v.r = cor;
-      v.g = cor;
-      v.b = cor;
-      v.a = 1.0f;
-      drawPoint(v,1.5f);
-    }
+  for(i=0; i<L; i++){
+    scanf("%lf %lf %lf\n", &xx, &yy, &r);
+    cor = 1.0;
+    //cor = 1.0f;
+    v.x = (2*xx-1)/1.15;
+    v.y = (2*yy-1)/1.15;
+    v.z = 0.0f;
+    v.r = cor;
+    v.g = cor;
+    v.b = cor;
+    v.a = 1.0f;
+    drawPoint(v,1.5f);
   }
 }
