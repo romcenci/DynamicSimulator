@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define raio 10
+#define raio 20
 #define N 500
 #define dt 0.1
 
@@ -65,7 +65,7 @@ void rotate(int k, double th) {
 void boundCollision(){
   for (i=0; i<N; i++) { // Restaura flag de parede
     if (flagBound[i]==1) {
-      if (x[i]>raio && x[i]<width-raio && y[i]>raio && y[i]<height-raio) {
+      if (x[i]>0 && x[i]<width && y[i]>0 && y[i]<height) {
         flagBound[i]=0;
       }
     }
