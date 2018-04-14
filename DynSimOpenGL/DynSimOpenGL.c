@@ -160,11 +160,12 @@ void gridMode(int tempo){
   float cor;
   float yy;
   Vertex v;
+  int L=800;
   yy = (float) (-(tempo%600)+300.0f)/330.0f;
-  for(i = 0;i < 800;i++){
+  for(i=0; i<L; i++){
     scanf("%f\n", &cor);
     cor = (cor+1)/2.0;
-    v.x = (i - 400.0)/440.0;
+    v.x = (i - L/2)/440.0;
     v.y = yy;
     v.z = 0.0f;
     v.r = cor;
@@ -180,6 +181,7 @@ void particleMode(int tempo){
   float cor;
   float yy, xx;
   Vertex v;
+  int L=500;
 
   glBegin(GL_QUADS); //Begin quadrilateral coordinates
   //Trapezoid
@@ -191,7 +193,7 @@ void particleMode(int tempo){
   glEnd(); //End quadrilateral coordinates
       
   yy = (float) (-(tempo%600)+300.0f)/330.0f;
-  for(i=0; i<500; i++){
+  for(i=0; i<L; i++){
     scanf("%f\n", &xx);
     cor = 1.0f;
     v.x = (2*xx-1)/1.15;
@@ -207,8 +209,9 @@ void particleMode(int tempo){
 
 void grid2dMode(int tempo){
   int i,j;
-  double cor, L=400;
+  double cor;
   Vertex v;
+  int L=500;
 
   for(j=0; j<L; j++){
     for(i=0; i<L; i++){
@@ -229,8 +232,9 @@ void grid2dMode(int tempo){
 
 void particle2dMode(){
   int i;
-  double cor, L=500, xx, yy, r;
+  double cor, xx, yy, r;
   Vertex v;
+  int L=500;
 
   glClear(GL_COLOR_BUFFER_BIT);
   
