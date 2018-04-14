@@ -25,10 +25,11 @@ void drawPointsDemo(int width, int height);
 void drawLineSegment(Vertex v1, Vertex v2, GLfloat width);
 void drawGrid(GLfloat width, GLfloat height, GLfloat grid_width);
 void DrawFrame();
-void gridMode();
-void particleMode();
+void gridMode(int tempo);
+void particleMode(int tempo);
 void grid2dMode();
 void particle2dMode();
+void DrawCircle(double x0, double y0, double r);
 
 int main(void)
 {
@@ -57,7 +58,7 @@ int main(void)
       glfwGetFramebufferSize(window, &width, &height);
       ratio = (float) width / (float)height;
       glViewport(0, 0, width, height);
-      // glClear(GL_COLOR_BUFFER_BIT);
+      //glClear(GL_COLOR_BUFFER_BIT);
       glMatrixMode(GL_PROJECTION);
       glLoadIdentity();
       //Orthographic Projection
@@ -94,6 +95,19 @@ void drawPoint(Vertex v1, GLfloat size){
   glBegin(GL_POINTS);
   glColor4f(v1.r, v1.g, v1.b, v1.a);
   glVertex3f(v1.x, v1.y, v1.z);
+  glEnd();
+}
+
+void DrawCircle(double x0, double y0, double r){
+  int i;
+  
+  glBegin(GL_POLYGON);
+  for(i=0; i <= 300; i++){
+    double angle = 2 * M_PI * i / 300;
+    double x = r/880*cos(angle)-x0;
+    double y = r/660*sin(angle)-y0;
+    glVertex2d(x,y);
+  }
   glEnd();
 }
 
@@ -213,22 +227,25 @@ void grid2dMode(int tempo){
   }
 }
 
-void particle2dMode(int tempo){
+void particle2dMode(){
   int i;
-  double cor, L=300, xx, yy, r;
+  double cor, L=500, xx, yy, r;
   Vertex v;
 
+  glClear(GL_COLOR_BUFFER_BIT);
+  
   for(i=0; i<L; i++){
     scanf("%lf %lf %lf\n", &xx, &yy, &r);
     cor = 1.0;
     //cor = 1.0f;
-    v.x = (2*xx-1)/1.15;
+    v.x = (2*xx-1)/1.15*660/880;
     v.y = (2*yy-1)/1.15;
     v.z = 0.0f;
     v.r = cor;
     v.g = cor;
     v.b = cor;
     v.a = 1.0f;
-    drawPoint(v,1.5f);
+    //drawPoint(v,r);
+    DrawCircle(v.x, v.y, r+3);  
   }
 }

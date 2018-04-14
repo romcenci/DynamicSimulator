@@ -5,14 +5,14 @@
 #include <math.h>
 
 #define raio 10
-#define N 300
+#define N 500
 #define dt 0.1
 
 #define width 1000
 #define height 1000
 
-#define xRandom (double)rand()/RAND_MAX*(width-raio)+raio
-#define yRandom (double)rand()/RAND_MAX*(height-raio)+raio
+#define xRandom (double)rand()/RAND_MAX*(width-3*raio)+raio
+#define yRandom (double)rand()/RAND_MAX*(height-3*raio)+raio
 #define velRandom (double)rand()/RAND_MAX > 0.5 ? (double)rand()/RAND_MAX*10 : -(double)rand()/RAND_MAX*10
 
 int i, j;
@@ -124,7 +124,7 @@ void collision(){
 
 void plot(){  
   for (i=0; i<N; i++) {
-    printf("%lf %lf %lf\n", x[i], y[i], (double)raio);
+    printf("%lf %lf %lf\n", x[i]/width, y[i]/height, (double)raio);
   }
 }
 
