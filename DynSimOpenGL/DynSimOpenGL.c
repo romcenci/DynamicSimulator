@@ -6,6 +6,8 @@
 //Standard Libraries
 #define _USE_MATH_DEFINES // M_PI constant
 
+int L=TAM;
+
 const int WINDOWS_WIDTH = 880;
 const int WINDOWS_HEIGHT = 660;
 
@@ -160,7 +162,7 @@ void gridMode(int tempo){
   float cor;
   float yy;
   Vertex v;
-  int L=800;
+
   yy = (float) (-(tempo%600)+300.0f)/330.0f;
   for(i=0; i<L; i++){
     scanf("%f\n", &cor);
@@ -181,7 +183,6 @@ void particleMode(int tempo){
   float cor;
   float yy, xx;
   Vertex v;
-  int L=500;
 
   glBegin(GL_QUADS); //Begin quadrilateral coordinates
   //Trapezoid
@@ -211,21 +212,20 @@ void grid2dMode(int tempo){
   int i,j;
   double cor;
   Vertex v;
-  int L=500;
 
   for(j=0; j<L; j++){
     for(i=0; i<L; i++){
       scanf("%lf\n", &cor);
       cor = (cor+1.0)/2.0;
       //cor = 1.0f;
-      v.x = (i - L/2)/440.0*(600/L);
-      v.y = (j - L/2)/330.0*(600/L);
+      v.x = (i*(2./L)-1)*660/880;
+      v.y = (j*(2./L)-1);
       v.z = 0.0f;
       v.r = cor;
       v.g = cor;
       v.b = cor;
       v.a = 1.0f;
-      drawPoint(v,1.5f);
+      drawPoint(v,1000/L);
     }
   }
 }
@@ -234,7 +234,6 @@ void particle2dMode(){
   int i;
   double cor, xx, yy, r;
   Vertex v;
-  int L=500;
 
   glClear(GL_COLOR_BUFFER_BIT);
   

@@ -5,14 +5,14 @@
 #include <math.h>
 
 #define raio 20
-#define N 500
+#define N 200
 #define dt 0.1
 
 #define width 1000
 #define height 1000
 
-#define xRandom (double)rand()/RAND_MAX*(width-3*raio)+raio
-#define yRandom (double)rand()/RAND_MAX*(height-3*raio)+raio
+#define xRandom (double)rand()/RAND_MAX*(width-3*raio)
+#define yRandom (double)rand()/RAND_MAX*(height-3*raio)
 #define velRandom (double)rand()/RAND_MAX > 0.5 ? (double)rand()/RAND_MAX*10 : -(double)rand()/RAND_MAX*10
 
 int i, j;

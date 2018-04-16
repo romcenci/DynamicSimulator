@@ -17,7 +17,7 @@
 #include <math.h>
 #include <time.h>
 
-#define L 400
+#define L 300
 #define N L*L
 #define XNN 1
 #define YNN L
