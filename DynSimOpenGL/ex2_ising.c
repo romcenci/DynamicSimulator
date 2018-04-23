@@ -31,12 +31,12 @@ double beta;
 void init(){
   int i;
   srand(time(0));
-  
+
   for(i=2; i<5; i+=2) prob[i]=exp(-2.*beta*(double)i); // Calcula as probabilidades possíveis
 
   // Começo FRIO:
   /* for(i=0; i<N; i++) s[i]=1; */
-  
+
   // Começo QUENTE:
   for(i=0; i<N; i++){
     if(rand()%2 == 0) s[i]=1;
@@ -47,7 +47,7 @@ void init(){
 void update(){
   int i, j;
   int nn, snn, dE;
-  
+
   for(j=0; j<N; j++){
     i=(double)rand()/RAND_MAX*N; // Escolhe alguém na rede
 
@@ -66,14 +66,14 @@ void update(){
 double measEner(){
   double e=0;
   int nn, snn, i;
-  
+
   for(i=0; i<N; i++){
     // Soma sobre os necessários, i-XNN e i-YNN são redundantes
     if((nn=i+XNN)>=N) nn-=N; snn =s[nn];
     if((nn=i+YNN)>=N) nn-=N; snn+=s[nn];
     e+=snn*s[i];
   }
-  
+
   return -e/N;
 }
 
@@ -98,7 +98,7 @@ void plot(){
 
 int main(int argc, char *argv[]){
   int mc;
-  beta=1;
+  beta=2;
   init();
 
   for(mc=0; mc<MC; mc++){
@@ -108,6 +108,6 @@ int main(int argc, char *argv[]){
       plot();
     }
   }
-  
+
   return 0;
 }
