@@ -6,6 +6,13 @@
 	
 	* Para compilar usa:
 		- "gcc DynSimSDL.c -lSDL2 -o DynSimSDL"
+		
+	* Para instalar glfw3:
+		- "sudo apt-get install libglfw3-dev"
+	* Para compilar:
+		- "gcc DynSimOpenGL2.c -lm -lGL -lglfw -Dmo=2 -DTAM=300 -O3 -o DynSim"
+		onde mo é o tipo de animação, e TAM é o tamanho linear
+	
 	
 * **Para rodar:**
 	* Se a.out imprime os dados:
