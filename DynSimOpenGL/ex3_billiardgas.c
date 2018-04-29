@@ -4,15 +4,15 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define raio 20
-#define N 200
+#define raio 40
+#define N 50
 #define dt 0.1
 
 #define width 1000
 #define height 1000
 
-#define xRandom (double)rand()/RAND_MAX*(width-3*raio)
-#define yRandom (double)rand()/RAND_MAX*(height-3*raio)
+#define xRandom (double)rand()/RAND_MAX*(width-raio)
+#define yRandom (double)rand()/RAND_MAX*(height-raio)
 #define velRandom (double)rand()/RAND_MAX > 0.5 ? (double)rand()/RAND_MAX*10 : -(double)rand()/RAND_MAX*10
 
 int i, j;
@@ -26,6 +26,7 @@ double th;
 
 int flag[N][N];
 int flagBound[N];
+int flg[N];
 
 void init(){
   for (i=0; i<N; i++) {
@@ -36,8 +37,17 @@ void init(){
   }
 
   for (i=0; i<N; i++) {
-    x[i]=xRandom;
-    y[i]=yRandom;
+    while(flg[i]<N-1){
+      x[i]=(double)rand()/RAND_MAX*(width-raio);
+      y[i]=(double)rand()/RAND_MAX*(height-raio);
+      flg[i]=0;
+      for (j=0; j<N; j++) {
+	if (sqrt((x[i]-x[j])*(x[i]-x[j])+(y[i]-y[j])*(y[i]-y[j])) > 2.5*raio) {
+	  flg[i]++;
+	}
+      }
+    }
+    
     /* vx[i]=2; */
     /* vy[i]=2; */
     vx[i]=velRandom;
@@ -130,6 +140,8 @@ void plot(){
 
 int main(int argc, char *argv[]){
   double t;
+
+  srand(time(0));
   
   init();
   
