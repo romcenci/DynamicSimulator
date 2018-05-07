@@ -5,7 +5,7 @@
 #include <time.h>
 
 
-#define alpha (0.11f)
+#define alpha (0.23f)
 #define waveq 0.8f
 #define timeprinter 600
 #define maxwindows 1000000
@@ -118,24 +118,49 @@ void update(double *fi)
 
   return;
 }
+void espectro_potencias(double *fi, double *ck){
+  int i,j;
 
+  for(i=0;i<L;i++)
+    fi3[i] = fi[i];
 
-double max(double *fi){
+  fftw_execute(f3r2c);
+
+  for(i=0;i<Lk;i++)
+    ck[i] =  (pow(fi3k[i][0],2) + pow(fi3k[i][1],2))/L;
+
+  return;
+}
+
+double max(double *fi,int tamanho){
 
   double xmax=0.0;
   int i;
 
-  for(i=0;i<L;i++)
+  for(i=0;i<tamanho;i++)
     xmax = (fi[i]>xmax?fi[i]:xmax);
 
   return xmax;
 }
 
+void delay(double number_of_seconds)
+{
+    // Converting time into milli_seconds
+    double milli_seconds = 1000 * number_of_seconds;
+
+    // Stroing start time
+    clock_t start_time = clock();
+
+    // looping till required time is not acheived
+    while (clock() < start_time + milli_seconds)
+        ;
+}
 int main(void)
 {
   double *fi,e,cc,K[5],g[2], somaU = 0, somaU2 = 0;
   int i,j;
   FILE *f1;
+  double spectro[Lk];
   char nome[100];
 
   fi = fftw_malloc(sizeof(double)*L);
@@ -163,9 +188,13 @@ int main(void)
     for(i=0;i<tprint;i++)
       update(fi);
     //
-     e = max(fi);
-     for(i=0;i<L;i++)
-       printf("%f\n",fi[i]/e);
+    espectro_potencias(fi, spectro);
+    for(i=0;i<Lk;i++)
+      spectro[i] = log(spectro[i]);
+     e = max(spectro,Lk);
+     for(i=0;i<Lk;i++){
+       printf("%d\t %f\n",i,spectro[i]/e);
+     }
      //printf("#draw\n");
 
   }

@@ -32,7 +32,7 @@ void particleMode(int tempo);
 void grid2dMode();
 void particle2dMode();
 void DrawCircle(double x0, double y0, double r);
-
+void SpectreMode();
 int main(void)
 {
   GLFWwindow* window;
@@ -83,7 +83,9 @@ int main(void)
       else if(mo==3){
 	particle2dMode(tempo);
       }
-
+      else if(mo==4){
+  SpectreMode(tempo);
+      }
       glfwSwapBuffers(window);
       glfwPollEvents();
     }
@@ -255,5 +257,43 @@ void particle2dMode(){
     v.a = 1.0f;
     //drawPoint(v,r);
     DrawCircle(v.x, v.y, r+3);
+  }
+}
+
+void SpectreMode(){
+  int pos,t;
+  float value;
+  double cor = 1.0;
+  Vertex v1,v2;
+  int Lk = (800/2+1);
+  scanf("%d\t%f",&pos,&value);
+  v1.x = (2.0*pos/Lk) -1.0f;
+  v1.y = (value);
+  v1.z = 0.0f;
+  v1.r = cor;
+  v1.g = cor;
+  v1.b = cor;
+  v1.a = 1.0f;
+  glClear(GL_COLOR_BUFFER_BIT);
+
+  for(t = 1; t < Lk;t++){
+    scanf("%d",&pos);
+    scanf("%f",&value);
+    v2.x = (2.0f*pos/Lk) -1.0f;
+    // v2.y = 2.0f*rand()/RAND_MAX - 1.0f;
+    v2.y = 2.0f*value - 1.0f;
+    v2.z = 0.0f;
+    v2.r = cor;
+    v2.g = cor;
+    v2.b = cor;
+    v2.a = 1.0f;
+    drawLineSegment(v1,v2,3.0f);
+    v1.x = v2.x;
+    v1.y = v2.y;
+    v1.z = v2.z;
+    v1.r = cor;
+    v1.g = cor;
+    v1.b = cor;
+    v1.a = 1.0f;
   }
 }
