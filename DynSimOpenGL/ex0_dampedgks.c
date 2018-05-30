@@ -10,7 +10,7 @@
 #define timeprinter 600
 #define maxwindows 1000000
 #define num_cel 10
-#define M 800
+#define M 1000
 #define N 1
 #define L  (M*N)
 #define X (L/sqrt(2)/2/num_cel)

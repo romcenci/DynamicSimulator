@@ -39,7 +39,7 @@ int main(void)
   if (!glfwInit())
     exit(EXIT_FAILURE);
   window = glfwCreateWindow(WINDOWS_WIDTH, WINDOWS_HEIGHT,
-			    "Chapter 2: Primitive drawings", NULL, NULL);
+			    "Dynamic Simulator", NULL, NULL);
   if (!window){
     glfwTerminate();
     exit(EXIT_FAILURE);
@@ -50,7 +50,13 @@ int main(void)
   glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  double GRID[600][800] = {0.0};
+  double GRID[600][L];
+  int i,j;
+  for (i = 0; i < 600; i++){
+    for(j = 0; j< L; j++){
+      GRID[i][j] = 0.0;
+    }
+  }
   int tempo = 0;
   while (!glfwWindowShouldClose(window))
     {
@@ -159,7 +165,7 @@ void DrawFrame(){
   // drawLineSegment(v4, v1,3.0f);
 }
 
-void gridMode(int tempo,double GRID[600][800]){
+void gridMode(int tempo,double GRID[600][L]){
   int i,j;
   float cor;
   float yy;
@@ -173,7 +179,7 @@ void gridMode(int tempo,double GRID[600][800]){
   glClear(GL_COLOR_BUFFER_BIT);
   for(j=0;j < 600; j++){
     for(i=0; i<L; i++){
-      v.x = (i - L/2)/440.0;
+      v.x = (i - L/2)/(1.1*L/2);
       v.y = (float) (-j+300.0f)/330.0f;
       v.z = 0.0f;
       v.r = GRID[j][i];
@@ -279,9 +285,9 @@ void SpectreMode(){
   for(t = 1; t < Lk;t++){
     scanf("%d",&pos);
     scanf("%f",&value);
-    v2.x = (2.0f*pos/Lk) -1.0f;
+    v2.x = (2.0f*t/Lk)-1.0f;
     // v2.y = 2.0f*rand()/RAND_MAX - 1.0f;
-    v2.y = 2.0f*value - 1.0f;
+    v2.y = value +.7;
     v2.z = 0.0f;
     v2.r = cor;
     v2.g = cor;

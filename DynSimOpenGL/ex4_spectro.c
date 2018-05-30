@@ -191,9 +191,10 @@ int main(void)
     espectro_potencias(fi, spectro);
     for(i=0;i<Lk;i++)
       spectro[i] = log(spectro[i]);
+
      e = max(spectro,Lk);
      for(i=0;i<Lk;i++){
-       printf("%d\t %f\n",i,spectro[i]/e);
+       printf("%d\t %f\n",i,spectro[i]/(4*e));
      }
      //printf("#draw\n");
 
