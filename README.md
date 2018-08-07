@@ -1,22 +1,16 @@
 # DynamicSimulator
 
 * **Pre-requisitos:**
-	* Para baixar SDL2:
-		- "sudo apt-get install libsdl2-dev"
-	
-	* Para compilar usa:
-		- "gcc DynSimSDL.c -lSDL2 -o DynSimSDL"
-		
 	* Para instalar glfw3:
-		- "sudo apt-get install libglfw3-dev"
+		- `sudo apt-get install libglfw3-dev`
 	* Para compilar:
-		- "gcc DynSimOpenGL2.c -lm -lGL -lglfw -Dmo=2 -DTAM=300 -O3 -o DynSim"
+		- `gcc DynSimOpenGL2.c -lm -lGL -lglfw -Dmo=2 -DTAM=300 -O3 -o DynSim`
 		onde mo é o tipo de animação, e TAM é o tamanho linear
 	
 	
 * **Para rodar:**
 	* Se a.out imprime os dados:
-		- "./a.out | ./DynSim -OPÇÕES"
+		- `./a.out | ./DynSim.sh -OPÇÕES`
 		
 * **Outras opções**
 	* -m : Modo de plot
