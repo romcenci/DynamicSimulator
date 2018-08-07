@@ -14,10 +14,14 @@
 		
 * **Outras opções**
 	* -m : Modo de plot
+		- 0: (1d) Rede fixa (Ex: dampedGKS)
+		<figure><img src="images/0.png" width="500"></figure>
 		- 1: (1d) Posição variável (Granular. Ex: Quasicristal)
-		- 2: (1d) Rede fixa (Ex: dampedGKS)
+		<figure><img src="images/1.png" width="500"></figure>
+		- 2: (2d) Posição fixa (Ex: Ising 2d)
+		<figure><img src="images/2.png" width="500"></figure>
 		- 3: (2d) Posição variável (Granular. Ex: Gás de bilhar)
-		- 4: (2d) Posição fixa (Ex: Ising 2d)
+		<figure><img src="images/3.png" width="500"></figure>
 		
 	* -l : Tamanho do vetor (quantidade de partículas)
 
