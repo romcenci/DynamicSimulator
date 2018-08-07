@@ -24,3 +24,6 @@ done
 
 gcc DynSimOpenGL.c -lm -lGL -lglfw -Dmo=$MODE -DTAM=$L -o DynSim
 ./DynSim
+
+wait
+rm DynSim

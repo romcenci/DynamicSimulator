@@ -3,10 +3,12 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include <unistd.h>
 //Standard Libraries
 #define _USE_MATH_DEFINES // M_PI constant
 
 int L=TAM;
+int para;
 
 const int WINDOWS_WIDTH = 880;
 const int WINDOWS_HEIGHT = 660;
@@ -33,8 +35,9 @@ void grid2dMode();
 void particle2dMode();
 void DrawCircle(double x0, double y0, double r);
 void SpectreMode();
-int main(void)
-{
+void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods );
+
+int main(void){
   GLFWwindow* window;
   if (!glfwInit())
     exit(EXIT_FAILURE);
@@ -57,25 +60,29 @@ int main(void)
       GRID[i][j] = 0.0;
     }
   }
+
+  glfwSetKeyCallback( window, keyCallback );
+  
   int tempo = 0;
-  while (!glfwWindowShouldClose(window))
-    {
+  while (!glfwWindowShouldClose(window)){
+    float ratio;
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    ratio = (float) width / (float)height;
+    glViewport(0, 0, width, height);
+    //glClear(GL_COLOR_BUFFER_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    //Orthographic Projection
+    // glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    // drawGrid(5.0f, 1.0f, 0.1f);
+    DrawFrame();
+
+    if(para==0){
       tempo++;
-      float ratio;
-      int width, height;
-      glfwGetFramebufferSize(window, &width, &height);
-      ratio = (float) width / (float)height;
-      glViewport(0, 0, width, height);
-      //glClear(GL_COLOR_BUFFER_BIT);
-      glMatrixMode(GL_PROJECTION);
-      glLoadIdentity();
-      //Orthographic Projection
-      // glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-      glMatrixMode(GL_MODELVIEW);
-      glLoadIdentity();
-      //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      // drawGrid(5.0f, 1.0f, 0.1f);
-      DrawFrame();
 
       if(mo==0){
 	gridMode(tempo,GRID);
@@ -90,11 +97,13 @@ int main(void)
 	particle2dMode(tempo);
       }
       else if(mo==4){
-  SpectreMode(tempo);
+	SpectreMode(tempo);
       }
-      glfwSwapBuffers(window);
-      glfwPollEvents();
     }
+    
+    glfwSwapBuffers(window);
+    glfwPollEvents();
+  }
   glfwDestroyWindow(window);
   glfwTerminate();
   exit(EXIT_SUCCESS);
@@ -301,5 +310,17 @@ void SpectreMode(){
     v1.g = cor;
     v1.b = cor;
     v1.a = 1.0f;
+  }
+}
+
+void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods ){
+  if (key == 32 && action == GLFW_PRESS ){
+    printf("space\n");
+    if(para==0){
+      para=1;
+    }
+    else if(para==1){
+      para=0;
+    }
   }
 }
