@@ -28,13 +28,3 @@
 		
 		
 	* -l : Tamanho do vetor (quantidade de partículas)
-
-	* -x :
-		- (-m 3) Tamanho horizontal
-		- (-m 4) Tamanho da rede horizontal
-	* -y : 
-		- (-m 3) Tamanho vertical
-		- (-m 4) Tamanho da rede vertical
-	
-	* -h : Altura da janela
-	* -w : Largura da janela
