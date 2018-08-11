@@ -1,24 +1,14 @@
 #!/bin/bash
 
 MODE=0
-L=800
+L=500
 
-while getopts ":l:m:" opt; do
+while getopts "l:m:" opt; do
     case $opt in
-	l)
-	    L=$OPTARG
-	    ;;
-	m)
-	    MODE=$OPTARG
-	    ;;
-	\?)
-	    echo "Invalid option: -$OPTARG" >&2
-	    exit 1
-	    ;;
-	:)
-	    echo "Option -$OPTARG requires an argument." >&2
-	    exit 1
-	    ;;
+	l)  L=$OPTARG ;;
+	m)  MODE=$OPTARG ;;
+	\?) exit 1 ;;
+	:)  exit 1 ;;
     esac
 done
 

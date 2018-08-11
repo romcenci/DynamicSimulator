@@ -10,8 +10,8 @@
 int L=TAM;
 int para;
 
-const int WINDOWS_WIDTH = 880;
-const int WINDOWS_HEIGHT = 660;
+//const int WINDOWS_WIDTH = 880;
+//const int WINDOWS_HEIGHT = 660;
 
 typedef struct
 {
