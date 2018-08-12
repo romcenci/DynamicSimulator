@@ -4,26 +4,29 @@
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
-//Standard Libraries
-#define _USE_MATH_DEFINES // M_PI constant
+
+#define _USE_MATH_DEFINES 
 
 int L=TAM;
 int para;
 
-double zoom=0;
-double zoomStep=0.05;
+double zoomStep=0.2;
+double zoom=1;
+double horizontal=0, vertical=0;
+int mouseClick=0;
+double mouseX, mouseY;
+double mouseXant, mouseYant;
+int flag;
 
 //const int WINDOWS_WIDTH = 880;
 //const int WINDOWS_HEIGHT = 660;
 
-typedef struct
-{
+typedef struct{
   GLfloat x, y, z;
   GLfloat r, g, b, a;
 } Vertex;
 
-typedef struct
-{
+typedef struct{
   GLfloat x, y, z;
 } Data;
 
@@ -38,22 +41,24 @@ void grid2dMode();
 void particle2dMode();
 void DrawCircle(double x0, double y0, double r);
 void SpectreMode();
+void cursorPositionCallback( GLFWwindow *window, double xPos, double yPos );
+void mouseButtonCallback( GLFWwindow *window, int button, int action, int mods );
 void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods );
 void scrollCallback( GLFWwindow *window, double xOffset, double yOffset );
+void mouseTranslate();
 
 int main(void){
   GLFWwindow* window;
   
-  if (!glfwInit())
+  if (!glfwInit()){
     exit(EXIT_FAILURE);
-  window = glfwCreateWindow(WINDOWS_WIDTH, WINDOWS_HEIGHT,
-			    "Dynamic Simulator", NULL, NULL);
+  }
+  window = glfwCreateWindow(WINDOWS_WIDTH, WINDOWS_HEIGHT,"Dynamic Simulator", NULL, NULL);
   if (!window){
     glfwTerminate();
     exit(EXIT_FAILURE);
   }
   glfwMakeContextCurrent(window);
-  // glfwSwapInterval(5);
   glEnable(GL_POINT_SMOOTH);
   glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
   glEnable(GL_BLEND);
@@ -65,10 +70,11 @@ int main(void){
       GRID[i][j] = 0.0;
     }
   }
-
+  
+  glfwSetCursorPosCallback( window, cursorPositionCallback );
+  glfwSetMouseButtonCallback( window, mouseButtonCallback );
   glfwSetKeyCallback( window, keyCallback );
   glfwSetScrollCallback( window, scrollCallback );
-
   int tempo = 0;
   while (!glfwWindowShouldClose(window)){
     float ratio;
@@ -77,34 +83,31 @@ int main(void){
     glfwGetFramebufferSize(window, &width, &height);
     ratio = (float) width / (float)height;
     glViewport(0, 0, width, height);
-    // glClear(GL_COLOR_BUFFER_BIT);
-    glMatrixMode(GL_PROJECTION);
+
     glLoadIdentity();
-    // glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    mouseTranslate();
+    glTranslatef(0.07*horizontal, 0.07*vertical, 0);
     // drawGrid(5.0f, 1.0f, 0.1f);
     
     if(para==0){
-      tempo++;
       DrawFrame();
-      if(zoomStep*zoom+1<0){zoom=-1/zoomStep;}
+      tempo++;
 
       if(mo==0){
-	glScalef(zoomStep*zoom+1,1,0);
+	glScalef(zoom,1,0);
 	gridMode(tempo,GRID);
       }
       else if(mo==1){
-	glScalef(zoomStep*zoom+1,1,0);
+	glScalef(zoom,1,0);
 	particleMode(tempo);
       }
       else if(mo==2){
-	glScalef(zoomStep*zoom+1,zoomStep*zoom+1,0);
+	glScalef(zoom,zoom,0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	grid2dMode(tempo);
       }
       else if(mo==3){
-	glScalef(zoomStep*zoom+1,zoomStep*zoom+1,0);
+	glScalef(zoom,zoom,0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	particle2dMode(tempo);
       }
@@ -119,6 +122,21 @@ int main(void){
   glfwDestroyWindow(window);
   glfwTerminate();
   exit(EXIT_SUCCESS);
+}
+
+void mouseTranslate(){
+  if(mouseClick==1){
+    if(flag==1){
+      horizontal+=0.04*(mouseX-mouseXant);
+      vertical+=0.04*(mouseYant-mouseY);
+    }
+    flag=1;
+    mouseXant=mouseX;
+    mouseYant=mouseY;      
+  }
+  else{
+    flag=0;
+  }
 }
 
 void drawPoint(Vertex v1, GLfloat size){
@@ -180,10 +198,6 @@ void DrawFrame(){
   Vertex v2 = {0.95f, -0.95f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
   Vertex v3 = {0.95f, 0.95f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
   Vertex v4 = {-0.95f, 0.95f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-  // drawLineSegment(v1, v2,3.0f);
-  // drawLineSegment(v2, v3,3.0f);
-  // drawLineSegment(v3, v4,3.0f);
-  // drawLineSegment(v4, v1,3.0f);
 }
 
 void gridMode(int tempo,double GRID[600][L]){
@@ -218,14 +232,13 @@ void particleMode(int tempo){
   float yy, xx;
   Vertex v;
   
-  glBegin(GL_QUADS); //Begin quadrilateral coordinates
-  //Trapezoid
+  glBegin(GL_QUADS);
   glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
   glVertex3f(-1.0f, -(2.*(tempo%600)-600.)/660.-0.03f, 0.0f);
   glVertex3f(1.0f,  -(2.*(tempo%600)-600.)/660.-0.03f, 0.0f);
   glVertex3f(1.0f,  -(2.*(tempo%600)-600.)/660., 0.0f);
   glVertex3f(-1.0f, -(2.*(tempo%600)-600.)/660., 0.0f);
-  glEnd(); //End quadrilateral coordinates
+  glEnd();
 
   yy = (float) (-(tempo%600)+300.0f)/330.0f;
   for(i=0; i<L; i++){
@@ -253,7 +266,6 @@ void grid2dMode(int tempo){
     for(i=0; i<L; i++){
       scanf("%lf\n", &cor);
       cor = (cor+1.0)/2.0;
-      //cor = 1.0f;
       v.x = (i*(2./L)-1)*660/880;
       v.y = (j*(2./L)-1);
       v.z = 0.0f;
@@ -276,7 +288,6 @@ void particle2dMode(){
   for(i=0; i<L; i++){
     scanf("%lf %lf %lf\n", &xx, &yy, &r);
     cor = 1.0;
-    //cor = 1.0f;
     v.x = (2*xx-1)/1.15*660/880;
     v.y = (2*yy-1)/1.15;
     v.z = 0.0f;
@@ -284,7 +295,6 @@ void particle2dMode(){
     v.g = cor;
     v.b = cor;
     v.a = 1.0f;
-    //drawPoint(v,r);
     DrawCircle(v.x, v.y, r+3);
   }
 }
@@ -327,8 +337,22 @@ void SpectreMode(){
   }
 }
 
+void cursorPositionCallback( GLFWwindow *window, double xPos, double yPos ){
+  mouseX=xPos;
+  mouseY=yPos;
+}
+
+void mouseButtonCallback( GLFWwindow *window, int button, int action, int mods ){
+  if( button==0 && action==GLFW_PRESS ){
+    mouseClick=1;
+  }
+  else if( button==0 && action==GLFW_RELEASE ){
+    mouseClick=0;    
+  }
+}
+
 void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods ){
-  if (key == 32 && action == GLFW_PRESS ){
+  if (key == 32 && action == GLFW_PRESS){ // space
     if(para==0){
       para=1;
     }
@@ -336,9 +360,23 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
       para=0;
     }
   }
+
+  if (key == 262 && (action == GLFW_REPEAT || GLFW_PRESS)){ horizontal--; } // Right arrow
+  if (key == 263 && (action == GLFW_REPEAT || GLFW_PRESS)){ horizontal++; } // Left arrow
+  if (key == 264 && (action == GLFW_REPEAT || GLFW_PRESS)){ vertical++; } // Down arrow
+  if (key == 265 && (action == GLFW_REPEAT || GLFW_PRESS)){ vertical--; } // Up arrow
+
+  if (key == 65 && action == GLFW_PRESS){ // Letra a - autoscale
+    horizontal=0;
+    vertical=0;
+    zoom=1;
+  }
+
+  if (key == 45 && (action == GLFW_REPEAT || GLFW_PRESS)){ zoom-=zoomStep*zoom; } // Tecla -
+  if (key == 61 && (action == GLFW_REPEAT || GLFW_PRESS)){ zoom+=zoomStep*zoom; } // Tecla +
 }
 
 void scrollCallback( GLFWwindow *window, double xOffset, double yOffset ){
-  zoom+=yOffset;
+  zoom+=yOffset*zoomStep*zoom;
   glClear(GL_COLOR_BUFFER_BIT);
 }
