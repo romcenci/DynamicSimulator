@@ -67,21 +67,20 @@ int main(void){
   while (!glfwWindowShouldClose(window)){
     float ratio;
     int width, height;
+    
     glfwGetFramebufferSize(window, &width, &height);
     ratio = (float) width / (float)height;
     glViewport(0, 0, width, height);
-    //glClear(GL_COLOR_BUFFER_BIT);
+    // glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    //Orthographic Projection
     // glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // drawGrid(5.0f, 1.0f, 0.1f);
-    DrawFrame();
 
     if(para==0){
+      DrawFrame();
       tempo++;
 
       if(mo==0){
@@ -99,9 +98,9 @@ int main(void){
       else if(mo==4){
 	SpectreMode(tempo);
       }
+      
+      glfwSwapBuffers(window);
     }
-    
-    glfwSwapBuffers(window);
     glfwPollEvents();
   }
   glfwDestroyWindow(window);
