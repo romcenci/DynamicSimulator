@@ -86,7 +86,7 @@ int main(void){
 
     glLoadIdentity();
     mouseTranslate();
-    glTranslatef(0.07*horizontal, 0.07*vertical, 0);
+    glTranslatef(0.08*horizontal, 0.08*vertical, 0);
     // drawGrid(5.0f, 1.0f, 0.1f);
     
     if(para==0){
@@ -102,12 +102,14 @@ int main(void){
 	particleMode(tempo);
       }
       else if(mo==2){
-	glScalef(zoom,zoom,0);
+        glScalef(zoom,zoom,0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	grid2dMode(tempo);
       }
       else if(mo==3){
 	glScalef(zoom,zoom,0);
+	mouseTranslate();
+	glTranslatef(0.05*horizontal, 0.05*vertical, 0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	particle2dMode(tempo);
       }
