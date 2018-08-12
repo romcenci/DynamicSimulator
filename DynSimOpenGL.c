@@ -10,6 +10,9 @@
 int L=TAM;
 int para;
 
+double zoom=0;
+double zoomStep=0.05;
+
 //const int WINDOWS_WIDTH = 880;
 //const int WINDOWS_HEIGHT = 660;
 
@@ -36,9 +39,11 @@ void particle2dMode();
 void DrawCircle(double x0, double y0, double r);
 void SpectreMode();
 void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods );
+void scrollCallback( GLFWwindow *window, double xOffset, double yOffset );
 
 int main(void){
   GLFWwindow* window;
+  
   if (!glfwInit())
     exit(EXIT_FAILURE);
   window = glfwCreateWindow(WINDOWS_WIDTH, WINDOWS_HEIGHT,
@@ -62,7 +67,8 @@ int main(void){
   }
 
   glfwSetKeyCallback( window, keyCallback );
-  
+  glfwSetScrollCallback( window, scrollCallback );
+
   int tempo = 0;
   while (!glfwWindowShouldClose(window)){
     float ratio;
@@ -78,28 +84,34 @@ int main(void){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     // drawGrid(5.0f, 1.0f, 0.1f);
-
+    
     if(para==0){
-      DrawFrame();
-
       tempo++;
+      DrawFrame();
+      if(zoomStep*zoom+1<0){zoom=-1/zoomStep;}
 
       if(mo==0){
+	glScalef(zoomStep*zoom+1,1,0);
 	gridMode(tempo,GRID);
       }
       else if(mo==1){
+	glScalef(zoomStep*zoom+1,1,0);
 	particleMode(tempo);
       }
       else if(mo==2){
+	glScalef(zoomStep*zoom+1,zoomStep*zoom+1,0);
+	glClear(GL_COLOR_BUFFER_BIT);
 	grid2dMode(tempo);
       }
       else if(mo==3){
+	glScalef(zoomStep*zoom+1,zoomStep*zoom+1,0);
+	glClear(GL_COLOR_BUFFER_BIT);
 	particle2dMode(tempo);
       }
       else if(mo==4){
 	SpectreMode(tempo);
       }
-      
+
       glfwSwapBuffers(window);
     }
     glfwPollEvents();
@@ -324,4 +336,9 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
       para=0;
     }
   }
+}
+
+void scrollCallback( GLFWwindow *window, double xOffset, double yOffset ){
+  zoom+=yOffset;
+  glClear(GL_COLOR_BUFFER_BIT);
 }
