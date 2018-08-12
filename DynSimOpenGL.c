@@ -81,6 +81,7 @@ int main(void){
 
     if(para==0){
       DrawFrame();
+
       tempo++;
 
       if(mo==0){
@@ -204,12 +205,12 @@ void particleMode(int tempo){
   float cor;
   float yy, xx;
   Vertex v;
-
+  
   glBegin(GL_QUADS); //Begin quadrilateral coordinates
   //Trapezoid
   glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-  glVertex3f(-1.0f, -(2.*(tempo%600)-600.)/660.-0.01f, 0.0f);
-  glVertex3f(1.0f,  -(2.*(tempo%600)-600.)/660.-0.01f, 0.0f);
+  glVertex3f(-1.0f, -(2.*(tempo%600)-600.)/660.-0.03f, 0.0f);
+  glVertex3f(1.0f,  -(2.*(tempo%600)-600.)/660.-0.03f, 0.0f);
   glVertex3f(1.0f,  -(2.*(tempo%600)-600.)/660., 0.0f);
   glVertex3f(-1.0f, -(2.*(tempo%600)-600.)/660., 0.0f);
   glEnd(); //End quadrilateral coordinates
@@ -225,6 +226,8 @@ void particleMode(int tempo){
     v.g = cor;
     v.b = cor;
     v.a = 1.0f;
+
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     drawPoint(v,1.1f);
   }
 }
@@ -314,7 +317,6 @@ void SpectreMode(){
 
 void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods ){
   if (key == 32 && action == GLFW_PRESS ){
-    printf("space\n");
     if(para==0){
       para=1;
     }
