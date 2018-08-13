@@ -1,18 +1,21 @@
 # DynamicSimulator
 
 * **Pre-requisitos:**
-	* Para instalar glfw3:
+	* Instalar glfw3:
 		- `sudo apt-get install libglfw3-dev`
-	* Para compilar:
-		- `gcc DynSimOpenGL2.c -lm -lGL -lglfw -Dmo=2 -DTAM=300 -O3 -o DynSim`
+	* Clonar o repositório com:
+		- `git clone --recursive https://github.com/romcenci/DynamicSimulator.git`
+	* Para compilar (não necessário):
+		- `gcc DynSimOpenGL2.c -lm -lGL -lglfw -Dmo=2 -DTAM=300 -DWINDOWS_WIDTH=880 -DWINDOWS_HEIGHT=660 -O3 -o DynSim`
 		onde mo é o tipo de animação, e TAM é o tamanho linear
-	
 	
 * **Para rodar:**
 	* Se a.out imprime os dados:
 		- `./a.out | ./DynSim.sh -OPÇÕES`
 		
 * **Outras opções**
+	* -l : Tamanho do vetor (quantidade de partículas)
+
 	* -m : Modo de plot
 		- 0: (1d) Rede fixa (Ex: dampedGKS)
 		<figure><img align=midle src="images/0.png" width="400"></figure>
@@ -25,6 +28,3 @@
 		
 		- 3: (2d) Posição variável (Granular. Ex: Gás de bilhar)
 		<figure><img align=midle src="images/3.png" width="400"></figure>
-		
-		
-	* -l : Tamanho do vetor (quantidade de partículas)
