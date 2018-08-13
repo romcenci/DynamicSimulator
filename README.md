@@ -13,7 +13,7 @@
 	* Se a.out imprime os dados:
 		- `./a.out | ./DynSim.sh -OPÇÕES`
 		
-* **Outras opções**
+* **Opções:**
 	* -l : Tamanho do vetor (quantidade de partículas)
 
 	* -m : Modo de plot
@@ -28,3 +28,12 @@
 		
 		- 3: (2d) Posição variável (Granular. Ex: Gás de bilhar)
 		<figure><img align=midle src="images/3.png" width="400"></figure>
+
+	* --height=altura
+	* --width=largura
+	
+* **Interativo:**
+	* <kbd>&uparrow;</kbd> <kbd>&downarrow;</kbd> <kbd>&leftarrow;</kbd> <kbd>&rightarrow;</kbd>: Translação
+	* <kbd>-</kbd> <kbd>+</kbd> : Zoom
+	* <kbd>a</kbd> : Autoescala
+	* <kbd>s</kbd> : Screenshot
