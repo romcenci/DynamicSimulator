@@ -23,7 +23,7 @@ while getopts "l:m:-:" opt; do
     esac
 done
 
-gcc DynSimOpenGL.c -lm -lGL -lglfw -Dmo=$MODE -DTAM=$L -DWINDOWS_WIDTH=$WIDTH -DWINDOWS_HEIGHT=$HEIGHT -o DynSim
+gcc libbmp/libbmp.c DynSimOpenGL.c -lm -lGL -lglfw -Dmo=$MODE -DTAM=$L -DWINDOWS_WIDTH=$WIDTH -DWINDOWS_HEIGHT=$HEIGHT -o DynSim
 ./DynSim
 
 wait

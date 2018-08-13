@@ -4,6 +4,7 @@
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
+#include "libbmp/libbmp.h"
 
 #define _USE_MATH_DEFINES 
 
@@ -17,9 +18,6 @@ int mouseClick=0;
 double mouseX, mouseY;
 double mouseXant, mouseYant;
 int flag;
-
-//const int WINDOWS_WIDTH = 880;
-//const int WINDOWS_HEIGHT = 660;
 
 typedef struct{
   GLfloat x, y, z;
@@ -46,6 +44,7 @@ void mouseButtonCallback( GLFWwindow *window, int button, int action, int mods )
 void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods );
 void scrollCallback( GLFWwindow *window, double xOffset, double yOffset );
 void mouseTranslate();
+void screenshot();
 
 int main(void){
   GLFWwindow* window;
@@ -376,9 +375,29 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
 
   if (key == 45 && (action == GLFW_REPEAT || GLFW_PRESS)){ zoom-=zoomStep*zoom; } // Tecla -
   if (key == 61 && (action == GLFW_REPEAT || GLFW_PRESS)){ zoom+=zoomStep*zoom; } // Tecla +
+
+  if (key == 83 && action == GLFW_PRESS){ // Letra s - screenshot
+    screenshot();
+  }
 }
 
 void scrollCallback( GLFWwindow *window, double xOffset, double yOffset ){
   zoom+=yOffset*zoomStep*zoom;
   glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void screenshot(){
+  bmp_img img;
+  bmp_img_init_df(&img, WINDOWS_WIDTH, WINDOWS_HEIGHT);
+
+  for (size_t y = 0; y < WINDOWS_HEIGHT; y++){
+    for (size_t x = 0; x < WINDOWS_WIDTH; x++){
+      GLfloat array[3];
+      glReadPixels(x, WINDOWS_HEIGHT-y, 1, 1, GL_RGB, GL_FLOAT, array);
+      bmp_pixel_init(&img.img_pixels[y][x], 254*array[0], 254*array[1], 254*array[2]);
+    }
+  }
+	
+  bmp_img_write(&img, "screenshot.bmp");
+  bmp_img_free(&img);
 }
