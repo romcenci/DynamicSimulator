@@ -28,6 +28,9 @@
 		
 		- 3: (2d) Posição variável (Granular. Ex: Gás de bilhar)
 		<figure><img align=midle src="images/3.png" width="400"></figure>
+		
+		- 5: (2d) Posição fixa (Flechas. Ex: Modelo de Heisenberg)
+		<figure><img align=midle src="images/4.png" width="400"></figure>
 
 	* --height=altura
 	* --width=largura
