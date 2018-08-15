@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include "libbmp/libbmp.h"
 
-#define _USE_MATH_DEFINES 
+#define _USE_MATH_DEFINES
 
 int L=TAM;
 int para;
@@ -39,6 +39,7 @@ void grid2dMode();
 void particle2dMode();
 void DrawCircle(double x0, double y0, double r);
 void SpectreMode();
+void ArrowMode(int tempo);
 void cursorPositionCallback( GLFWwindow *window, double xPos, double yPos );
 void mouseButtonCallback( GLFWwindow *window, int button, int action, int mods );
 void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods );
@@ -48,7 +49,7 @@ void screenshot();
 
 int main(void){
   GLFWwindow* window;
-  
+
   if (!glfwInit()){
     exit(EXIT_FAILURE);
   }
@@ -69,7 +70,7 @@ int main(void){
       GRID[i][j] = 0.0;
     }
   }
-  
+
   glfwSetCursorPosCallback( window, cursorPositionCallback );
   glfwSetMouseButtonCallback( window, mouseButtonCallback );
   glfwSetKeyCallback( window, keyCallback );
@@ -78,7 +79,7 @@ int main(void){
   while (!glfwWindowShouldClose(window)){
     float ratio;
     int width, height;
-    
+
     glfwGetFramebufferSize(window, &width, &height);
     ratio = (float) width / (float)height;
     glViewport(0, 0, width, height);
@@ -87,7 +88,7 @@ int main(void){
     mouseTranslate();
     glTranslatef(0.08*horizontal, 0.08*vertical, 0);
     // drawGrid(5.0f, 1.0f, 0.1f);
-    
+
     if(para==0){
       DrawFrame();
       tempo++;
@@ -115,7 +116,9 @@ int main(void){
       else if(mo==4){
 	SpectreMode(tempo);
       }
-
+      else if (mo==5){
+  ArrowMode(tempo);
+      }
       glfwSwapBuffers(window);
     }
     glfwPollEvents();
@@ -133,7 +136,7 @@ void mouseTranslate(){
     }
     flag=1;
     mouseXant=mouseX;
-    mouseYant=mouseY;      
+    mouseYant=mouseY;
   }
   else{
     flag=0;
@@ -232,7 +235,7 @@ void particleMode(int tempo){
   float cor;
   float yy, xx;
   Vertex v;
-  
+
   glBegin(GL_QUADS);
   glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
   glVertex3f(-1.0f, -(2.*(tempo%600)-600.)/660.-0.03f, 0.0f);
@@ -300,6 +303,37 @@ void particle2dMode(){
   }
 }
 
+void ArrowMode(int tempo){
+  int i,j;
+  double xx,yy,zz;
+  double length, cor;
+  Vertex v1,v2;
+  length = (600.0/(2*L))/660;
+  cor = 1.0f;
+  glClear(GL_COLOR_BUFFER_BIT);
+  for (i = 0;i< L;i++){
+    for(j= 0;j<L;j++){
+      scanf("%lf %lf %lf\n", &xx, &yy, &zz);
+      cor = (zz+1.0)/2.0;
+      v1.x = (i - L/2)/(1.1*L/2);
+      v1.y = (j - L/2)/(1.1*L/2);
+      v1.z = 0.0f;
+      v1.r = cor;
+      v1.g = cor;
+      v1.b = 1.0f;
+      v1.a = 1.0f;
+      v2.x = (i - L/2)/(1.1*L/2)+length*xx;
+      v2.y = (j - L/2)/(1.1*L/2)+length*yy;
+      v2.z = length*zz;
+      v2.r = cor;
+      v2.g = cor;
+      v2.b = 1.0f;
+      v2.a = 1.0f;
+      drawLineSegment(v1,v2,3.0f);
+    }
+  }
+}
+
 void SpectreMode(){
   int pos,t;
   float value;
@@ -348,7 +382,7 @@ void mouseButtonCallback( GLFWwindow *window, int button, int action, int mods )
     mouseClick=1;
   }
   else if( button==0 && action==GLFW_RELEASE ){
-    mouseClick=0;    
+    mouseClick=0;
   }
 }
 
@@ -397,7 +431,7 @@ void screenshot(){
       bmp_pixel_init(&img.img_pixels[y][x], 254*array[0], 254*array[1], 254*array[2]);
     }
   }
-	
+
   bmp_img_write(&img, "screenshot.bmp");
   bmp_img_free(&img);
 }
