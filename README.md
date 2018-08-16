@@ -12,6 +12,10 @@
 * **Opções:**
 	* -l : Tamanho do vetor (quantidade de partículas)
 
+	* -h (--height) : altura da tela
+	
+	* -w (--width) : largura da tela
+	
 	* -m (--mode) : Modo de plot
 		- 0: (1d) Rede fixa (Ex: dampedGKS)
 		<figure><img align=midle src="images/0.png" width="400"></figure>
@@ -28,15 +32,14 @@
 		- 5: (2d) Posição fixa (Flechas. Ex: Modelo de Heisenberg)
 		<figure><img align=midle src="images/4.png" width="400"></figure>
 
-	* -h (--height) altura
-	* -w (--width) largura
-
 * **Para rodar:**
 	* Syntaxe:
 		- `./a.out | ./DynSim.sh -OPÇÕES`		
 	* Exemplo:
-		- ```gcc ex2_ising.c -lm
-		  ./a.out | ./DynSim.sh -m 2 -l 300 --height 600 --width 800```
+		```shell
+		gcc ex2_ising.c -lm
+		./a.out | ./DynSim.sh -m 2 -l 300 --height 600 --width 800
+		```
 	
 * **Interativo:**
 	* <kbd>Spacebar</kbd> : Pausar
