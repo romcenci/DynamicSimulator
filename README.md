@@ -36,10 +36,8 @@
 	* Syntaxe:
 		- `./a.out | ./DynSim.sh -OPÇÕES`		
 	* Exemplo:
-		```shell
-		gcc ex2_ising.c -lm
-		./a.out | ./DynSim.sh -m 2 -l 300 --height 600 --width 800
-		```
+		`gcc ex2_ising.c -lm`
+		`./a.out | ./DynSim.sh -m 2 -l 300 --height 600 --width 800`
 	
 * **Interativo:**
 	* <kbd>Spacebar</kbd> : Pausar
