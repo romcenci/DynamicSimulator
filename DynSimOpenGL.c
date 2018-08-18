@@ -33,10 +33,10 @@ void drawPointsDemo(int width, int height);
 void drawLineSegment(Vertex v1, Vertex v2, GLfloat width);
 void drawGrid(GLfloat width, GLfloat height, GLfloat grid_width);
 void DrawFrame();
-void gridMode(int tempo, double GRID[600][800]);
+void gridMode(int tempo, double GRID[600][L]);
 void particleMode(int tempo);
-void grid2dMode();
-void particle2dMode();
+void grid2dMode(int tempo, double GRID_m2[L][L]);
+void particle2dMode(int tempo, double GRID_m3[L][3]);
 void DrawCircle(double x0, double y0, double r);
 void SpectreMode();
 void ArrowMode(int tempo);
@@ -63,6 +63,7 @@ int main(void){
   glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
   double GRID[600][L];
   int i,j;
   for (i = 0; i < 600; i++){
@@ -70,11 +71,24 @@ int main(void){
       GRID[i][j] = 0.0;
     }
   }
+  double GRID_m2[L][L];
+  for (i = 0; i < L; i++){
+    for(j = 0; j< L; j++){
+      GRID_m2[i][j] = 0.0;
+    }
+  }
+  double GRID_m3[L][3];
+  for (i = 0; i < L; i++){
+      GRID_m3[i][1] = 0.0;
+      GRID_m3[i][2] = 0.0;
+      GRID_m3[i][3] = 0.0;
+  }
 
   glfwSetCursorPosCallback( window, cursorPositionCallback );
   glfwSetMouseButtonCallback( window, mouseButtonCallback );
   glfwSetKeyCallback( window, keyCallback );
   glfwSetScrollCallback( window, scrollCallback );
+  
   int tempo = 0;
   while (!glfwWindowShouldClose(window)){
     float ratio;
@@ -87,42 +101,35 @@ int main(void){
     glLoadIdentity();
     mouseTranslate();
     glTranslatef(0.08*horizontal, 0.08*vertical, 0);
+    if(mo==0 || mo==1){ glScalef(zoom,1,0); }
+    if(mo==2 || mo==3){ glScalef(zoom,zoom,0); }
     // drawGrid(5.0f, 1.0f, 0.1f);
 
-    if(para==0){
-      DrawFrame();
-      tempo++;
-
-      if(mo==0){
-	glScalef(zoom,1,0);
-	gridMode(tempo,GRID);
-      }
-      else if(mo==1){
-	glScalef(zoom,1,0);
-	particleMode(tempo);
-      }
-      else if(mo==2){
-        glScalef(zoom,zoom,0);
-	glClear(GL_COLOR_BUFFER_BIT);
-	grid2dMode(tempo);
-      }
-      else if(mo==3){
-	glScalef(zoom,zoom,0);
-	mouseTranslate();
-	glTranslatef(0.05*horizontal, 0.05*vertical, 0);
-	glClear(GL_COLOR_BUFFER_BIT);
-	particle2dMode(tempo);
-      }
-      else if(mo==4){
-	SpectreMode(tempo);
-      }
-      else if (mo==5){
-  ArrowMode(tempo);
-      }
-      glfwSwapBuffers(window);
+    DrawFrame();
+    if(para==0){ tempo++; }
+    
+    if(mo==0){
+      gridMode(tempo,GRID);
     }
+    else if(mo==1){
+      particleMode(tempo);
+    }
+    else if(mo==2){
+      grid2dMode(tempo,GRID_m2);
+    }
+    else if(mo==3){
+      particle2dMode(tempo, GRID_m3);
+    }
+    else if(mo==4){
+      SpectreMode(tempo);
+    }
+    else if (mo==5){
+      ArrowMode(tempo);
+    }
+    glfwSwapBuffers(window);
     glfwPollEvents();
   }
+  
   glfwDestroyWindow(window);
   glfwTerminate();
   exit(EXIT_SUCCESS);
@@ -211,8 +218,10 @@ void gridMode(int tempo,double GRID[600][L]){
   Vertex v;
 
   for(i=0; i<L; i++){
-    scanf("%f\n", &cor);
-    cor = (cor+1)/2.0;
+    if(para==0){
+      scanf("%f\n", &cor);
+      cor = (cor+1)/2.0;
+    }
     GRID[tempo%600][i] = cor;
   }
   glClear(GL_COLOR_BUFFER_BIT);
@@ -246,43 +255,50 @@ void particleMode(int tempo){
 
   yy = (float) (-(tempo%600)+300.0f)/330.0f;
   for(i=0; i<L; i++){
-    scanf("%f\n", &xx);
-    cor = 1.0f;
-    v.x = (2*xx-1)/1.15;
-    v.y = yy;
-    v.z = 0.0f;
-    v.r = cor;
-    v.g = cor;
-    v.b = cor;
-    v.a = 1.0f;
+    if(para==0){
+      scanf("%f\n", &xx);
+      cor = 1.0f;
+      v.x = (2*xx-1)/1.15;
+      v.y = yy;
+      v.z = 0.0f;
+      v.r = cor;
+      v.g = cor;
+      v.b = cor;
+      v.a = 1.0f;
+    }
 
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     drawPoint(v,1.1f);
   }
 }
 
-void grid2dMode(int tempo){
+void grid2dMode(int tempo,double GRID_m2[L][L]){
   int i,j;
   double cor;
   Vertex v;
+  
+  glClear(GL_COLOR_BUFFER_BIT);
 
   for(j=0; j<L; j++){
     for(i=0; i<L; i++){
-      scanf("%lf\n", &cor);
-      cor = (cor+1.0)/2.0;
+      if(para==0){
+	scanf("%lf\n", &cor);
+	cor = (cor+1.0)/2.0;
+	GRID_m2[i][j]=cor;
+      }
       v.x = (i*(2./L)-1)*660/880;
       v.y = (j*(2./L)-1);
       v.z = 0.0f;
-      v.r = cor;
-      v.g = cor;
-      v.b = cor;
+      v.r = GRID_m2[i][j];
+      v.g = GRID_m2[i][j];
+      v.b = GRID_m2[i][j];
       v.a = 1.0f;
       drawPoint(v,1000/L);
     }
   }
 }
 
-void particle2dMode(){
+void particle2dMode(int tempo, double GRID_m3[L][3]){
   int i;
   double cor, xx, yy, r;
   Vertex v;
@@ -290,16 +306,21 @@ void particle2dMode(){
   glClear(GL_COLOR_BUFFER_BIT);
 
   for(i=0; i<L; i++){
-    scanf("%lf %lf %lf\n", &xx, &yy, &r);
+    if(para==0){
+      scanf("%lf %lf %lf\n", &xx, &yy, &r);
+      GRID_m3[i][1]=xx;
+      GRID_m3[i][2]=yy;
+      GRID_m3[i][3]=r;
+    }
     cor = 1.0;
-    v.x = (2*xx-1)/1.15*660/880;
-    v.y = (2*yy-1)/1.15;
+    v.x = (2*GRID_m3[i][1]-1)/1.15*660/880;
+    v.y = (2*GRID_m3[i][2]-1)/1.15;
     v.z = 0.0f;
     v.r = cor;
     v.g = cor;
     v.b = cor;
     v.a = 1.0f;
-    DrawCircle(v.x, v.y, r+3);
+    DrawCircle(v.x, v.y, GRID_m3[i][3]+3);
   }
 }
 

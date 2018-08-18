@@ -1,9 +1,9 @@
 #!/bin/bash
 
-MODE=1
-L=500
-HEIGHT=660
-WIDTH=880
+MODE=2
+L=300
+HEIGHT=500
+WIDTH=700
 
 for arg in "$@"; do
   shift
