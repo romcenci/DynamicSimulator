@@ -34,7 +34,7 @@ void drawLineSegment(Vertex v1, Vertex v2, GLfloat width);
 void drawGrid(GLfloat width, GLfloat height, GLfloat grid_width);
 void DrawFrame();
 void gridMode(int tempo, double GRID[600][L]);
-void particleMode(int tempo);
+void particleMode(int tempo, double GRID_m1[600][L]);
 void grid2dMode(int tempo, double GRID_m2[L][L]);
 void particle2dMode(int tempo, double GRID_m3[L][3]);
 void DrawCircle(double x0, double y0, double r);
@@ -64,8 +64,14 @@ int main(void){
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  double GRID[600][L];
   int i,j;
+  double GRID[600][L];
+  for (i = 0; i < 600; i++){
+    for(j = 0; j< L; j++){
+      GRID[i][j] = 0.0;
+    }
+  }
+  double GRID_m1[600][L];
   for (i = 0; i < 600; i++){
     for(j = 0; j< L; j++){
       GRID[i][j] = 0.0;
@@ -112,7 +118,7 @@ int main(void){
       gridMode(tempo,GRID);
     }
     else if(mo==1){
-      particleMode(tempo);
+      particleMode(tempo,GRID_m1);
     }
     else if(mo==2){
       grid2dMode(tempo,GRID_m2);
@@ -239,36 +245,36 @@ void gridMode(int tempo,double GRID[600][L]){
   }
 }
 
-void particleMode(int tempo){
-  int i;
+void particleMode(int tempo, double GRID_m1[600][L]){
+  int i,j;
   float cor;
   float yy, xx;
   Vertex v;
 
-  glBegin(GL_QUADS);
-  glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-  glVertex3f(-1.0f, -(2.*(tempo%600)-600.)/660.-0.03f, 0.0f);
-  glVertex3f(1.0f,  -(2.*(tempo%600)-600.)/660.-0.03f, 0.0f);
-  glVertex3f(1.0f,  -(2.*(tempo%600)-600.)/660., 0.0f);
-  glVertex3f(-1.0f, -(2.*(tempo%600)-600.)/660., 0.0f);
-  glEnd();
-
-  yy = (float) (-(tempo%600)+300.0f)/330.0f;
   for(i=0; i<L; i++){
     if(para==0){
       scanf("%f\n", &xx);
-      cor = 1.0f;
-      v.x = (2*xx-1)/1.15;
-      v.y = yy;
-      v.z = 0.0f;
-      v.r = cor;
-      v.g = cor;
-      v.b = cor;
-      v.a = 1.0f;
     }
+    GRID_m1[tempo%600][i]=xx;
+  }
 
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    drawPoint(v,1.1f);
+  yy = (float) (-(tempo%600)+300.0f)/330.0f;
+  glClear(GL_COLOR_BUFFER_BIT);
+  for(j=0; j<600; j++){
+    for(i=0; i<L; i++){
+      if(GRID_m1[j][i]!=0){
+	cor = 1.0f;
+	v.x = (2*GRID_m1[j][i]-1)/1.15;
+	v.y = (float) (-j+300.0f)/330.0f;
+	v.z = 0.0f;
+	v.r = cor;
+	v.g = cor;
+	v.b = cor;
+	v.a = 1.0f;
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	drawPoint(v,1.0f);
+      }
+    }
   }
 }
 
