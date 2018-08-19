@@ -1,7 +1,7 @@
 #!/bin/bash
 
-MODE=1
-L=500
+MODE=2
+L=300
 HEIGHT=500
 WIDTH=700
 

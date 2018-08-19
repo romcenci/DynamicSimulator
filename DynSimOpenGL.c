@@ -14,7 +14,7 @@ int para;
 double zoomStep=0.2;
 double zoom=1;
 double horizontal=0, vertical=0;
-int mouseClick=0;
+int mouseLeftClick=0;
 double mouseX, mouseY;
 double mouseXant, mouseYant;
 int flag;
@@ -105,11 +105,10 @@ int main(void){
     glViewport(0, 0, width, height);
 
     glLoadIdentity();
-    mouseTranslate();
-    glTranslatef(0.08*horizontal, 0.08*vertical, 0);
     if(mo==0 || mo==1){ glScalef(zoom,1,0); }
     if(mo==2 || mo==3){ glScalef(zoom,zoom,0); }
-    // drawGrid(5.0f, 1.0f, 0.1f);
+    mouseTranslate();
+    glTranslatef(0.08*horizontal, 0.08*vertical, 0);
 
     DrawFrame();
     if(para==0){ tempo++; }
@@ -142,7 +141,7 @@ int main(void){
 }
 
 void mouseTranslate(){
-  if(mouseClick==1){
+  if(mouseLeftClick==1){
     if(flag==1){
       horizontal+=0.04*(mouseX-mouseXant);
       vertical+=0.04*(mouseYant-mouseY);
@@ -406,10 +405,10 @@ void cursorPositionCallback( GLFWwindow *window, double xPos, double yPos ){
 
 void mouseButtonCallback( GLFWwindow *window, int button, int action, int mods ){
   if( button==0 && action==GLFW_PRESS ){
-    mouseClick=1;
+    mouseLeftClick=1;
   }
   else if( button==0 && action==GLFW_RELEASE ){
-    mouseClick=0;
+    mouseLeftClick=0;
   }
 }
 
