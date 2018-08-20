@@ -1,32 +1,25 @@
 #!/usr/bin/octave -qf
-
 graphics_toolkit('qt');
 
 [ctrlh,outh,sim_pid] = popen2('./demos/a.out');
 
-zerodata = [];
-data = [];
+n = 100;
+l = 256;
 
-for i = 1:100
-	disp(i);
+data = zeros(l,l,n);
+
+k=1;
+do
 	fwrite(ctrlh,"\n"); fflush(ctrlh);
+
 	rawdata = fgetl(outh);
 	fclear(outh);
 
 	if(rawdata ~= -1)
-		rawdata = str2num(rawdata);
-
-		if isempty(zerodata)
-			zerodata = 0*rawdata;
-		end
-
-		if size(rawdata) == size(zerodata)
-			data(:,:,i) = reshape(rawdata,[1,1]*sqrt(length(rawdata)));
-		end
-	else
-		pause(0.1);
+		data(:,:,k) = reshape(rawdata == '+',[l,l]);
+		k = k + 1;
 	endif
-end
+until k == n
 
 figure();
 h=imshow(zeros(256,256));
@@ -34,6 +27,6 @@ h=imshow(zeros(256,256));
 tic;
 while(toc < 10)
 	frame = mod(round(toc*24), size(data,3)) + 1
-	set(h,'cdata',255*(data(:,:, frame)+1)/2);
+	set(h,'cdata',data(:,:, frame));
 pause(0.01);
 end
