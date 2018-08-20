@@ -10,13 +10,14 @@
 
 int L=TAM;
 int para;
-
 double zoomStep=0.2;
-double zoom=1;
+double zoom1=1,zoom2=1;
 double horizontal=0, vertical=0;
 int mouseLeftClick=0;
 double mouseX, mouseY;
 double mouseXant, mouseYant;
+double corner_x1=0, corner_y1=0;
+double corner_x2=0, corner_y2=0;
 int flag;
 
 typedef struct{
@@ -31,15 +32,17 @@ typedef struct{
 void drawPoint(Vertex v1, GLfloat size);
 void drawPointsDemo(int width, int height);
 void drawLineSegment(Vertex v1, Vertex v2, GLfloat width);
+void DrawCircle(double x0, double y0, double r);
 void drawGrid(GLfloat width, GLfloat height, GLfloat grid_width);
 void DrawFrame();
+
 void gridMode(int tempo, double GRID[600][L]);
 void particleMode(int tempo, double GRID_m1[600][L]);
 void grid2dMode(int tempo, double GRID_m2[L][L]);
 void particle2dMode(int tempo, double GRID_m3[L][3]);
-void DrawCircle(double x0, double y0, double r);
 void SpectreMode();
 void ArrowMode(int tempo);
+
 void cursorPositionCallback( GLFWwindow *window, double xPos, double yPos );
 void mouseButtonCallback( GLFWwindow *window, int button, int action, int mods );
 void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods );
@@ -105,10 +108,10 @@ int main(void){
     glViewport(0, 0, width, height);
 
     glLoadIdentity();
-    if(mo==0 || mo==1){ glScalef(zoom,1,0); }
-    if(mo==2 || mo==3){ glScalef(zoom,zoom,0); }
+    if(mo==0 || mo==1){ glScalef(zoom1,1,0); }
+    if(mo==2 || mo==3){ glScalef(zoom1,zoom2,0); }
     mouseTranslate();
-    glTranslatef(0.08*horizontal, 0.08*vertical, 0);
+    glTranslatef(horizontal, vertical, 0);
 
     DrawFrame();
     if(para==0){ tempo++; }
@@ -143,8 +146,8 @@ int main(void){
 void mouseTranslate(){
   if(mouseLeftClick==1){
     if(flag==1){
-      horizontal+=0.04*(mouseX-mouseXant);
-      vertical+=0.04*(mouseYant-mouseY);
+      horizontal+=2*(mouseX-mouseXant)/WINDOWS_WIDTH/zoom1;
+      vertical+=2*(mouseYant-mouseY)/WINDOWS_HEIGHT/zoom2;
     }
     flag=1;
     mouseXant=mouseX;
@@ -404,11 +407,21 @@ void cursorPositionCallback( GLFWwindow *window, double xPos, double yPos ){
 }
 
 void mouseButtonCallback( GLFWwindow *window, int button, int action, int mods ){
-  if( button==0 && action==GLFW_PRESS ){
-    mouseLeftClick=1;
+  if( button==0 && action==GLFW_PRESS ){ mouseLeftClick=1; }
+  else if( button==0 && action==GLFW_RELEASE ){ mouseLeftClick=0; }
+
+  if( button==1 && action==GLFW_PRESS ){
+    corner_x1=mouseX;
+    corner_y1=mouseY;
   }
-  else if( button==0 && action==GLFW_RELEASE ){
-    mouseLeftClick=0;
+  else if( button==1 && action==GLFW_RELEASE ){
+    corner_x2=mouseX;
+    corner_y2=mouseY;
+    horizontal=-(corner_x2+corner_x1-WINDOWS_WIDTH)/WINDOWS_WIDTH;
+    vertical=(corner_y2+corner_y1-WINDOWS_HEIGHT)/WINDOWS_HEIGHT;
+
+    zoom1+=(1+WINDOWS_WIDTH/fabs(corner_x2-corner_x1))*zoom1;
+    zoom2+=(1+WINDOWS_HEIGHT/fabs(corner_y2-corner_y1))*zoom2;
   }
 }
 
@@ -422,19 +435,26 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
     }
   }
 
-  if (key == 262 && (action == GLFW_REPEAT || GLFW_PRESS)){ horizontal--; } // Right arrow
-  if (key == 263 && (action == GLFW_REPEAT || GLFW_PRESS)){ horizontal++; } // Left arrow
-  if (key == 264 && (action == GLFW_REPEAT || GLFW_PRESS)){ vertical++; } // Down arrow
-  if (key == 265 && (action == GLFW_REPEAT || GLFW_PRESS)){ vertical--; } // Up arrow
+  if (key == 262 && (action == GLFW_REPEAT || GLFW_PRESS)){ horizontal-=0.08; } // Right arrow
+  if (key == 263 && (action == GLFW_REPEAT || GLFW_PRESS)){ horizontal+=0.08; } // Left arrow
+  if (key == 264 && (action == GLFW_REPEAT || GLFW_PRESS)){ vertical+=0.08; } // Down arrow
+  if (key == 265 && (action == GLFW_REPEAT || GLFW_PRESS)){ vertical-=0.08; } // Up arrow
 
   if (key == 65 && action == GLFW_PRESS){ // Letra a - autoscale
     horizontal=0;
     vertical=0;
-    zoom=1;
+    zoom1=1;
+    zoom2=1;
   }
 
-  if (key == 45 && (action == GLFW_REPEAT || GLFW_PRESS)){ zoom-=zoomStep*zoom; } // Tecla -
-  if (key == 61 && (action == GLFW_REPEAT || GLFW_PRESS)){ zoom+=zoomStep*zoom; } // Tecla +
+  if (key == 45 && (action == GLFW_REPEAT || GLFW_PRESS)){ // Tecla -
+    zoom1-=zoomStep*zoom1;
+    zoom2-=zoomStep*zoom2;
+  }
+  if (key == 61 && (action == GLFW_REPEAT || GLFW_PRESS)){ // Tecla +
+    zoom1+=zoomStep*zoom1;
+    zoom2+=zoomStep*zoom2;
+  }
 
   if (key == 83 && action == GLFW_PRESS){ // Letra s - screenshot
     screenshot();
@@ -442,7 +462,8 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
 }
 
 void scrollCallback( GLFWwindow *window, double xOffset, double yOffset ){
-  zoom+=yOffset*zoomStep*zoom;
+  zoom1+=yOffset*zoomStep*zoom1;
+  zoom2+=yOffset*zoomStep*zoom2;
   glClear(GL_COLOR_BUFFER_BIT);
 }
 
