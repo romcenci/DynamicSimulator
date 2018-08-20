@@ -17,12 +17,12 @@
 #include <math.h>
 #include <time.h>
 
-#define L 256
+#define L 400
 #define N L*L
 #define XNN 1
 #define YNN L
 
-#define MC 100
+#define MC 240
 
 int s[N];
 double prob[5];

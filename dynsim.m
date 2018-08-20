@@ -3,8 +3,8 @@ graphics_toolkit('qt');
 
 [ctrlh,outh,sim_pid] = popen2('./demos/a.out');
 
-n = 100;
-l = 256;
+n = 240;
+l = 400;
 
 data = zeros(l,l,n);
 
@@ -26,7 +26,7 @@ h=imshow(zeros(256,256));
 
 tic;
 while(toc < 10)
-	frame = mod(round(toc*24), size(data,3)) + 1
+	frame = mod(round(toc*24), size(data,3)) + 1;
 	set(h,'cdata',data(:,:, frame));
-pause(0.01);
+	pause(0.01);
 end
