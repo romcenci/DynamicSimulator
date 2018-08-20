@@ -33,7 +33,7 @@
 		<figure><img align=midle src="images/4.png" width="400"></figure>
 
 * **Para rodar:**
-	* Syntaxe:
+	* Sintaxe:
 		- `./a.out | ./DynSim.sh -OPÇÕES`		
 	* Exemplo:
 		- `gcc ex2_ising.c -lm`
