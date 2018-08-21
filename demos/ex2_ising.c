@@ -17,12 +17,10 @@
 #include <math.h>
 #include <time.h>
 
-#define L 400
+#define L 256
 #define N L*L
 #define XNN 1
 #define YNN L
-
-#define MC 240
 
 int s[N];
 double prob[5];
@@ -93,7 +91,8 @@ void plot(){
   for(i=0; i<N; i++){
     printf("%c", s[i]==1?'+':'-');
   }
-  //printf("e\n");
+  
+  printf("\n");
 }
 
 int main(int argc, char *argv[]){
@@ -101,21 +100,23 @@ int main(int argc, char *argv[]){
   beta=2;
   init();
 
-  for(mc=0; mc<MC; mc++){
+  while(1){
     unsigned char comm = getc(stdin);
-    if(comm != '\n')
+
+    switch(comm)
     {
-      fprintf(stderr,"invalid command: 0x%X\n",comm);
-      break;
+      case 'p':
+        plot();
+        break;
+      case 'u':
+        update();
+        break;
+      case 'l':
+        printf("%d %d\n",L,L);
+      default:
+        break;
     }
 
-    update();
-
-    if(mc%1 == 0){
-      //printf("%d %lf %lf\n", mc, measEner(), measMag());
-      plot();
-    }
-    printf("\n");
     fflush(stdout);
   }
 
