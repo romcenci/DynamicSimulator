@@ -39,7 +39,6 @@ rawdata = -1;
 
 fprintf(ctrlh,'pu'); fflush(ctrlh);
 tic;
-
 do
 	% get data
 	if(rawdata == -1)
