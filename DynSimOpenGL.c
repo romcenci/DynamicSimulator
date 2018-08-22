@@ -4,11 +4,16 @@
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
+#include <getopt.h>
 #include "libbmp/libbmp.h"
 
 #define _USE_MATH_DEFINES
 
-int L=TAM;
+int L=300;
+int MODE=2;
+int WINDOWS_HEIGHT=900;
+int WINDOWS_WIDTH=700;
+
 int para;
 double zoomStep=0.2;
 double zoom1=1,zoom2=1;
@@ -50,9 +55,53 @@ void scrollCallback( GLFWwindow *window, double xOffset, double yOffset );
 void mouseTranslate();
 void screenshot();
 
-int main(void){
+int main(int argc, char *argv[]){
   GLFWwindow* window;
 
+  if(argc <= 1)
+    printf("Digite no formato 'tal'\n");
+    
+  while(1){
+    static struct option long_options[] = {
+      {"mode", required_argument, 0, 'm'},
+      {"height", required_argument, 0, 'h'},
+      {"width", required_argument, 0, 'w'},
+      {0, 0, 0, 0}
+    };
+
+    // getopt_long stores the option index here.
+    int option_index = 0;
+
+    int c = getopt_long(argc, argv, "l:m:h:w:", long_options, &option_index);
+
+    // Detect the end of the options.
+    if (c == -1) { break; }
+
+    switch (c) {
+    case 0:
+      break;
+
+    case 'l':
+      L=atoi(optarg);
+      break;
+
+    case 'm':
+      MODE=atoi(optarg);
+      break;
+
+    case 'h':
+      WINDOWS_HEIGHT=atoi(optarg);
+      break;
+
+    case 'w':
+      WINDOWS_WIDTH=atoi(optarg);
+      break;
+
+    default:
+      return 1;
+    }
+  }
+  
   if (!glfwInit()){
     exit(EXIT_FAILURE);
   }
@@ -88,9 +137,9 @@ int main(void){
   }
   double GRID_m3[L][3];
   for (i = 0; i < L; i++){
-      GRID_m3[i][1] = 0.0;
-      GRID_m3[i][2] = 0.0;
-      GRID_m3[i][3] = 0.0;
+    GRID_m3[i][1] = 0.0;
+    GRID_m3[i][2] = 0.0;
+    GRID_m3[i][3] = 0.0;
   }
 
   glfwSetCursorPosCallback( window, cursorPositionCallback );
@@ -108,30 +157,30 @@ int main(void){
     glViewport(0, 0, width, height);
 
     glLoadIdentity();
-    if(mo==0 || mo==1){ glScalef(zoom1,1,0); }
-    if(mo==2 || mo==3){ glScalef(zoom1,zoom2,0); }
+    if(MODE==0 || MODE==1){ glScalef(zoom1,1,0); }
+    if(MODE==2 || MODE==3){ glScalef(zoom1,zoom2,0); }
     mouseTranslate();
     glTranslatef(horizontal, vertical, 0);
 
     DrawFrame();
     if(para==0){ tempo++; }
     
-    if(mo==0){
+    if(MODE==0){
       gridMode(tempo,GRID);
     }
-    else if(mo==1){
+    else if(MODE==1){
       particleMode(tempo,GRID_m1);
     }
-    else if(mo==2){
+    else if(MODE==2){
       grid2dMode(tempo,GRID_m2);
     }
-    else if(mo==3){
+    else if(MODE==3){
       particle2dMode(tempo, GRID_m3);
     }
-    else if(mo==4){
+    else if(MODE==4){
       SpectreMode(tempo);
     }
-    else if (mo==5){
+    else if(MODE==5){
       ArrowMode(tempo);
     }
     glfwSwapBuffers(window);
