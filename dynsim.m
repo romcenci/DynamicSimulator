@@ -11,24 +11,18 @@ tmax = 10;
 
 graphics_toolkit('qt');
 
-frame = 0;
-fcount = 0;
-
-rawdata = -1;
-prebuff = 0;
-
 % ---- FIFO:
 
 global fifo;
 fifo = [];
-fifo.data(1:buffsize) = cell(1,buffsize);
+fifo.data = cell(1,buffsize);
 fifo.start = 1;
 fifo.final = 1;
-fifo.bsize=buffsize;
+fifo.bsize = buffsize;
 
 function b = pull()
 	global fifo;
-	if(fifo.start < fifo.final)
+	if(fsize > 0)
 		b = fifo.data{mod(fifo.start,fifo.bsize)+1};
 		fifo.start = fifo.start + 1;
 	else
@@ -49,6 +43,12 @@ endfunction
 
 % ---- Initial:
 
+frame = 0;
+fcount = 0;
+rawdata = -1;
+prebuff = 0;
+olddata = [];
+
 [ctrlh,outh,sim_pid] = popen2(argv(){end}); % open process
 
 do % get size
@@ -57,26 +57,34 @@ do % get size
 	fclear(outh);
 	pause(0.1);
 until l ~= -1
-
 l = l(:)';
 
 for i = 1:buffsize
 	fifo.data{i} = zeros(l); % alocate buffer
 end
 
+% ---- Figure:
+
+figure();
+
 h = imshow(ones(l)); % open figure
+
 pause(0.001);
 
 % ---- Main loop:
+
 basetime = tic;
 do
 	% prebuffer?
 	if((fsize == 0) && (prebuff == 0))
 		prebuff = round(prebuffperc*buffsize/100);
-	% plot data if available and not buffering
+		title buffering
+		pause(0.0001)
+	% plot data if available and not prebuffering
 	elseif( ( (toc(basetime)*fps) > frame) && (prebuff == 0) )
 		frame = frame + 1;
 		fcount = fcount + 1;
+		% -- plotting:
 		set(h,'cdata',pull());
 		pause(1e-5);
 	endif
@@ -91,12 +99,14 @@ do
 		rawdata = -1;
 	% add data to buffer
 	elseif((length(rawdata) >= l(1)*l(2)) && (fsize < buffsize-2))
+		fprintf(ctrlh,'u'); fflush(ctrlh);
 		rawdata((rawdata != '+') || (rawdata != '-')) = [];
 		rawdata = reshape(rawdata == '+',l);
 
-		push(rawdata);
-
-		fprintf(ctrlh,'u'); fflush(ctrlh);
+		if(!isequal(olddata, rawdata)) % ignore if repeated
+			push(rawdata);
+		endif
+		olddata = rawdata;
 		rawdata = -1;
 
 		if(prebuff > 0)
@@ -104,9 +114,12 @@ do
 			if prebuff == 0
 				basetime = tic;
 				frame = 0;
+				title running
 			endif
 		endif
 	endif
 until(fcount >= tmax*fps)
+
+% ---- Close:
 
 system(['kill -9 ' num2str(sim_pid)]);
