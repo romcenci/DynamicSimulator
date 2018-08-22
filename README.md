@@ -5,9 +5,8 @@
 		- `sudo apt-get install libglfw3-dev`
 	* Clonar o repositório com:
 		- `git clone --recursive https://github.com/romcenci/DynamicSimulator.git`
-	* Para compilar (não necessário):
-		- `gcc DynSimOpenGL2.c -lm -lGL -lglfw -Dmo=2 -DTAM=300 -DWINDOWS_WIDTH=880 -DWINDOWS_HEIGHT=660 -O3 -o DynSim`
-		onde mo é o tipo de animação, e TAM é o tamanho linear
+	* Para compilar:
+		- `make`
 	
 * **Opções:**
 	* -l : Tamanho do vetor (quantidade de partículas)
@@ -34,10 +33,10 @@
 
 * **Para rodar:**
 	* Sintaxe:
-		- `./a.out | ./DynSim.sh -OPÇÕES`		
+		- `./a.out | ./DynSim -OPÇÕES`		
 	* Exemplo:
-		- `gcc ex2_ising.c -lm`
-		- `./a.out | ./DynSim.sh -m 2 -l 300 --height 600 --width 800`
+		- `make demos`
+		- `./demos/ogl_ex2_ising.c | ./DynSim -m 2 -l 300 --height 600 --width 800`
 	
 * **Interativo:**
 	* <kbd>Spacebar</kbd> : Pausar
