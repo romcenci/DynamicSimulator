@@ -1,18 +1,25 @@
 #!/usr/bin/octave -qf
 
-% ---- Variables:
+% ------------ Variables:
 
-fps = 24;
-buffsize = 10;
-prebuffperc = 50;
-tmax = 10;
-superspeedval = 10;
+global fps = 24;
+buffsize = 100;
+prebuffperc = 24;
+global superspeedval = 10;
 
-% ---- Code:
+% ------------ Code:
 
 graphics_toolkit('qt');
 
-% ---- FIFO:
+function retval = ternary (expr, true_val, false_val)
+	if (expr)
+		retval = true_val;
+	else
+		retval = false_val;
+	endif
+endfunction
+
+% ------------ FIFO:
 
 global fifo;
 fifo = [];
@@ -49,7 +56,7 @@ function clearfifo()
 	fifo.final = 1;
 endfunction
 
-% ---- Initial:
+% ------------ Initial:
 
 frame = 0;
 fcount = 0;
@@ -59,6 +66,7 @@ olddata = [];
 global killflag = 0;
 global pauseflag = 1;
 global speedflag = 1;
+global l;
 
 global ctrlh outh sim_pid;
 [ctrlh,outh,sim_pid] = popen2(argv(){end}); % open process
@@ -75,9 +83,10 @@ for i = 1:buffsize
 	fifo.data{i} = zeros(l); % alocate buffer
 end
 
-% ---- Figure:
+% ------------ Figure:
 
 function playpause(h)
+	uiresume();
 	global pauseflag;
 	if(pauseflag)
 		set(h,'label','Pause');
@@ -89,82 +98,126 @@ function playpause(h)
 endfunction
 
 function resetsim()
-	global ctrlh outh sim_pid;
+	uiresume();
+	global ctrlh outh sim_pid l h;
+	set(h,'cdata',ones(l));
+	pause(0.001);
 	system(['kill -9 ' num2str(sim_pid)]);
 	clearfifo();
 	[ctrlh,outh,sim_pid] = popen2(argv(){end});
 endfunction
 
 function superspeed()
-	global speedflag;
+	uiresume();
+	global speedflag superspeedval;
 	if(speedflag == 1)
-		speedflag = 10;
+		speedflag = superspeedval;
 	else
 		speedflag = 1;
 	endif
 endfunction
 
-f = figure('menubar','none','toolbar','figure','units','pixels','name','DynamicSimulator',...
-	'numbertitle','off','closerequestfcn','killflag=1;');
+function setspeed()
+	global superspeedval;
+	ssvalstring = inputdlg('Set Superspeed (updates per frame, default: 10):','Simulation Options');
+	try
+		superspeedval = str2double(ssvalstring{1});
+	catch
+		superspeedval = 10;
+	end_try_catch
+endfunction
+
+function setfps()
+	global fps;
+	fpsstring = inputdlg('Set FPS: (default: 24)','Simulation Options');
+	try
+		fps = str2double(fpsstring{1});
+	catch
+		fps = 24;
+	end_try_catch
+endfunction
+
+f = figure('menubar','none','toolbar','figure','units','pixel','name','DynamicSimulator',...
+	'numbertitle','off','closerequestfcn','uiresume();killflag=1;');
 
 f1 = uimenu ('label', '&File','accelerator', 'f');
 f11 = uimenu (f1, 'label', 'Autoscale', 'accelerator', 'a', ...
-           'callback', 'axis([0,l(1),0,l(2)])');
+           'callback', 'global l;axis([0,l(1),0,l(2)])');
 f11 = uimenu (f1, 'label', 'Close', 'accelerator', 'q', ...
-           'callback', 'killflag=1;');
+           'callback', 'global killflag;uiresume();killflag=1;');
 
 f2 = uimenu ('label', '&Simulation','accelerator', 'a');
-f21 = uimenu (f2, 'label', 'Start', 'accelerator', 's', ...
-           'callback', 'playpause(f21);');
+global f21 = uimenu (f2, 'label', 'Start', 'accelerator', 's',...
+	'callback', 'global f21;playpause(f21);');
 f22 = uimenu (f2, 'label', 'Superspeed', 'accelerator', 'v', ...
-           'callback', 'superspeed();');
+           'callback', 'uiresume();superspeed();');
 f23 = uimenu (f2, 'label', 'Reset', 'accelerator', 'r', ...
-           'callback', 'resetsim();');
+           'callback', 'uiresume();resetsim();');
 
 f3 = uimenu ('label', '&Options', 'accelerator', 's');
+f31 = uimenu (f3, 'label', 'Set FPS','callback', 'setfps()');
+f32 = uimenu (f3, 'label', 'Set Superspeed','callback', 'setspeed()');
 
 h = imshow(ones(l));
 
+t1 = annotation('textbox',[0.02,0.98,0,0],'units','pixels',...
+	'verticalalignment','top','horizontalalignment','left','linestyle','none');
+
 pause(0.001);
 
-% ---- Main loop:
+% ------------ Main loop:
 
 playpause(f21);
 
+fpsmean = 20;
+mfps = zeros(1,fpsmean);
+fpstime = tic;
 basetime = tic;
+
 do
-	% prebuffer?
-	if((fsize == 0) && (prebuff == 0))
+	if((fsize == 0) && (prebuff == 0)) % need prebuffer?
 		prebuff = round(prebuffperc*buffsize/100);
 		title buffering;
 		pause(0.0001);
-	% plot data if available and not prebuffering and not paused
-	elseif( ( (toc(basetime)*fps) > frame) && (prebuff == 0) && !pauseflag)
+
+	elseif( ( (toc(basetime)*fps) > frame) && (prebuff == 0) && !pauseflag) % plot data if available and not prebuffering and not paused
 		frame = frame + 1;
 		fcount = fcount + 1;
+
 		% -- plotting:
-		title running
 		set(h,'cdata',pull());
 		pause(1e-5);
+
+		mfps = [mfps(2:end) 1/toc(fpstime)];
+		fpstime = tic;
+
+		if( (toc(basetime)*fps) > frame)
+			basetime = tic;
+			frame = 0;
+		endif
 	endif
 
-	% get data
-	if(isequal(rawdata, -1))
+	
+	if(isequal(rawdata, -1)) % get data
 		fprintf(ctrlh,'p'); fflush(ctrlh);
 		rawdata = fgetl(outh);
 		fclear(outh);
-	% clean bad data
-	elseif(length(rawdata) < l(1)*l(2))
+
+	elseif(length(rawdata) < l(1)*l(2)) % clean bad data
 		rawdata = -1;
-	% add data to buffer
-	elseif((length(rawdata) >= l(1)*l(2)) && (fsize < buffsize-2))
+
+	elseif((length(rawdata) >= l(1)*l(2)) && (fsize < buffsize-1)) % add data to buffer
 		for i = 1:speedflag
 			fprintf(ctrlh,'u');
 		endfor
 		fflush(ctrlh);
 
-		rawdata((rawdata != '+') || (rawdata != '-')) = [];
-		rawdata = reshape(rawdata == '+',l);
+		try
+			rawdata = reshape(rawdata == '+',l);
+		catch
+			disp('Bad data received!');
+			rawdata = olddata;
+		end_try_catch
 
 		if(!isequal(olddata, rawdata)) % ignore if repeated
 			push(rawdata);
@@ -177,19 +230,26 @@ do
 			if prebuff == 0
 				basetime = tic;
 				frame = 0;
-				title running;
+				title('');
 			endif
 		endif
 	endif
 
 	if(pauseflag)
-		title paused;
-		waitfor(f21,'label');
 		basetime = tic;
 		frame = 0;
+		pause(0.01);
 	endif
+
+	set(t1,'string',[...
+		'buffer = ' num2str(round(100*fsize/buffsize)) "\%\n"...
+		'fps = '  num2str(round(100*mean(mfps))/100) "\n"...
+		'frame = ' num2str(fcount) "\n" ...
+		ternary(speedflag==1,'normal','superspeed') "\n"...
+		ternary(pauseflag==0,'running','paused')]);
+
 until(killflag && ishandle(f))
 
-% ---- Close:
+% ------------ Close:
 
 system(['kill -9 ' num2str(sim_pid)]);
