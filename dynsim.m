@@ -7,18 +7,6 @@ buffsize = 100;
 prebuffperc = 24;
 global superspeedval = 10;
 
-% ------------ Code:
-
-graphics_toolkit('qt');
-
-function retval = ternary (expr, true_val, false_val)
-	if (expr)
-		retval = true_val;
-	else
-		retval = false_val;
-	endif
-endfunction
-
 % ------------ FIFO:
 
 global fifo;
@@ -58,8 +46,10 @@ endfunction
 
 % ------------ Initial:
 
+graphics_toolkit('qt');
+
 frame = 0;
-fcount = 0;
+global fcount = 0;
 rawdata = -1;
 prebuff = 0;
 olddata = [];
@@ -85,6 +75,14 @@ end
 
 % ------------ Figure:
 
+function r = ternary (expr, true_val, false_val)
+	if (expr)
+		r = true_val;
+	else
+		r = false_val;
+	endif
+endfunction
+
 function playpause(h)
 	uiresume();
 	global pauseflag;
@@ -99,11 +97,12 @@ endfunction
 
 function resetsim()
 	uiresume();
-	global ctrlh outh sim_pid l h;
+	global ctrlh outh sim_pid l h fcount;
 	set(h,'cdata',ones(l));
 	pause(0.001);
 	system(['kill -9 ' num2str(sim_pid)]);
 	clearfifo();
+	fcount = 0;
 	[ctrlh,outh,sim_pid] = popen2(argv(){end});
 endfunction
 
@@ -138,7 +137,7 @@ function setfps()
 endfunction
 
 f = figure('menubar','none','toolbar','figure','units','pixel','name','DynamicSimulator',...
-	'numbertitle','off','closerequestfcn','uiresume();killflag=1;');
+	'numbertitle','off','closerequestfcn','uiresume();killflag=1;','visible','off');
 
 f1 = uimenu ('label', '&File','accelerator', 'f');
 f11 = uimenu (f1, 'label', 'Autoscale', 'accelerator', 'a', ...
@@ -160,8 +159,18 @@ f32 = uimenu (f3, 'label', 'Set Superspeed','callback', 'setspeed()');
 
 h = imshow(ones(l));
 
-t1 = annotation('textbox',[0.02,0.98,0,0],'units','pixels',...
-	'verticalalignment','top','horizontalalignment','left','linestyle','none');
+t1 = annotation('textbox',[0.02,0.2,0,0],'units','pixels',...
+	'verticalalignment','bottom','horizontalalignment','left','linestyle','none');
+
+set(t1,'string',[...
+		ternary(pauseflag==0,'running','paused')  "\n"...
+		ternary(speedflag==1,'normal','superspeed') "\n"...
+		'frame = 0' "\n" ...
+		'fps = 0' "\n"...
+		'buffer = 0' "\%\n"...
+		'l = ' num2str(l) ]);
+
+set(f,'visible','on');
 
 pause(0.001);
 
@@ -197,7 +206,6 @@ do
 		endif
 	endif
 
-	
 	if(isequal(rawdata, -1)) % get data
 		fprintf(ctrlh,'p'); fflush(ctrlh);
 		rawdata = fgetl(outh);
@@ -238,16 +246,16 @@ do
 	if(pauseflag)
 		basetime = tic;
 		frame = 0;
-		pause(0.01);
+		pause(0.1);
 	endif
 
 	set(t1,'string',[...
-		'buffer = ' num2str(round(100*fsize/buffsize)) "\%\n"...
-		'fps = '  num2str(round(100*mean(mfps))/100) "\n"...
-		'frame = ' num2str(fcount) "\n" ...
+		ternary(pauseflag==0,'running','paused') "\n"...
 		ternary(speedflag==1,'normal','superspeed') "\n"...
-		ternary(pauseflag==0,'running','paused')]);
-
+		'frame = ' num2str(fcount) "\n"...
+		'fps = '  num2str(round(100*mean(mfps))/100) "\n"...
+		'buffer = ' num2str(round(100*fsize/buffsize)) "\%\n"...
+		'l = ' num2str(l)]);
 until(killflag && ishandle(f))
 
 % ------------ Close:
