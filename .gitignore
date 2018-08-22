@@ -1,5 +1,5 @@
 DynSim
-a.out
 screenshot.bmp
 *.out
+*.o
 octave-workspace
