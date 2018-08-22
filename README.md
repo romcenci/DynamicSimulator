@@ -7,6 +7,20 @@
 		- `git clone --recursive https://github.com/romcenci/DynamicSimulator.git`
 	* Para compilar:
 		- `make`
+
+* **Para rodar:**
+	* Sintaxe:
+		- `./a.out | ./DynSim -OPÇÕES`		
+	* Exemplo:
+		- `make demos`
+		- `./demos/ogl_ex2_ising.c | ./DynSim -m 2 -l 300 --height 600 --width 800`
+		
+* **Interativo:**
+	* <kbd>Spacebar</kbd> : Pausar
+	* <kbd>&uparrow;</kbd> <kbd>&downarrow;</kbd> <kbd>&leftarrow;</kbd> <kbd>&rightarrow;</kbd>: Translação
+	* <kbd>-</kbd> <kbd>+</kbd> : Zoom
+	* <kbd>a</kbd> : Autoescala
+	* <kbd>s</kbd> : Screenshot
 	
 * **Opções:**
 	* -l : Tamanho do vetor (quantidade de partículas)
@@ -30,20 +44,6 @@
 		
 		- 5: (2d) Posição fixa (Flechas. Ex: Modelo de Heisenberg)
 		<figure><img align=midle src="images/4.png" width="400"></figure>
-
-* **Para rodar:**
-	* Sintaxe:
-		- `./a.out | ./DynSim -OPÇÕES`		
-	* Exemplo:
-		- `make demos`
-		- `./demos/ogl_ex2_ising.c | ./DynSim -m 2 -l 300 --height 600 --width 800`
-	
-* **Interativo:**
-	* <kbd>Spacebar</kbd> : Pausar
-	* <kbd>&uparrow;</kbd> <kbd>&downarrow;</kbd> <kbd>&leftarrow;</kbd> <kbd>&rightarrow;</kbd>: Translação
-	* <kbd>-</kbd> <kbd>+</kbd> : Zoom
-	* <kbd>a</kbd> : Autoescala
-	* <kbd>s</kbd> : Screenshot
 
 # DynamicSimulator-octave
 
