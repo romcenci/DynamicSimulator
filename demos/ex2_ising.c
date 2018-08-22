@@ -17,12 +17,10 @@
 #include <math.h>
 #include <time.h>
 
-#define L 300
+#define L 256
 #define N L*L
 #define XNN 1
 #define YNN L
-
-#define MC 10000
 
 int s[N];
 double prob[5];
@@ -38,17 +36,17 @@ void init(){
   /* for(i=0; i<N; i++) s[i]=1; */
 
   // Começo QUENTE:
-  for(i=0; i<N; i++){
-    if(rand()%2 == 0) s[i]=1;
-    else s[i]=-1;
+    for(i=0; i<N; i++){
+      if(rand()%2 == 0) s[i]=1;
+      else s[i]=-1;
+    }
   }
-}
 
-void update(){
-  int i, j;
-  int nn, snn, dE;
+  void update(){
+    int i, j;
+    int nn, snn, dE;
 
-  for(j=0; j<N; j++){
+    for(j=0; j<N; j++){
     i=(double)rand()/RAND_MAX*N; // Escolhe alguém na rede
 
     if((nn=i+XNN)>=N) nn-=N; snn =s[nn]; // Condições de contorno + Soma vizinhos
@@ -83,7 +81,7 @@ double measMag(){
 
   for(i=0; i<N; i++) m+=s[i];
 
-  return m;
+    return m;
 }
 
 void plot(){
@@ -91,9 +89,10 @@ void plot(){
 
   //printf("p '-' u 1:2:3 w p pt 5 ps 0.7 pal\n");
   for(i=0; i<N; i++){
-    printf("%d\n", s[i]);
+    printf("%c", s[i]==1?'+':'-');
   }
-  //printf("e\n");
+  
+  printf("\n");
 }
 
 int main(int argc, char *argv[]){
@@ -101,12 +100,24 @@ int main(int argc, char *argv[]){
   beta=2;
   init();
 
-  for(mc=0; mc<MC; mc++){
-    update();
-    if(mc%1 == 0){
-      //printf("%d %lf %lf\n", mc, measEner(), measMag());
-      plot();
+  while(1){
+    unsigned char comm = getc(stdin);
+
+    switch(comm)
+    {
+      case 'p':
+        plot();
+        break;
+      case 'u':
+        update();
+        break;
+      case 'l':
+        printf("%d %d\n",L,L);
+      default:
+        break;
     }
+
+    fflush(stdout);
   }
 
   return 0;
