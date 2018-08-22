@@ -158,8 +158,9 @@ f31 = uimenu (f3, 'label', 'Set FPS','callback', 'setfps()');
 f32 = uimenu (f3, 'label', 'Set Superspeed','callback', 'setspeed()');
 
 h = imshow(ones(l));
+set(get(h,'parent'),'box','on','boxstyle','full');
 
-t1 = annotation('textbox',[0.02,0.2,0,0],'units','pixels',...
+t1 = annotation('textbox',[0.02,0.02,0,0],'units','pixels',...
 	'verticalalignment','bottom','horizontalalignment','left','linestyle','none');
 
 set(t1,'string',[...
@@ -246,7 +247,7 @@ do
 	if(pauseflag)
 		basetime = tic;
 		frame = 0;
-		pause(0.1);
+		pause(0.001);
 	endif
 
 	set(t1,'string',[...
