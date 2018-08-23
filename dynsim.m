@@ -9,11 +9,10 @@
 
 % ------------ Variables:
 
-global fps = 24;
-buffsize = 100;
-prebuffmax = 24;
-prebuffmin = 5;
-global superspeedval = 10;
+buffsize = 100; % frames
+prebuffmax = 24; % perc
+prebuffmin = 5; % perc
+fpsmean = 20; % n de medidas
 
 % ------------ Figure:
 
@@ -28,7 +27,6 @@ function r = ternary (expr, true_val, false_val)
 endfunction
 
 function playpause(h)
-	uiresume();
 	global pauseflag;
 	if(pauseflag)
 		set(h,'label','Pause');
@@ -40,7 +38,6 @@ function playpause(h)
 endfunction
 
 function resetsim()
-	uiresume();
 	global ctrlh outh sim_pid l h fcount rawdata;
 	set(h,'cdata',ones(l));
 	pause(0.001);
@@ -54,7 +51,6 @@ function resetsim()
 endfunction
 
 function superspeed()
-	uiresume();
 	global speedflag superspeedval;
 	if(speedflag == 1)
 		speedflag = superspeedval;
@@ -74,31 +70,35 @@ function setspeed()
 endfunction
 
 function setfps()
-	global fps;
+	global fps frames basetime;
 	fpsstring = inputdlg('Set FPS: (default: 24)','Simulation Options');
 	try
 		fps = str2double(fpsstring{1});
 	catch
 		fps = 24;
 	end_try_catch
+
+	basetime = tic;
+	frames = 0;
+	pause(0.001);
 endfunction
 
 f = figure('menubar','none','toolbar','figure','units','pixel','name','DynamicSimulator',...
-	'numbertitle','off','closerequestfcn','uiresume();killflag=1;','visible','off');
+	'numbertitle','off','closerequestfcn','killflag=1;','visible','off');
 
 f1 = uimenu ('label', '&File','accelerator', 'f');
 f11 = uimenu (f1, 'label', 'Autoscale', 'accelerator', 'a', ...
            'callback', 'global l;axis([0,l(1),0,l(2)])');
 f11 = uimenu (f1, 'label', 'Close', 'accelerator', 'q', ...
-           'callback', 'global killflag;uiresume();killflag=1;');
+           'callback', 'global killflag;killflag=1;');
 
 f2 = uimenu ('label', '&Simulation','accelerator', 'a');
 global f21 = uimenu (f2, 'label', 'Start', 'accelerator', 's',...
 	'callback', 'global f21;playpause(f21);');
 f22 = uimenu (f2, 'label', 'Superspeed', 'accelerator', 'v', ...
-           'callback', 'uiresume();superspeed();');
+           'callback', 'superspeed();');
 f23 = uimenu (f2, 'label', 'Reset', 'accelerator', 'r', ...
-           'callback', 'uiresume();resetsim();');
+           'callback', 'resetsim();');
 
 f3 = uimenu ('label', '&Options', 'accelerator', 's');
 f31 = uimenu (f3, 'label', 'Set FPS','callback', 'setfps()');
@@ -109,14 +109,6 @@ set(get(h,'parent'),'box','on','boxstyle','full');
 
 t1 = annotation('textbox',[0.02,0.02,0,0],'units','pixels',...
 	'verticalalignment','bottom','horizontalalignment','left','linestyle','none');
-
-set(t1,'string',[...
-		'paused'  "\n"...
-		'normal' "\n"...
-		'frame = 0' "\n" ...
-		'fps = 0' "\n"...
-		'buffer = 0' "\%\n"...
-		'l = ' ]);
 
 % ------------ FIFO:
 
@@ -169,16 +161,20 @@ endfunction
 
 % ------------ Code:
 
-frame = 0;
+global basetime;
+global frame = 0;
 global fcount = 0;
 global rawdata = -1;
-prebuff = 0;
-olddata = [];
 global killflag = 0;
 global pauseflag = 1;
 global speedflag = 1;
 global l;
 global ctrlh outh sim_pid;
+global prebuff = 0;
+global fps = 24;
+global superspeedval = 10;
+
+olddata = [];
 
 [ctrlh,outh,sim_pid] = popen2(argv(){end}); % open process
 
@@ -196,11 +192,9 @@ end
 
 axis([0,l(1),0,l(2)]);
 
-set(f,'visible','on');
 pause(0.001);
 
 playpause(f21);
-fpsmean = 20;
 mfps = fps*ones(1,fpsmean);
 fpstime = tic;
 basetime = tic;
@@ -217,7 +211,7 @@ do
 
 		% -- plotting:
 		set(h,'cdata',pull());
-		pause(1e-5);
+		pause(0.001);
 
 		mfps = [mfps(2:end) 1/toc(fpstime)];
 		fpstime = tic;
@@ -228,7 +222,7 @@ do
 		endif
 	endif
 
-	if(isequal(rawdata, -1)) % get data
+	if(isequal(rawdata, -1) && (fsize < buffsize-1)) % get data
 		fprintf(ctrlh,'p'); fflush(ctrlh);
 		pause(0.001);
 		rawdata = fgetl(outh);
@@ -259,6 +253,7 @@ do
 				title ' ';
 			endif
 		endif
+
 		olddata = rawdata;
 		rawdata = -1;
 	endif
@@ -276,6 +271,7 @@ do
 		'fps = '  num2str(round(100*mean(mfps))/100) "\n"...
 		'buffer = ' num2str(round(100*fsize/buffsize)) "\%\n"...
 		'l = ' num2str(l)]);
+	set(f,'visible','on');
 until(killflag && ishandle(f))
 
 % ------------ Close:
