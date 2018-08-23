@@ -1,79 +1,16 @@
-#!/usr/bin/octave -qf
+#!/usr/bin/octave -qfi
 
 % ------------ Variables:
 
 global fps = 24;
 buffsize = 100;
-prebuffperc = 24;
+prebuffmax = 24;
+prebuffmin = 5;
 global superspeedval = 10;
 
-% ------------ FIFO:
-
-global fifo;
-fifo = [];
-fifo.data = cell(1,buffsize);
-fifo.start = 1;
-fifo.final = 1;
-fifo.bsize = buffsize;
-
-function b = pull()
-	global fifo;
-	if(fsize > 0)
-		b = fifo.data{mod(fifo.start,fifo.bsize)+1};
-		fifo.start = fifo.start + 1;
-	else
-		b = NaN;
-	endif
-endfunction
-
-function push(b)
-	global fifo;
-	fifo.data{mod(fifo.final,fifo.bsize)+1} = b;
-	fifo.final = fifo.final + 1;
-endfunction
-
-function n = fsize()
-	global fifo;
-	n = fifo.final - fifo.start;
-endfunction
-
-function clearfifo()
-	global fifo;
-	fifo.data = cell(1,fifo.bsize);
-	fifo.start = 1;
-	fifo.final = 1;
-endfunction
-
-% ------------ Initial:
+% ------------ Figure:
 
 graphics_toolkit('qt');
-
-frame = 0;
-global fcount = 0;
-rawdata = -1;
-prebuff = 0;
-olddata = [];
-global killflag = 0;
-global pauseflag = 1;
-global speedflag = 1;
-global l;
-
-global ctrlh outh sim_pid;
-[ctrlh,outh,sim_pid] = popen2(argv(){end}); % open process
-
-do % get size
-	fprintf(ctrlh,'l'); fflush(ctrlh);
-	l = fscanf(outh,'%d',2);
-	fclear(outh);
-	pause(0.1);
-until l ~= -1
-l = l(:)';
-
-for i = 1:buffsize
-	fifo.data{i} = zeros(l); % alocate buffer
-end
-
-% ------------ Figure:
 
 function r = ternary (expr, true_val, false_val)
 	if (expr)
@@ -97,11 +34,14 @@ endfunction
 
 function resetsim()
 	uiresume();
-	global ctrlh outh sim_pid l h fcount;
+	global ctrlh outh sim_pid l h fcount rawdata;
 	set(h,'cdata',ones(l));
 	pause(0.001);
 	system(['kill -9 ' num2str(sim_pid)]);
+	fclose(ctrlh);
+	fclose(outh);
 	clearfifo();
+	rawdata = -1;
 	fcount = 0;
 	[ctrlh,outh,sim_pid] = popen2(argv(){end});
 endfunction
@@ -157,38 +97,111 @@ f3 = uimenu ('label', '&Options', 'accelerator', 's');
 f31 = uimenu (f3, 'label', 'Set FPS','callback', 'setfps()');
 f32 = uimenu (f3, 'label', 'Set Superspeed','callback', 'setspeed()');
 
-h = imshow(ones(l));
+global h = imshow(ones(1,1));
 set(get(h,'parent'),'box','on','boxstyle','full');
 
 t1 = annotation('textbox',[0.02,0.02,0,0],'units','pixels',...
 	'verticalalignment','bottom','horizontalalignment','left','linestyle','none');
 
 set(t1,'string',[...
-		ternary(pauseflag==0,'running','paused')  "\n"...
-		ternary(speedflag==1,'normal','superspeed') "\n"...
+		'paused'  "\n"...
+		'normal' "\n"...
 		'frame = 0' "\n" ...
 		'fps = 0' "\n"...
 		'buffer = 0' "\%\n"...
-		'l = ' num2str(l) ]);
+		'l = ' ]);
+
+% ------------ FIFO:
+
+global fifo;
+fifo = [];
+fifo.data = cell(1,buffsize);
+fifo.start = 0;
+fifo.final = 0;
+fifo.bsize = buffsize;
+
+function b = pull()
+	global fifo;
+	if(fsize > 0)
+		b = fifo.data{mod(fifo.start,fifo.bsize)+1};
+		fifo.start = fifo.start + 1;
+	else
+		b = NaN;
+	endif
+endfunction
+
+function push(b)
+	global fifo;
+	fifo.data{mod(fifo.final,fifo.bsize)+1} = b;
+	fifo.final = fifo.final + 1;
+endfunction
+
+function n = fsize()
+	global fifo;
+	n = fifo.final - fifo.start;
+endfunction
+
+function clearfifo()
+	global fifo;
+	fifo.data{1} = [];
+	fifo.start = 0;
+	fifo.final = 0;
+endfunction
+
+function c = getdata(ind)
+	global fifo;
+	c = fifo.data(mod(ind,fifo.bsize)+1);
+endfunction
+
+function setdata(ind,data)
+	global fifo;
+	for i = ind
+		fifo.data(mod(i,fifo.bsize)+1) = data(i);
+	endfor
+endfunction
+
+% ------------ Initial:
+
+frame = 0;
+global fcount = 0;
+global rawdata = -1;
+prebuff = 0;
+olddata = [];
+global killflag = 0;
+global pauseflag = 1;
+global speedflag = 1;
+global l;
+global ctrlh outh sim_pid;
+
+[ctrlh,outh,sim_pid] = popen2(argv(){end}); % open process
+
+do % get size
+	fprintf(ctrlh,'l'); fflush(ctrlh);
+	l = fscanf(outh,'%d',2);
+	fclear(outh);
+	pause(0.1);
+until l ~= -1
+l = l(:)';
+
+for i = 1:buffsize
+	fifo.data{i} = zeros(l); % alocate buffer
+end
+
+axis([0,l(1),0,l(2)]);
 
 set(f,'visible','on');
-
 pause(0.001);
 
-% ------------ Main loop:
-
 playpause(f21);
-
 fpsmean = 20;
-mfps = zeros(1,fpsmean);
+mfps = fps*ones(1,fpsmean);
 fpstime = tic;
 basetime = tic;
-
 do
-	if((fsize == 0) && (prebuff == 0)) % need prebuffer?
-		prebuff = round(prebuffperc*buffsize/100);
+	if((fsize <= prebuffmin*buffsize/100) && (prebuff == 0)) % need prebuffer?
+		prebuff = round(prebuffmax*buffsize/100) - fsize();
 		title buffering;
-		pause(0.0001);
+		pause(0.001);
 
 	elseif( ( (toc(basetime)*fps) > frame) && (prebuff == 0) && !pauseflag) % plot data if available and not prebuffering and not paused
 		frame = frame + 1;
@@ -206,9 +219,10 @@ do
 			frame = 0;
 		endif
 	endif
-
+	
 	if(isequal(rawdata, -1)) % get data
 		fprintf(ctrlh,'p'); fflush(ctrlh);
+		pause(0.001);
 		rawdata = fgetl(outh);
 		fclear(outh);
 
@@ -230,21 +244,18 @@ do
 
 		if(!isequal(olddata, rawdata)) % ignore if repeated
 			push(rawdata);
+
+			if(prebuff > 0)
+				prebuff = prebuff - 1;
+			else
+				title ' ';
+			endif
 		endif
 		olddata = rawdata;
 		rawdata = -1;
-
-		if(prebuff > 0)
-			prebuff = prebuff - 1;
-			if prebuff == 0
-				basetime = tic;
-				frame = 0;
-				title('');
-			endif
-		endif
 	endif
 
-	if(pauseflag)
+	if(pauseflag || (prebuff>0))
 		basetime = tic;
 		frame = 0;
 		pause(0.001);
