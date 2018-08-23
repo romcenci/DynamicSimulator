@@ -1,5 +1,12 @@
 #!/usr/bin/octave -qfi
 
+% This file is part of DynamicSimulator.
+%
+% (c) Franco Sauvisky <francosauvisky+ds@gmail.com>
+%
+% This source file is subject to the 3-Clause BSD License that is bundled
+% with this source code in the file LICENSE.md
+
 % ------------ Variables:
 
 global fps = 24;
