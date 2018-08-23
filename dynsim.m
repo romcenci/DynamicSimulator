@@ -160,7 +160,7 @@ function setdata(ind,data)
 	endfor
 endfunction
 
-% ------------ Initial:
+% ------------ Code:
 
 frame = 0;
 global fcount = 0;
@@ -197,13 +197,14 @@ fpsmean = 20;
 mfps = fps*ones(1,fpsmean);
 fpstime = tic;
 basetime = tic;
+
 do
 	if((fsize <= prebuffmin*buffsize/100) && (prebuff == 0)) % need prebuffer?
 		prebuff = round(prebuffmax*buffsize/100) - fsize();
 		title buffering;
 		pause(0.001);
 
-	elseif( ( (toc(basetime)*fps) > frame) && (prebuff == 0) && !pauseflag) % plot data if available and not prebuffering and not paused
+	elseif( ( (toc(basetime)*fps) > frame) && (prebuff == 0) && !pauseflag) % plot data
 		frame = frame + 1;
 		fcount = fcount + 1;
 
@@ -219,7 +220,7 @@ do
 			frame = 0;
 		endif
 	endif
-	
+
 	if(isequal(rawdata, -1)) % get data
 		fprintf(ctrlh,'p'); fflush(ctrlh);
 		pause(0.001);
