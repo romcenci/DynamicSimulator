@@ -52,7 +52,7 @@ int animacao = 1;
 double plot = 2; 	// 0 = 2D, 1 = 3D com esquema de cores, 2 = 3D sem esquema de cores
 int snap = 0;		// snapshot da configuração dos spins - 0 = não faz, 1 = faz
 //**************************************************************************
-#include"ex5_heisenberg_fcn.h"
+#include"ogl_ex5_heisenberg_fcn.h"
 //**************************************************************************
 //**********************************função principal************************
 clock_t start, stop;
