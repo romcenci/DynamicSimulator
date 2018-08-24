@@ -9,10 +9,10 @@
 
 #define _USE_MATH_DEFINES
 
-int L=300;
-int MODE=2;
-int WINDOWS_HEIGHT=900;
-int WINDOWS_WIDTH=700;
+int L=50;
+int MODE=3;
+int WINDOWS_HEIGHT=600;
+int WINDOWS_WIDTH=800;
 
 int para;
 double zoomStep=0.2;
@@ -41,10 +41,10 @@ void DrawCircle(double x0, double y0, double r);
 void drawGrid(GLfloat width, GLfloat height, GLfloat grid_width);
 void DrawFrame();
 
-void gridMode(int tempo, double GRID[600][L]);
-void particleMode(int tempo, double GRID_m1[600][L]);
-void grid2dMode(int tempo, double GRID_m2[L][L]);
-void particle2dMode(int tempo, double GRID_m3[L][3]);
+void gridMode(int tempo, double **GRID);
+void particleMode(int tempo, double **GRID);
+void grid2dMode(int tempo, double **GRID);
+void particle2dMode(int tempo, double **GRID);
 void SpectreMode();
 void ArrowMode(int tempo);
 
@@ -117,29 +117,25 @@ int main(int argc, char *argv[]){
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   int i,j;
-  double GRID[600][L];
-  for (i = 0; i < 600; i++){
-    for(j = 0; j< L; j++){
-      GRID[i][j] = 0.0;
+  double **GRID;
+
+  if(MODE==0 || MODE==1){
+    GRID=(double **)malloc(600*sizeof(double *));
+    for (i = 0; i < 600; ++i){
+      GRID[i]=(double *)malloc(L*sizeof(double));
     }
   }
-  double GRID_m1[600][L];
-  for (i = 0; i < 600; i++){
-    for(j = 0; j< L; j++){
-      GRID[i][j] = 0.0;
+  else if(MODE==2){
+    GRID=(double **)malloc(L*sizeof(double *));
+    for (i = 0; i < L; ++i){
+      GRID[i]=(double *)malloc(L*sizeof(double));
     }
   }
-  double GRID_m2[L][L];
-  for (i = 0; i < L; i++){
-    for(j = 0; j< L; j++){
-      GRID_m2[i][j] = 0.0;
+  else if(MODE==3){
+    GRID=(double **)malloc(L*sizeof(double *));
+    for (i = 0; i < L; ++i){
+      GRID[i]=(double *)malloc(3*sizeof(double));
     }
-  }
-  double GRID_m3[L][3];
-  for (i = 0; i < L; i++){
-    GRID_m3[i][1] = 0.0;
-    GRID_m3[i][2] = 0.0;
-    GRID_m3[i][3] = 0.0;
   }
 
   glfwSetCursorPosCallback( window, cursorPositionCallback );
@@ -169,13 +165,13 @@ int main(int argc, char *argv[]){
       gridMode(tempo,GRID);
     }
     else if(MODE==1){
-      particleMode(tempo,GRID_m1);
+      particleMode(tempo,GRID);
     }
     else if(MODE==2){
-      grid2dMode(tempo,GRID_m2);
+      grid2dMode(tempo,GRID);
     }
     else if(MODE==3){
-      particle2dMode(tempo, GRID_m3);
+      particle2dMode(tempo, GRID);
     }
     else if(MODE==4){
       SpectreMode(tempo);
@@ -186,7 +182,8 @@ int main(int argc, char *argv[]){
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
-  
+
+  free(GRID);
   glfwDestroyWindow(window);
   glfwTerminate();
   exit(EXIT_SUCCESS);
@@ -268,7 +265,7 @@ void DrawFrame(){
   Vertex v4 = {-0.95f, 0.95f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 }
 
-void gridMode(int tempo,double GRID[600][L]){
+void gridMode(int tempo,double **GRID){
   int i,j;
   float cor;
   float yy;
@@ -296,7 +293,7 @@ void gridMode(int tempo,double GRID[600][L]){
   }
 }
 
-void particleMode(int tempo, double GRID_m1[600][L]){
+void particleMode(int tempo,double **GRID){
   int i,j;
   float cor;
   float yy, xx;
@@ -306,16 +303,16 @@ void particleMode(int tempo, double GRID_m1[600][L]){
     if(para==0){
       scanf("%f\n", &xx);
     }
-    GRID_m1[tempo%600][i]=xx;
+    GRID[tempo%600][i]=xx;
   }
 
   yy = (float) (-(tempo%600)+300.0f)/330.0f;
   glClear(GL_COLOR_BUFFER_BIT);
   for(j=0; j<600; j++){
     for(i=0; i<L; i++){
-      if(GRID_m1[j][i]!=0){
+      if(GRID[j][i]!=0){
 	cor = 1.0f;
-	v.x = (2*GRID_m1[j][i]-1)/1.15;
+	v.x = (2*GRID[j][i]-1)/1.15;
 	v.y = (float) (-j+300.0f)/330.0f;
 	v.z = 0.0f;
 	v.r = cor;
@@ -329,7 +326,7 @@ void particleMode(int tempo, double GRID_m1[600][L]){
   }
 }
 
-void grid2dMode(int tempo,double GRID_m2[L][L]){
+void grid2dMode(int tempo,double **GRID){
   int i,j;
   double cor;
   Vertex v;
@@ -341,21 +338,21 @@ void grid2dMode(int tempo,double GRID_m2[L][L]){
       if(para==0){
 	scanf("%lf\n", &cor);
 	cor = (cor+1.0)/2.0;
-	GRID_m2[i][j]=cor;
+	GRID[i][j]=cor;
       }
       v.x = (i*(2./L)-1)*660/880;
       v.y = (j*(2./L)-1);
       v.z = 0.0f;
-      v.r = GRID_m2[i][j];
-      v.g = GRID_m2[i][j];
-      v.b = GRID_m2[i][j];
+      v.r = GRID[i][j];
+      v.g = GRID[i][j];
+      v.b = GRID[i][j];
       v.a = 1.0f;
       drawPoint(v,1000/L);
     }
   }
 }
 
-void particle2dMode(int tempo, double GRID_m3[L][3]){
+void particle2dMode(int tempo,double **GRID){
   int i;
   double cor, xx, yy, r;
   Vertex v;
@@ -365,19 +362,19 @@ void particle2dMode(int tempo, double GRID_m3[L][3]){
   for(i=0; i<L; i++){
     if(para==0){
       scanf("%lf %lf %lf\n", &xx, &yy, &r);
-      GRID_m3[i][1]=xx;
-      GRID_m3[i][2]=yy;
-      GRID_m3[i][3]=r;
+      GRID[i][0]=xx;
+      GRID[i][1]=yy;
+      GRID[i][2]=r;
     }
     cor = 1.0;
-    v.x = (2*GRID_m3[i][1]-1)/1.15*660/880;
-    v.y = (2*GRID_m3[i][2]-1)/1.15;
+    v.x = (2*GRID[i][0]-1)/1.15*660/880;
+    v.y = (2*GRID[i][1]-1)/1.15;
     v.z = 0.0f;
     v.r = cor;
     v.g = cor;
     v.b = cor;
     v.a = 1.0f;
-    DrawCircle(v.x, v.y, GRID_m3[i][3]+3);
+    DrawCircle(v.x, v.y, GRID[i][2]+3);
   }
 }
 
