@@ -11,8 +11,8 @@
 
 int L=300;
 int MODE=2;
-int WINDOWS_HEIGHT=900;
-int WINDOWS_WIDTH=700;
+int WINDOWS_HEIGHT=600;
+int WINDOWS_WIDTH=800;
 
 int para;
 double zoomStep=0.2;
@@ -41,7 +41,7 @@ void DrawCircle(double x0, double y0, double r);
 void drawGrid(GLfloat width, GLfloat height, GLfloat grid_width);
 void DrawFrame();
 
-void gridMode(int tempo, double GRID[600][L]);
+void gridMode(int tempo, double **GRID);
 void particleMode(int tempo, double GRID_m1[600][L]);
 void grid2dMode(int tempo, double GRID_m2[L][L]);
 void particle2dMode(int tempo, double GRID_m3[L][3]);
@@ -117,12 +117,12 @@ int main(int argc, char *argv[]){
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   int i,j;
-  double GRID[600][L];
+  double **GRID;
+  GRID=(double **)malloc(600*sizeof(double *));
   for (i = 0; i < 600; i++){
-    for(j = 0; j< L; j++){
-      GRID[i][j] = 0.0;
-    }
+    GRID[i]=(double *)malloc(L*sizeof(double));
   }
+
   double GRID_m1[600][L];
   for (i = 0; i < 600; i++){
     for(j = 0; j< L; j++){
@@ -186,7 +186,9 @@ int main(int argc, char *argv[]){
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
-  
+
+  for (i = 0; i < 600; i++){ free(GRID[i]); }
+  free(GRID);
   glfwDestroyWindow(window);
   glfwTerminate();
   exit(EXIT_SUCCESS);
@@ -268,7 +270,7 @@ void DrawFrame(){
   Vertex v4 = {-0.95f, 0.95f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 }
 
-void gridMode(int tempo,double GRID[600][L]){
+void gridMode(int tempo,double **GRID){
   int i,j;
   float cor;
   float yy;
@@ -290,6 +292,7 @@ void gridMode(int tempo,double GRID[600][L]){
       v.r = GRID[j][i];
       v.g = GRID[j][i];
       v.b = GRID[j][i];
+      printf("%d %d\n",i,j);
       v.a = 1.0f;
       drawPoint(v,1.0f);
     }
