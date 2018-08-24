@@ -70,7 +70,7 @@ function setspeed()
 endfunction
 
 function setfps()
-	global fps frames basetime;
+	global fps frame basetime;
 	fpsstring = inputdlg('Set FPS: (default: 24)','Simulation Options');
 	try
 		fps = str2double(fpsstring{1});
@@ -79,7 +79,7 @@ function setfps()
 	end_try_catch
 
 	basetime = tic;
-	frames = 0;
+	frame = 0;
 	pause(0.001);
 endfunction
 
@@ -249,8 +249,12 @@ do
 
 			if(prebuff > 0)
 				prebuff = prebuff - 1;
-			else
-				title ' ';
+				if(prebuff == 0)
+					title ' ';
+					basetime = tic;
+					frame = 0;
+					pause(0.001);
+				endif
 			endif
 		endif
 
