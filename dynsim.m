@@ -1,4 +1,4 @@
-#!/usr/bin/octave -qfi
+#!/usr/bin/octave -qf
 
 % This file is part of DynamicSimulator.
 %
@@ -191,7 +191,7 @@ for i = 1:buffsize
 end
 
 axis([0,l(1),0,l(2)]);
-
+set(f,'visible','on');
 pause(0.001);
 
 playpause(f21);
@@ -271,7 +271,6 @@ do
 		'fps = '  num2str(round(100*mean(mfps))/100) "\n"...
 		'buffer = ' num2str(round(100*fsize/buffsize)) "\%\n"...
 		'l = ' num2str(l)]);
-	set(f,'visible','on');
 until(killflag && ishandle(f))
 
 % ------------ Close:
