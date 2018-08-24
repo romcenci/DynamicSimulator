@@ -1,6 +1,6 @@
 # DynamicSimulator
 
-* **Pre-requisitos:**
+## Pre-requisitos:
 	* Instalar glfw3:
 		- `sudo apt-get install libglfw3-dev`
 	* Clonar o repositório com:
@@ -8,21 +8,21 @@
 	* Para compilar:
 		- `make`
 
-* **Para rodar:**
+## Para rodar:
 	* Sintaxe:
 		- `./a.out | ./DynSim -OPÇÕES`		
 	* Exemplo:
 		- `make demos`
 		- `./demos/ogl_ex2_ising.c | ./DynSim -m 2 -l 300 --height 600 --width 800`
 		
-* **Interativo:**
+## Interativo:
 	* <kbd>Spacebar</kbd> : Pausar
 	* <kbd>&uparrow;</kbd> <kbd>&downarrow;</kbd> <kbd>&leftarrow;</kbd> <kbd>&rightarrow;</kbd>: Translação
 	* <kbd>-</kbd> <kbd>+</kbd> : Zoom
 	* <kbd>a</kbd> : Autoescala
 	* <kbd>s</kbd> : Screenshot
 	
-* **Opções:**
+## Opções:
 	* -l : Tamanho do vetor (quantidade de partículas)
 
 	* -h (--height) : altura da tela
@@ -47,7 +47,11 @@
 
 # DynamicSimulator-octave
 
-## Uso
+## Pre-requisitos:
+
+- Octave 4.2 ou mais recente
+
+## Uso:
 
 - Compilar exemplos com `make demos`
 - Rodar simulação com `./dynsim.m ./demos/ex2_ising.out`
