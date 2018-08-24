@@ -116,7 +116,6 @@ f31 = uimenu (f3, 'label', 'Set FPS','callback', 'setfps()');
 f32 = uimenu (f3, 'label', 'Set Superspeed','callback', 'setspeed()');
 
 global h = imshow(ones(1,1));
-set(get(h,'parent'),'box','on','boxstyle','full');
 
 t1 = annotation('textbox',[0.02,0.02,0,0],'units','pixels',...
 	'verticalalignment','bottom','horizontalalignment','left','linestyle','none');
