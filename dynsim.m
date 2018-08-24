@@ -39,15 +39,22 @@ endfunction
 
 function resetsim()
 	global ctrlh outh sim_pid l h fcount rawdata;
+
 	set(h,'cdata',ones(l));
 	pause(0.001);
-	system(['kill -9 ' num2str(sim_pid)]);
+
 	fclose(ctrlh);
 	fclose(outh);
+	system(['kill -9 ' num2str(sim_pid)]);
+
+	[ctrlh,outh,sim_pid] = popen2(argv(){end});
+
 	clearfifo();
 	rawdata = -1;
 	fcount = 0;
-	[ctrlh,outh,sim_pid] = popen2(argv(){end});
+	basetime = tic;
+	frame = 0;
+	pause(0.001);
 endfunction
 
 function superspeed()
@@ -67,6 +74,10 @@ function setspeed()
 	catch
 		superspeedval = 10;
 	end_try_catch
+
+	basetime = tic;
+	frame = 0;
+	pause(0.001);
 endfunction
 
 function setfps()
