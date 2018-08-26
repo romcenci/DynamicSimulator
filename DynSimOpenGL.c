@@ -9,10 +9,10 @@
 
 #define _USE_MATH_DEFINES
 
-int L=50;
-int MODE=3;
-int WINDOWS_HEIGHT=600;
-int WINDOWS_WIDTH=800;
+int L=1000;
+int MODE=0;
+int WINDOWS_HEIGHT=400;
+int WINDOWS_WIDTH=500;
 
 int para;
 double zoomStep=0.2;
@@ -55,24 +55,59 @@ void scrollCallback( GLFWwindow *window, double xOffset, double yOffset );
 void mouseTranslate();
 void screenshot();
 
+int NCOLORS=2;
+double *R,*G,*B;
+
+void readColorFile(char *optarg){
+  int ch,i;
+  FILE *f1=fopen(optarg,"r");
+
+  NCOLORS=0;
+  while(!feof(f1)){ // Conta o número de linhas
+    ch = fgetc(f1);
+    if(ch == '\n'){
+      NCOLORS++;
+    }
+  }
+
+  R=malloc(NCOLORS*sizeof(double));
+  G=malloc(NCOLORS*sizeof(double));
+  B=malloc(NCOLORS*sizeof(double));
+
+  char hex[6];
+  int r,g,b;
+  rewind(f1);
+  for(i=0; i<NCOLORS; i++){
+    fscanf(f1,"%*2s%s",hex);
+    sscanf(hex, "%02x%02x%02x", &r, &g, &b);
+    R[i]=r/255.; G[i]=g/255.; B[i]=b/255.;
+  }
+  fclose(f1);
+}
+
 int main(int argc, char *argv[]){
   GLFWwindow* window;
 
-  if(argc <= 1)
-    printf("Digite no formato 'tal'\n");
-    
+  R=malloc(NCOLORS*sizeof(double));
+  G=malloc(NCOLORS*sizeof(double));
+  B=malloc(NCOLORS*sizeof(double));
+  R[0]=1.0; R[1]=0.0;
+  G[0]=1.0; G[1]=0.0;
+  B[0]=1.0; B[1]=0.0;
+  
   while(1){
     static struct option long_options[] = {
       {"mode", required_argument, 0, 'm'},
       {"height", required_argument, 0, 'h'},
       {"width", required_argument, 0, 'w'},
+      {"color", required_argument, 0, 'c'},
       {0, 0, 0, 0}
     };
 
     // getopt_long stores the option index here.
     int option_index = 0;
 
-    int c = getopt_long(argc, argv, "l:m:h:w:", long_options, &option_index);
+    int c = getopt_long(argc, argv, "l:m:h:w:c:", long_options, &option_index);
 
     // Detect the end of the options.
     if (c == -1) { break; }
@@ -95,6 +130,10 @@ int main(int argc, char *argv[]){
 
     case 'w':
       WINDOWS_WIDTH=atoi(optarg);
+      break;
+
+    case 'c':
+      readColorFile(optarg);
       break;
 
     default:
@@ -266,7 +305,7 @@ void DrawFrame(){
 }
 
 void gridMode(int tempo,double **GRID){
-  int i,j;
+  int i,j,k;
   float cor;
   float yy;
   Vertex v;
@@ -274,19 +313,24 @@ void gridMode(int tempo,double **GRID){
   for(i=0; i<L; i++){
     if(para==0){
       scanf("%f\n", &cor);
-      cor = (cor+1)/2.0;
+      cor = (cor+1.)/2.0;
+      GRID[tempo%600][i] = cor;
     }
-    GRID[tempo%600][i] = cor;
   }
-  glClear(GL_COLOR_BUFFER_BIT);
+
   for(j=0;j < 600; j++){
     for(i=0; i<L; i++){
       v.x = (i - L/2)/(1.1*L/2);
       v.y = (float) (-j+300.0f)/330.0f;
       v.z = 0.0f;
-      v.r = GRID[j][i];
-      v.g = GRID[j][i];
-      v.b = GRID[j][i];
+
+      for(k=0; k<NCOLORS-1; k++){
+	if(GRID[j][i]>=(double)k/(NCOLORS-1) && GRID[j][i]<=(double)(k+1.)/(NCOLORS-1)){
+	  v.r = R[k]+(R[k+1]-R[k])*GRID[j][i];
+	  v.g = G[k]+(G[k+1]-G[k])*GRID[j][i];
+	  v.b = B[k]+(B[k+1]-B[k])*GRID[j][i];
+	}
+      }
       v.a = 1.0f;
       drawPoint(v,1.0f);
     }
@@ -327,25 +371,29 @@ void particleMode(int tempo,double **GRID){
 }
 
 void grid2dMode(int tempo,double **GRID){
-  int i,j;
+  int i,j,k;
   double cor;
   Vertex v;
-  
+
   glClear(GL_COLOR_BUFFER_BIT);
 
   for(j=0; j<L; j++){
     for(i=0; i<L; i++){
       if(para==0){
-	scanf("%lf\n", &cor);
-	cor = (cor+1.0)/2.0;
-	GRID[i][j]=cor;
+  	scanf("%lf\n", &cor);
+  	cor = (cor+1.0)/2.0;
+  	GRID[i][j]=cor;
       }
       v.x = (i*(2./L)-1)*660/880;
       v.y = (j*(2./L)-1);
       v.z = 0.0f;
-      v.r = GRID[i][j];
-      v.g = GRID[i][j];
-      v.b = GRID[i][j];
+      for(k=0; k<NCOLORS-1; k++){
+	if(GRID[i][j]>=(double)k/(NCOLORS-1) && GRID[i][j]<=(double)(k+1.)/(NCOLORS-1)){
+	  v.r = R[k]+(R[k+1]-R[k])*GRID[i][j];
+	  v.g = G[k]+(G[k+1]-G[k])*GRID[i][j];
+	  v.b = B[k]+(B[k+1]-B[k])*GRID[i][j];
+	}
+      }
       v.a = 1.0f;
       drawPoint(v,1000/L);
     }

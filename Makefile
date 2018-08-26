@@ -14,10 +14,10 @@ DynSim: DynSimOpenGL.c
 demos: $(dlist:.c=.out) $(dlistpp:.cpp=.out)
 
 $(dlist:.c=.out): %.out: %.c $(wildcard %.h)
-	gcc -O3 -lm -lfftw3 $< -o $(basename $<).out
+	gcc $< -O3 -lm -lfftw3 -o $(basename $<).out
 
 $(dlistpp:.cpp=.out): %.out: %.cpp $(wildcard %.h)
-	g++ -O3 -lm -lfftw3 $< -o $(basename $<).out
+	g++ $< -O3 -lm -lfftw3 -o $(basename $<).out
 
 clean:
 	rm -f $(dlist:.c=.out) DynSim
