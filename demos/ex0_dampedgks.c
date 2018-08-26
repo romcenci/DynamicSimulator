@@ -5,7 +5,7 @@
 #include <time.h>
 
 
-#define alpha (0.11f)
+#define alpha (0.22f)
 #define waveq 0.8f
 #define timeprinter 600
 #define maxwindows 1000000
@@ -14,8 +14,8 @@
 #define N 1
 #define L  (M*N)
 #define X (L/sqrt(2)/2/num_cel)
-#define dx M_PI/X
-// #define dx 0.088
+// #define dx M_PI/X
+#define dx (M_PI/6)
 
 
 #define dt 0.01f

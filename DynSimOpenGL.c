@@ -34,6 +34,14 @@ typedef struct{
   GLfloat x, y, z;
 } Data;
 
+typedef struct {
+    double h, s, v;
+} HSV_Color;
+
+typedef struct {
+  double r, g, b;
+} RGB_Color;
+
 void drawPoint(Vertex v1, GLfloat size);
 void drawPointsDemo(int width, int height);
 void drawLineSegment(Vertex v1, Vertex v2, GLfloat width);
@@ -41,7 +49,7 @@ void DrawCircle(double x0, double y0, double r);
 void drawGrid(GLfloat width, GLfloat height, GLfloat grid_width);
 void DrawFrame();
 
-void gridMode(int tempo, double **GRID);
+void gridMode(int tempo, double **GRID, HSV_Color *hsv_pal);
 void particleMode(int tempo, double **GRID);
 void grid2dMode(int tempo, double **GRID);
 void particle2dMode(int tempo, double **GRID);
@@ -55,9 +63,16 @@ void scrollCallback( GLFWwindow *window, double xOffset, double yOffset );
 void mouseTranslate();
 void screenshot();
 
+double min(double num1,double num2);
+double max(double num1,double num2);
+void RGB2HSV(RGB_Color *rgb_pal, HSV_Color *hsv_pal, int ncolors);
+void HSV2RGB(RGB_Color *rgb_pal, HSV_Color *hsv_pal, int ncolors);
+// void RGB2HSV(Color *rgb_pal, HSV_Color *hsv_pal);
+
 struct Color{
   double r, g, b;
 } *pal;
+
 
 int NCOLORS=2;
 
@@ -72,7 +87,7 @@ void readColorFile(char *optarg){
       NCOLORS++;
     }
   }
-  
+
   pal=malloc(NCOLORS*sizeof(struct Color));
 
   char hex[6];
@@ -90,10 +105,13 @@ int main(int argc, char *argv[]){
   GLFWwindow* window;
 
   pal=malloc(NCOLORS*sizeof(struct Color));
+  HSV_Color HSV_pal[NCOLORS];
+  RGB_Color RGB_pal[NCOLORS];
+
   pal[0].r=1.0; pal[1].r=0.0;
   pal[0].g=1.0; pal[1].g=0.0;
   pal[0].b=1.0; pal[1].b=0.0;
-  
+
   while(1){
     static struct option long_options[] = {
       {"mode", required_argument, 0, 'm'},
@@ -139,7 +157,22 @@ int main(int argc, char *argv[]){
       return 1;
     }
   }
-  
+  //convertendo pal para a struct que criei, pra poder usar o conversor;
+  for (int iii = 0; iii < NCOLORS; iii++){
+     RGB_pal[iii].r = pal[iii].r;
+     RGB_pal[iii].g = pal[iii].g;
+     RGB_pal[iii].b = pal[iii].b;
+  }
+  //cria a palette em HSV
+  // size_t ncolors = sizeof(RGB_pal)/sizeof(RGB_pal[0]);
+  for(int iii = 0; iii < NCOLORS;iii++){
+      printf("%f\t%f\t%f\n",RGB_pal[iii].r,RGB_pal[iii].g,RGB_pal[iii].b);
+  }
+  RGB2HSV(RGB_pal,HSV_pal, NCOLORS);
+  HSV2RGB(RGB_pal,HSV_pal, NCOLORS);
+  for(int iii = 0; iii < NCOLORS;iii++){
+      printf("%f\t%f\t%f\n",RGB_pal[iii].r,RGB_pal[iii].g,RGB_pal[iii].b);
+  }
   if (!glfwInit()){
     exit(EXIT_FAILURE);
   }
@@ -180,7 +213,7 @@ int main(int argc, char *argv[]){
   glfwSetMouseButtonCallback( window, mouseButtonCallback );
   glfwSetKeyCallback( window, keyCallback );
   glfwSetScrollCallback( window, scrollCallback );
-  
+
   int tempo = 0;
   while (!glfwWindowShouldClose(window)){
     float ratio;
@@ -198,9 +231,9 @@ int main(int argc, char *argv[]){
 
     DrawFrame();
     if(para==0){ tempo++; }
-    
+
     if(MODE==0){
-      gridMode(tempo,GRID);
+      gridMode(tempo,GRID, HSV_pal);
     }
     else if(MODE==1){
       particleMode(tempo,GRID);
@@ -304,11 +337,14 @@ void DrawFrame(){
   Vertex v4 = {-0.95f, 0.95f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 }
 
-void gridMode(int tempo,double **GRID){
+void gridMode(int tempo,double **GRID, HSV_Color *hsv_pal){
   int i,j,k;
   float cor;
   float yy;
   Vertex v;
+  HSV_Color hsv;
+  RGB_Color rgb;
+  double r,g,b;
 
   for(i=0; i<L; i++){
     if(para==0){
@@ -575,4 +611,93 @@ void screenshot(){
 
   bmp_img_write(&img, "screenshot.bmp");
   bmp_img_free(&img);
+}
+
+double min(double num1,double num2){
+    if (num1 <= num2)
+        return num1;
+    else
+        return num2;
+}
+
+double max(double num1,double num2){
+    if (num1 >= num2)
+        return num1;
+    else
+        return num2;
+}
+
+void RGB2HSV(RGB_Color *rgb_pal, HSV_Color *hsv_pal, int ncolors){
+    double min_, max_, d;
+    for (int i = 0; i < ncolors; i++) {
+        max_ = max(max(rgb_pal[i].r,rgb_pal[i].g),rgb_pal[i].b);
+        min_ = min(min(rgb_pal[i].r,rgb_pal[i].g),rgb_pal[i].b);
+        hsv_pal[i].v = max_;
+        if (max_ == 0)
+            hsv_pal[i].s = 0.0;
+        else
+            hsv_pal[i].s = (max_-min_)/max_;
+
+        if (hsv_pal[i].s == 0)
+            hsv_pal[i].h = fabs(0.0/0.0);
+        else{
+            d = max_ - min_;
+            if (rgb_pal[i].r == max_){
+                hsv_pal[i].h = (rgb_pal[i].g - rgb_pal[i].b)/d;
+            }
+            else if (rgb_pal[i].g == max_){
+                hsv_pal[i].h = 2.0 + (rgb_pal[i].b - rgb_pal[i].r)/d;
+            }
+            else if (rgb_pal[i].b == max_){
+                hsv_pal[i].h = 4.0 + (rgb_pal[i].r - rgb_pal[i].g)/d;
+            }
+            hsv_pal[i].h = hsv_pal[i].h*60.0;
+            if (hsv_pal[i].h < 0)
+                hsv_pal[i].h = hsv_pal[i].h + 360.0;
+        }
+    }
+}
+
+void HSV2RGB(RGB_Color *rgb_pal, HSV_Color *hsv_pal, int ncolors){
+    int sextant;
+    double fract, p, q, t;
+    double h,s,v;
+    for(int i = 0; i < ncolors;i++){
+        h = hsv_pal[i].h;
+        s = hsv_pal[i].s;
+        v = hsv_pal[i].v;
+        if (s == 0){
+            if (isnan(h)){rgb_pal[i].r = rgb_pal[i].g = rgb_pal[i].b = v;}
+            else{
+            printf("Error in HSV Palette");
+            exit(EXIT_FAILURE);
+            }
+        }
+        else{
+            if (h == 360)
+                h = 0;
+            else
+                h = h/60;
+            sextant = (int) floor(h);
+            fract = h - sextant;
+            p = v*(1-s);
+            q = v*(1-s*fract);
+            t = v*(1-s*(1-fract));
+            switch (sextant) {
+                case 0:
+                rgb_pal[i].r = v; rgb_pal[i].g = t; rgb_pal[i].b = p; break;
+                case 1:
+                rgb_pal[i].r = q; rgb_pal[i].g = v; rgb_pal[i].b = p; break;
+                case 2:
+                rgb_pal[i].r = p; rgb_pal[i].g = v; rgb_pal[i].b = t; break;
+                case 3:
+                rgb_pal[i].r = p; rgb_pal[i].g = q; rgb_pal[i].b = v; break;
+                case 4:
+                rgb_pal[i].r = t; rgb_pal[i].g = p; rgb_pal[i].b = v; break;
+                case 5:
+                rgb_pal[i].r = v; rgb_pal[i].g = p; rgb_pal[i].b = q; break;
+
+            }
+        }
+    }
 }
