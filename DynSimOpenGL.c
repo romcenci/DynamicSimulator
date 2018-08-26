@@ -55,8 +55,11 @@ void scrollCallback( GLFWwindow *window, double xOffset, double yOffset );
 void mouseTranslate();
 void screenshot();
 
+struct Color{
+  double r, g, b;
+} *pal;
+
 int NCOLORS=2;
-double *R,*G,*B;
 
 void readColorFile(char *optarg){
   int ch,i;
@@ -69,10 +72,8 @@ void readColorFile(char *optarg){
       NCOLORS++;
     }
   }
-
-  R=malloc(NCOLORS*sizeof(double));
-  G=malloc(NCOLORS*sizeof(double));
-  B=malloc(NCOLORS*sizeof(double));
+  
+  pal=malloc(NCOLORS*sizeof(struct Color));
 
   char hex[6];
   int r,g,b;
@@ -80,7 +81,7 @@ void readColorFile(char *optarg){
   for(i=0; i<NCOLORS; i++){
     fscanf(f1,"%*2s%s",hex);
     sscanf(hex, "%02x%02x%02x", &r, &g, &b);
-    R[i]=r/255.; G[i]=g/255.; B[i]=b/255.;
+    pal[i].r=r/255.; pal[i].g=g/255.; pal[i].b=b/255.;
   }
   fclose(f1);
 }
@@ -88,12 +89,10 @@ void readColorFile(char *optarg){
 int main(int argc, char *argv[]){
   GLFWwindow* window;
 
-  R=malloc(NCOLORS*sizeof(double));
-  G=malloc(NCOLORS*sizeof(double));
-  B=malloc(NCOLORS*sizeof(double));
-  R[0]=1.0; R[1]=0.0;
-  G[0]=1.0; G[1]=0.0;
-  B[0]=1.0; B[1]=0.0;
+  pal=malloc(NCOLORS*sizeof(struct Color));
+  pal[0].r=1.0; pal[1].r=0.0;
+  pal[0].g=1.0; pal[1].g=0.0;
+  pal[0].b=1.0; pal[1].b=0.0;
   
   while(1){
     static struct option long_options[] = {
@@ -223,6 +222,7 @@ int main(int argc, char *argv[]){
   }
 
   free(GRID);
+  free(pal);
   glfwDestroyWindow(window);
   glfwTerminate();
   exit(EXIT_SUCCESS);
@@ -326,9 +326,9 @@ void gridMode(int tempo,double **GRID){
 
       for(k=0; k<NCOLORS-1; k++){
 	if(GRID[j][i]>=(double)k/(NCOLORS-1) && GRID[j][i]<=(double)(k+1.)/(NCOLORS-1)){
-	  v.r = R[k]+(R[k+1]-R[k])*GRID[j][i];
-	  v.g = G[k]+(G[k+1]-G[k])*GRID[j][i];
-	  v.b = B[k]+(B[k+1]-B[k])*GRID[j][i];
+	  v.r = pal[k].r+(pal[k+1].r-pal[k].r)*GRID[j][i];
+	  v.g = pal[k].g+(pal[k+1].g-pal[k].g)*GRID[j][i];
+	  v.b = pal[k].b+(pal[k+1].b-pal[k].b)*GRID[j][i];
 	}
       }
       v.a = 1.0f;
@@ -389,9 +389,9 @@ void grid2dMode(int tempo,double **GRID){
       v.z = 0.0f;
       for(k=0; k<NCOLORS-1; k++){
 	if(GRID[i][j]>=(double)k/(NCOLORS-1) && GRID[i][j]<=(double)(k+1.)/(NCOLORS-1)){
-	  v.r = R[k]+(R[k+1]-R[k])*GRID[i][j];
-	  v.g = G[k]+(G[k+1]-G[k])*GRID[i][j];
-	  v.b = B[k]+(B[k+1]-B[k])*GRID[i][j];
+	  v.r = pal[k].r+(pal[k+1].r-pal[k].r)*GRID[i][j];
+	  v.g = pal[k].g+(pal[k+1].g-pal[k].g)*GRID[i][j];
+	  v.b = pal[k].b+(pal[k+1].b-pal[k].b)*GRID[i][j];
 	}
       }
       v.a = 1.0f;
