@@ -26,7 +26,7 @@
 ## Opções:
 * -l : Tamanho do vetor (quantidade de partículas)
 
-* -c (--color) : Especifica arquivo com paleta de cores 
+* -c (--color) : Especifica arquivo com paleta de cores (formato hexadecimal 0xRRGGBB)
 
 * -h (--height) : Altura da tela
 	
