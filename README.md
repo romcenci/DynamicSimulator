@@ -14,7 +14,7 @@
 	- `./a.out | ./DynSim -OPÇÕES`		
 * Exemplo:
 	- `make demos`
-	- `./demos/ogl_ex2_ising.c | ./DynSim -m 2 -l 300 --height 600 --width 800`
+	- `./demos/ogl_ex2_ising.out | ./DynSim -m 2 -l 300 --height 600 --width 800 --color color.txt`
 		
 ## Interativo:
 * <kbd>Spacebar</kbd> : Pausar
@@ -26,9 +26,11 @@
 ## Opções:
 * -l : Tamanho do vetor (quantidade de partículas)
 
-* -h (--height) : altura da tela
+* -c (--color) : Especifica arquivo com paleta de cores 
+
+* -h (--height) : Altura da tela
 	
-* -w (--width) : largura da tela
+* -w (--width) : Largura da tela
 	
 * -m (--mode) : Modo de plot
 	- 0: (1d) Rede fixa (Ex: dampedGKS)
