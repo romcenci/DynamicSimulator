@@ -47,11 +47,6 @@
 	<figure><img align=midle src="images/4.png" width="400"></figure>
 
 # DynamicSimulator-octave
-
-## Pre-requisitos:
-
-- Octave 4.2 ou mais recente
-
 ## Uso:
 
 - Compilar exemplos com `make demos`
