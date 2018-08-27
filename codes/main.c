@@ -11,17 +11,33 @@ double horizontal=0, vertical=0;
 
 int NCOLORS=2;
 
-int main(int argc, char *argv[]){
-  GLFWwindow* window;
+double **allocateGRID(){
+  int i,j;
+  double **GRID;
 
-  pal=malloc(NCOLORS*sizeof(struct Color));
-  HSV_Color HSV_pal[NCOLORS];
-  RGB_Color RGB_pal[NCOLORS];
+  if(MODE==0 || MODE==1){
+    GRID=(double **)malloc(600*sizeof(double *));
+    for (i = 0; i < 600; ++i){
+      GRID[i]=(double *)malloc(L*sizeof(double));
+    }
+  }
+  else if(MODE==2){
+    GRID=(double **)malloc(L*sizeof(double *));
+    for (i = 0; i < L; ++i){
+      GRID[i]=(double *)malloc(L*sizeof(double));
+    }
+  }
+  else if(MODE==3){
+    GRID=(double **)malloc(L*sizeof(double *));
+    for (i = 0; i < L; ++i){
+      GRID[i]=(double *)malloc(3*sizeof(double));
+    }
+  }
 
-  pal[0].r=1.0; pal[1].r=0.0;
-  pal[0].g=1.0; pal[1].g=0.0;
-  pal[0].b=1.0; pal[1].b=0.0;
+  return GRID;
+}
 
+int getopts(int argc, char *argv[]){
   while(1){
     static struct option long_options[] = {
       {"mode", required_argument, 0, 'm'},
@@ -67,6 +83,20 @@ int main(int argc, char *argv[]){
       return 1;
     }
   }
+}
+
+int main(int argc, char *argv[]){
+  GLFWwindow* window;
+
+  pal=malloc(NCOLORS*sizeof(struct Color));
+  HSV_Color HSV_pal[NCOLORS];
+  RGB_Color RGB_pal[NCOLORS];
+
+  pal[0].r=1.0; pal[1].r=0.0;
+  pal[0].g=1.0; pal[1].g=0.0;
+  pal[0].b=1.0; pal[1].b=0.0;
+
+  getopts(argc, argv);
 
   //convertendo pal para a struct que criei, pra poder usar o conversor;
   for (int iii = 0; iii < NCOLORS; iii++){
@@ -99,33 +129,14 @@ int main(int argc, char *argv[]){
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  int i,j;
-  double **GRID;
-
-  if(MODE==0 || MODE==1){
-    GRID=(double **)malloc(600*sizeof(double *));
-    for (i = 0; i < 600; ++i){
-      GRID[i]=(double *)malloc(L*sizeof(double));
-    }
-  }
-  else if(MODE==2){
-    GRID=(double **)malloc(L*sizeof(double *));
-    for (i = 0; i < L; ++i){
-      GRID[i]=(double *)malloc(L*sizeof(double));
-    }
-  }
-  else if(MODE==3){
-    GRID=(double **)malloc(L*sizeof(double *));
-    for (i = 0; i < L; ++i){
-      GRID[i]=(double *)malloc(3*sizeof(double));
-    }
-  }
-
   glfwSetCursorPosCallback( window, cursorPositionCallback );
   glfwSetMouseButtonCallback( window, mouseButtonCallback );
   glfwSetKeyCallback( window, keyCallback );
   glfwSetScrollCallback( window, scrollCallback );
 
+  double **GRID;
+  GRID=allocateGRID();
+  
   int tempo = 0;
   while (!glfwWindowShouldClose(window)){
     float ratio;
