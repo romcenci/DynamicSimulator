@@ -130,7 +130,7 @@ void ArrowMode(int tempo){
   double xx,yy,zz;
   double length, cor;
   Vertex v1,v2;
-  length = (600.0/(2*L))/660;
+  length = 6*(600.0/(2*L))/660;
   cor = 1.0f;
   glClear(GL_COLOR_BUFFER_BIT);
   for (i = 0;i< L;i++){
@@ -151,9 +151,15 @@ void ArrowMode(int tempo){
       v2.g = cor;
       v2.b = 1.0f;
       v2.a = 1.0f;
-      drawLineSegment(v1,v2,3.0f);
+      //drawLineSegment(v1,v2,3.0f);
+      DrawArrow(v1,v2,3.0f);
     }
   }
+  /* v1.x=0; */
+  /* v1.y=0; */
+  /* v2.x=0.2; */
+  /* v2.y=0.5;   */
+  /* DrawArrow(v1,v2,3.0f); */
 }
 
 void SpectreMode(){
