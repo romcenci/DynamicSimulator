@@ -12,8 +12,8 @@
 #define PI M_PI
 #define tmax 200000
 #define ns 100 // corte no tempo
-#define Lx 5 // tamanho da rede na direção x, número de partículas no eixo x
-#define Ly 5 // tamanho da rede na direção y, número de partículas no eixo y
+#define Lx 10 // tamanho da rede na direção x, número de partículas no eixo x
+#define Ly 10 // tamanho da rede na direção y, número de partículas no eixo y
 #define Lz 1	// tamanho da rede na direção z, número de partículas no eixo z
 #define co 3
 #define dx 1.0

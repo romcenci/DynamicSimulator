@@ -52,7 +52,7 @@ void DrawArrow(Vertex v1, Vertex v2, GLfloat width){
   glColor4f(v2.r, v2.g, v2.b, v2.a);
   glVertex2d(R-headSize*R,0);
   glEnd();
-  
+
   glBegin(GL_POLYGON);
   glVertex2d(R-headSize*R,-headSize*R);
   glVertex2d(R,0);
@@ -111,10 +111,11 @@ Vertex VertexMatrixOp(Vertex v, Matrix M){
 
 void DrawArrow2D(Vertex v1, Vertex v2, GLfloat width){
     double length = sqrt(powf(v2.x -v1.x,2)+powf(v2.y -v1.y,2)+powf(v2.z -v1.z,2));
+    double length2 = sqrt(powf(v2.x -v1.x,2)+powf(v2.y -v1.y,2));
     double theta = atan2((v2.y-v1.y),(v2.x-v1.x));
-    Vertex tp1 = {length,0.0f,1.0f,v1.r,v1.g,v1.b,v1.a};
-    Vertex tp2 = {0.8*length,-0.01,1.0f,v1.r,v1.g,v1.b,v1.a};
-    Vertex tp3 = {0.8*length,0.01,1.0f,v1.r,v1.g,v1.b,v1.a};
+    Vertex tp1 = {length2,0.0f,1.0f,v1.r,v1.g,v1.b,v1.a};
+    Vertex tp2 = {0.8*length2,-0.01,1.0f,v1.r,v1.g,v1.b,v1.a};
+    Vertex tp3 = {0.8*length2,0.01,1.0f,v1.r,v1.g,v1.b,v1.a};
     Matrix M = {cos(theta),-sin(theta),0,sin(theta),cos(theta),0,0,0,1};
     Matrix M2 = {1,0,v2.x,1,0,v2.y,0,0,1};
 
@@ -138,7 +139,7 @@ void DrawArrow2D(Vertex v1, Vertex v2, GLfloat width){
     glColor4f(v2.r, v2.g, v2.b, v2.a);
     glVertex3f(v1.x, v1.y, v1.z);
     glColor4f(v2.r, v2.g, v2.b, v2.a);
-    glVertex3f(v2.x -0.2*length, v2.y-0.2*length, v2.z);
+    glVertex3f(v2.x, v2.y, v2.z);
     glEnd();
     glBegin(GL_TRIANGLES);
     glColor4f(v2.r, v2.g, v2.b, v2.a);

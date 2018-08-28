@@ -146,23 +146,14 @@ void ArrowMode(int tempo){
       v1.g = cor;
       v1.b = 1.0f;
       v1.a = 1.0f;
-      v2.x = (i - L/2)/(1.1*L/2)+length*xx;
-      v2.y = (j - L/2)/(1.1*L/2)+length*yy;
-      v2.z = length*zz;
+      v2.x = (i - L/2)/(1.1*L/2)+1.3*length*xx;
+      v2.y = (j - L/2)/(1.1*L/2)+1.3*length*yy;
+      v2.z = 1.3*length*zz;
       v2.r = cor;
       v2.g = cor;
       v2.b = 1.0f;
       v2.a = 1.0f;
-    //   Vertex tp1 = {1*10*length,0.0f,1.0f,v1.r,v1.g,v1.b,v1.a};
-    //   Vertex tp2 = {0.8*10*length,-0.5*10*length,1.0f,v1.r,v1.g,v1.b,v1.a};
-    //   Vertex tp3 = {0.8*10*length,+0.5*10*length,1.0f,v1.r,v1.g,v1.b,v1.a};
-      // glBegin(GL_TRIANGLES);
-    // glColor3f(0.5, 0.5, 0.5);
-    // glVertex3f(tp1.x, tp1.y, tp1.z);
-    // glVertex3f(tp2.x, tp2.y, tp2.z);
-    // glVertex3f(tp3.x, tp3.y, tp3.z);
-    // glEnd();
-      DrawArrow2D(v1,v2,1.0f);
+      DrawArrow2D(v1,v2,2.0f);
     }
   }
   /* v1.x=0; */
