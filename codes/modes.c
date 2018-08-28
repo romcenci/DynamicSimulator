@@ -129,17 +129,19 @@ void ArrowMode(int tempo){
   int i,j;
   double xx,yy,zz;
   double length, cor;
+
   Vertex v1,v2;
-  length = (600.0/(2*L))/660;
+  length = (600.0/(2.0*L))/660.0;
   cor = 1.0f;
   glClear(GL_COLOR_BUFFER_BIT);
-  for (i = 0;i< L;i++){
+
+  for (i = 0;i<L;i++){
     for(j= 0;j<L;j++){
       scanf("%lf %lf %lf\n", &xx, &yy, &zz);
       cor = (zz+1.0)/2.0;
       v1.x = (i - L/2)/(1.1*L/2);
       v1.y = (j - L/2)/(1.1*L/2);
-      v1.z = 0.0f;
+      v1.z = 0.0;
       v1.r = cor;
       v1.g = cor;
       v1.b = 1.0f;
@@ -151,7 +153,16 @@ void ArrowMode(int tempo){
       v2.g = cor;
       v2.b = 1.0f;
       v2.a = 1.0f;
-      drawLineSegment(v1,v2,3.0f);
+    //   Vertex tp1 = {1*10*length,0.0f,1.0f,v1.r,v1.g,v1.b,v1.a};
+    //   Vertex tp2 = {0.8*10*length,-0.5*10*length,1.0f,v1.r,v1.g,v1.b,v1.a};
+    //   Vertex tp3 = {0.8*10*length,+0.5*10*length,1.0f,v1.r,v1.g,v1.b,v1.a};
+      // glBegin(GL_TRIANGLES);
+    // glColor3f(0.5, 0.5, 0.5);
+    // glVertex3f(tp1.x, tp1.y, tp1.z);
+    // glVertex3f(tp2.x, tp2.y, tp2.z);
+    // glVertex3f(tp3.x, tp3.y, tp3.z);
+    // glEnd();
+      DrawArrow2D(v1,v2,1.0f);
     }
   }
 }
@@ -183,7 +194,7 @@ void SpectreMode(){
     v2.g = cor;
     v2.b = cor;
     v2.a = 1.0f;
-    drawLineSegment(v1,v2,3.0f);
+    drawLineSegment(v1,v2,2.0f);
     v1.x = v2.x;
     v1.y = v2.y;
     v1.z = v2.z;

@@ -12,8 +12,8 @@
 #define PI M_PI
 #define tmax 200000
 #define ns 100 // corte no tempo
-#define Lx 10 // tamanho da rede na direção x, número de partículas no eixo x
-#define Ly 10 // tamanho da rede na direção y, número de partículas no eixo y
+#define Lx 5 // tamanho da rede na direção x, número de partículas no eixo x
+#define Ly 5 // tamanho da rede na direção y, número de partículas no eixo y
 #define Lz 1	// tamanho da rede na direção z, número de partículas no eixo z
 #define co 3
 #define dx 1.0
@@ -31,7 +31,7 @@ double gama=1; // razão giromagnética [1/Ts}
 double Ku= 1.0; // densidade de energia de anisotropia [J/m3]
 double Kc= 1.0;
 double dt= 5e-3;// passo de tempo [s]
-double T = 10;	 	; // temperatura [axes]
+double T = 1 ;	 	; // temperatura [axes]
 double alfa =0.2;
 double lambda= 1./(1+alfa*alfa);
 double A =1;

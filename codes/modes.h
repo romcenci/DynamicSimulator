@@ -34,3 +34,4 @@ void drawLineSegment(Vertex v1, Vertex v2, GLfloat width);
 void DrawCircle(double x0, double y0, double r);
 void drawGrid(GLfloat width, GLfloat height, GLfloat grid_width);
 void DrawFrame();
+void DrawArrow2D(Vertex v1, Vertex v2, GLfloat width);

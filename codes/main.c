@@ -106,15 +106,9 @@ int main(int argc, char *argv[]){
   }
   //cria a palette em HSV
   // size_t ncolors = sizeof(RGB_pal)/sizeof(RGB_pal[0]);
-  for(int iii = 0; iii < NCOLORS;iii++){
-      printf("%f\t%f\t%f\n",RGB_pal[iii].r,RGB_pal[iii].g,RGB_pal[iii].b);
-  }
   RGB2HSV(RGB_pal,HSV_pal, NCOLORS);
   HSV2RGB(RGB_pal,HSV_pal, NCOLORS);
-  for(int iii = 0; iii < NCOLORS;iii++){
-      printf("%f\t%f\t%f\n",RGB_pal[iii].r,RGB_pal[iii].g,RGB_pal[iii].b);
-  }
-  
+
   if (!glfwInit()){
     exit(EXIT_FAILURE);
   }
@@ -136,7 +130,7 @@ int main(int argc, char *argv[]){
 
   double **GRID;
   GRID=allocateGRID();
-  
+
   int tempo = 0;
   while (!glfwWindowShouldClose(window)){
     float ratio;
