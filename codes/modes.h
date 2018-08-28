@@ -31,6 +31,7 @@ typedef struct{
 void drawPoint(Vertex v1, GLfloat size);
 void drawPointsDemo(int width, int height);
 void drawLineSegment(Vertex v1, Vertex v2, GLfloat width);
+void DrawArrow(Vertex v1, Vertex v2, GLfloat width);
 void DrawCircle(double x0, double y0, double r);
 void drawGrid(GLfloat width, GLfloat height, GLfloat grid_width);
 void DrawFrame();

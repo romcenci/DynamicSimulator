@@ -165,6 +165,11 @@ void ArrowMode(int tempo){
       DrawArrow2D(v1,v2,1.0f);
     }
   }
+  /* v1.x=0; */
+  /* v1.y=0; */
+  /* v2.x=0.2; */
+  /* v2.y=0.5;   */
+  /* DrawArrow(v1,v2,3.0f); */
 }
 
 void SpectreMode(){
