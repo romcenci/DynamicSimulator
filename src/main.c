@@ -161,7 +161,6 @@ int main(int argc, char *argv[]){
     mouseTranslate();
     glTranslatef(horizontal, vertical, 0);
 
-    DrawFrame();
     if(para==0){ tempo++; }
 
     if(MODE==0){

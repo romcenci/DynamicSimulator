@@ -1,6 +1,7 @@
 #include <math.h>
 #include <GLFW/glfw3.h>
 #include <stdio.h>
+
 typedef struct{
   GLfloat x, y, z;
   GLfloat r, g, b, a;
@@ -13,7 +14,6 @@ typedef struct{
 typedef struct{
     GLfloat a11, a12, a13, a21, a22, a23, a31, a32, a33;
 } Matrix;
-
 
 void drawPoint(Vertex v1, GLfloat size){
   glPointSize(size);

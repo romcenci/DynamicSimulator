@@ -16,7 +16,8 @@ void gridMode(int tempo, double **GRID, HSV_Color *hsv_pal){
       GRID[tempo%600][i] = cor;
     }
   }
-
+  
+  glClear(GL_COLOR_BUFFER_BIT);
   for(j=0;j < 600; j++){
     for(i=0; i<L; i++){
       v.x = (i - L/2)/(1.1*L/2);
