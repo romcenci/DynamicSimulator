@@ -158,7 +158,7 @@ void ArrowMode(int tempo, double **GRID){
       v2.g = cor;
       v2.b = 1.0f;
       v2.a = 1.0f;
-      DrawArrow2D(v1,v2,2.0f);
+      DrawArrow(v1,v2,2.0f);
     }
   }
 }
