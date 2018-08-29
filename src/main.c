@@ -157,7 +157,7 @@ int main(int argc, char *argv[]){
 
     glLoadIdentity();
     if(MODE==0 || MODE==1){ glScalef(zoom1,1,0); }
-    if(MODE==2 || MODE==3){ glScalef(zoom1,zoom2,0); }
+    if(MODE==2 || MODE==3 || MODE==5){ glScalef(zoom1,zoom2,0); }
     mouseTranslate();
     glTranslatef(horizontal, vertical, 0);
 
