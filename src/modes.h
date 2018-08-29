@@ -6,8 +6,6 @@
 extern int L;
 extern int NCOLORS;
 extern int para;
-extern int WINDOWS_WIDTH;
-extern int WINDOWS_HEIGHT;
 
 typedef struct {
     double h, s, v;
@@ -33,7 +31,8 @@ typedef struct{
 void drawPoint(Vertex v1, GLfloat size);
 void drawPointsDemo(int width, int height);
 void drawLineSegment(Vertex v1, Vertex v2, GLfloat width);
+void DrawArrow(Vertex v1, Vertex v2, GLfloat width);
 void DrawCircle(double x0, double y0, double r);
 void drawGrid(GLfloat width, GLfloat height, GLfloat grid_width);
 void DrawFrame();
-void DrawArrow(Vertex v1, Vertex v2, GLfloat width);
+void DrawArrow2D(Vertex v1, Vertex v2, GLfloat width);

@@ -164,13 +164,13 @@ int main(int argc, char *argv[]){
     if(para==0){ tempo++; }
 
     if(MODE==0){
-      gridMode(tempo,GRID, HSV_pal);
+      gridMode(tempo, GRID, HSV_pal);
     }
     else if(MODE==1){
-      particleMode(tempo,GRID);
+      particleMode(tempo, GRID);
     }
     else if(MODE==2){
-      grid2dMode(tempo,GRID);
+      grid2dMode(tempo, GRID);
     }
     else if(MODE==3){
       particle2dMode(tempo, GRID);

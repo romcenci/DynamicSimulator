@@ -82,10 +82,10 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
     }
   }
 
-  if (key == 262 && (action == GLFW_REPEAT || GLFW_PRESS)){ horizontal-=0.05; } // Right arrow
-  if (key == 263 && (action == GLFW_REPEAT || GLFW_PRESS)){ horizontal+=0.05; } // Left arrow
-  if (key == 264 && (action == GLFW_REPEAT || GLFW_PRESS)){ vertical+=0.05; } // Down arrow
-  if (key == 265 && (action == GLFW_REPEAT || GLFW_PRESS)){ vertical-=0.05; } // Up arrow
+  if (key == 262 && (action == GLFW_REPEAT || GLFW_PRESS)){ horizontal-=0.08; } // Right arrow
+  if (key == 263 && (action == GLFW_REPEAT || GLFW_PRESS)){ horizontal+=0.08; } // Left arrow
+  if (key == 264 && (action == GLFW_REPEAT || GLFW_PRESS)){ vertical+=0.08; } // Down arrow
+  if (key == 265 && (action == GLFW_REPEAT || GLFW_PRESS)){ vertical-=0.08; } // Up arrow
 
   if (key == 65 && action == GLFW_PRESS){ // Letra a - autoscale
     horizontal=0;

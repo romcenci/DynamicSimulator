@@ -26,9 +26,21 @@ void gridMode(int tempo, double **GRID, HSV_Color *hsv_pal){
 
       for(k=0; k<NCOLORS-1; k++){
 	if(GRID[j][i]>=(double)k/(NCOLORS-1) && GRID[j][i]<=(double)(k+1.)/(NCOLORS-1)){
-	  v.r = pal[k].r+(pal[k+1].r-pal[k].r)*GRID[j][i];
-	  v.g = pal[k].g+(pal[k+1].g-pal[k].g)*GRID[j][i];
-	  v.b = pal[k].b+(pal[k+1].b-pal[k].b)*GRID[j][i];
+	  rgb.r=v.r;
+	  rgb.g=v.g;
+	  rgb.b=v.b;
+
+	  RGB2HSV(&rgb, &hsv, 1);
+
+	  hsv.h = hsv_pal[k].h+(hsv_pal[k+1].h-hsv_pal[k].h)*GRID[j][i];
+	  hsv.s = hsv_pal[k].s+(hsv_pal[k+1].s-hsv_pal[k].s)*GRID[j][i];
+	  hsv.v = hsv_pal[k].v+(hsv_pal[k+1].v-hsv_pal[k].v)*GRID[j][i];
+
+	  HSV2RGB(&rgb, &hsv, 1);
+
+	  v.r=rgb.r;
+	  v.g=rgb.g;
+	  v.b=rgb.b;
 	}
       }
       v.a = 1.0f;
