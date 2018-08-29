@@ -83,8 +83,8 @@ void grid2dMode(int tempo, double **GRID){
   	cor = (cor+1.0)/2.0;
   	GRID[i][j]=cor;
       }
-      v.x = (i*(2./L)-1)*660/880;
-      v.y = (j*(2./L)-1);
+      v.x = (i*(2./(L-1))-1)*WINDOWS_HEIGHT/WINDOWS_WIDTH;
+      v.y = (j*(2./(L-1))-1);
       v.z = 0.0f;
       for(k=0; k<NCOLORS-1; k++){
 	if(GRID[i][j]>=(double)k/(NCOLORS-1) && GRID[i][j]<=(double)(k+1.)/(NCOLORS-1)){
@@ -144,15 +144,15 @@ void ArrowMode(int tempo, double **GRID){
 	GRID[i+L*j][2]=zz;
       }
       cor = (GRID[i+L*j][2]+1.0)/2.0;
-      v1.x = (i - L/2)/(1.1*L/2);
-      v1.y = (j - L/2)/(1.1*L/2);
+      v1.x = 0.85*(i*(2./(L-1))-1)*WINDOWS_HEIGHT/WINDOWS_WIDTH;
+      v1.y = 0.85*(j*(2./(L-1))-1);
       v1.z = 0.0;
       v1.r = cor;
       v1.g = cor;
       v1.b = 1.0f;
       v1.a = 1.0f;
-      v2.x = (i - L/2)/(1.1*L/2)+1.3*length*GRID[i+L*j][0];
-      v2.y = (j - L/2)/(1.1*L/2)+1.3*length*GRID[i+L*j][1];
+      v2.x = 0.85*(i*(2./(L-1))-1)*WINDOWS_HEIGHT/WINDOWS_WIDTH+1.3*length*GRID[i+L*j][0];
+      v2.y = 0.85*(j*(2./(L-1))-1)+1.3*length*GRID[i+L*j][1];
       v2.z = 1.3*length*GRID[i+L*j][2];
       v2.r = cor;
       v2.g = cor;

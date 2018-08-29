@@ -6,6 +6,8 @@
 extern int L;
 extern int NCOLORS;
 extern int para;
+extern int WINDOWS_WIDTH;
+extern int WINDOWS_HEIGHT;
 
 typedef struct {
     double h, s, v;
