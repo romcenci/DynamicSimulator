@@ -1,6 +1,6 @@
 #include "modes.h"
 
-void gridMode(int tempo,double **GRID, HSV_Color *hsv_pal){
+void gridMode(int tempo, double **GRID, HSV_Color *hsv_pal){
   int i,j,k;
   float cor;
   float yy;
@@ -36,7 +36,7 @@ void gridMode(int tempo,double **GRID, HSV_Color *hsv_pal){
   }
 }
 
-void particleMode(int tempo,double **GRID){
+void particleMode(int tempo, double **GRID){
   int i,j;
   float cor;
   float yy, xx;
@@ -69,7 +69,7 @@ void particleMode(int tempo,double **GRID){
   }
 }
 
-void grid2dMode(int tempo,double **GRID){
+void grid2dMode(int tempo, double **GRID){
   int i,j,k;
   double cor;
   Vertex v;
@@ -99,7 +99,7 @@ void grid2dMode(int tempo,double **GRID){
   }
 }
 
-void particle2dMode(int tempo,double **GRID){
+void particle2dMode(int tempo, double **GRID){
   int i;
   double cor, xx, yy, r;
   Vertex v;
@@ -125,7 +125,7 @@ void particle2dMode(int tempo,double **GRID){
   }
 }
 
-void ArrowMode(int tempo){
+void ArrowMode(int tempo, double **GRID){
   int i,j;
   double xx,yy,zz;
   double length, cor;
@@ -137,8 +137,13 @@ void ArrowMode(int tempo){
 
   for (i = 0;i<L;i++){
     for(j= 0;j<L;j++){
-      scanf("%lf %lf %lf\n", &xx, &yy, &zz);
-      cor = (zz+1.0)/2.0;
+      if(para==0){
+	scanf("%lf %lf %lf\n", &xx, &yy, &zz);
+	GRID[i+L*j][0]=xx;
+	GRID[i+L*j][1]=yy;
+	GRID[i+L*j][2]=zz;
+      }
+      cor = (GRID[i+L*j][2]+1.0)/2.0;
       v1.x = (i - L/2)/(1.1*L/2);
       v1.y = (j - L/2)/(1.1*L/2);
       v1.z = 0.0;
@@ -146,9 +151,9 @@ void ArrowMode(int tempo){
       v1.g = cor;
       v1.b = 1.0f;
       v1.a = 1.0f;
-      v2.x = (i - L/2)/(1.1*L/2)+1.3*length*xx;
-      v2.y = (j - L/2)/(1.1*L/2)+1.3*length*yy;
-      v2.z = 1.3*length*zz;
+      v2.x = (i - L/2)/(1.1*L/2)+1.3*length*GRID[i+L*j][0];
+      v2.y = (j - L/2)/(1.1*L/2)+1.3*length*GRID[i+L*j][1];
+      v2.z = 1.3*length*GRID[i+L*j][2];
       v2.r = cor;
       v2.g = cor;
       v2.b = 1.0f;
@@ -156,11 +161,6 @@ void ArrowMode(int tempo){
       DrawArrow2D(v1,v2,2.0f);
     }
   }
-  /* v1.x=0; */
-  /* v1.y=0; */
-  /* v2.x=0.2; */
-  /* v2.y=0.5;   */
-  /* DrawArrow(v1,v2,3.0f); */
 }
 
 void SpectreMode(){

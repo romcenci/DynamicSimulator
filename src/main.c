@@ -20,25 +20,33 @@ double **allocateGRID(){
     for (i = 0; i < 600; ++i){
       GRID[i]=(double *)malloc(L*sizeof(double));
     }
-    
     return GRID;
   }
+
   else if(MODE==2){
     GRID=(double **)malloc(L*sizeof(double *));
     for (i = 0; i < L; ++i){
       GRID[i]=(double *)malloc(L*sizeof(double));
     }
-    
     return GRID;
   }
+
   else if(MODE==3){
     GRID=(double **)malloc(L*sizeof(double *));
     for (i = 0; i < L; ++i){
       GRID[i]=(double *)malloc(3*sizeof(double));
     }
-    
     return GRID;
   }
+
+  else if(MODE==5){
+    GRID=(double **)malloc(L*L*sizeof(double *));
+    for (i = 0; i < L*L; ++i){
+      GRID[i]=(double *)malloc(3*sizeof(double));
+    }
+    return GRID;
+  }
+
   else{
     return 0;
   }
@@ -172,7 +180,7 @@ int main(int argc, char *argv[]){
       SpectreMode(tempo);
     }
     else if(MODE==5){
-      ArrowMode(tempo);
+      ArrowMode(tempo, GRID);
     }
     glfwSwapBuffers(window);
     glfwPollEvents();

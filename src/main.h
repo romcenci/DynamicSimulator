@@ -41,7 +41,7 @@ void particleMode(int tempo, double **GRID);
 void grid2dMode(int tempo, double **GRID);
 void particle2dMode(int tempo, double **GRID);
 void SpectreMode();
-void ArrowMode(int tempo);
+void ArrowMode(int tempo, double **GRID);
 
 void cursorPositionCallback( GLFWwindow *window, double xPos, double yPos );
 void mouseButtonCallback( GLFWwindow *window, int button, int action, int mods );
