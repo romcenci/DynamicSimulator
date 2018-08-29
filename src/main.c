@@ -20,21 +20,28 @@ double **allocateGRID(){
     for (i = 0; i < 600; ++i){
       GRID[i]=(double *)malloc(L*sizeof(double));
     }
+    
+    return GRID;
   }
   else if(MODE==2){
     GRID=(double **)malloc(L*sizeof(double *));
     for (i = 0; i < L; ++i){
       GRID[i]=(double *)malloc(L*sizeof(double));
     }
+    
+    return GRID;
   }
   else if(MODE==3){
     GRID=(double **)malloc(L*sizeof(double *));
     for (i = 0; i < L; ++i){
       GRID[i]=(double *)malloc(3*sizeof(double));
     }
+    
+    return GRID;
   }
-
-  return GRID;
+  else{
+    return 0;
+  }
 }
 
 int getopts(int argc, char *argv[]){
