@@ -4,6 +4,11 @@
 #include "libbmp/libbmp.h"
 #include <GLFW/glfw3.h>
 
+#define	GLFW_ARROW_CURSOR 0x00036001
+#define GLFW_HAND_CURSOR 0x00036004
+#define GLFW_VRESIZE_CURSOR 0x00036006
+#define GLFW_CROSSHAIR_CURSOR 0x00036003
+
 int flag;
 int mouseLeftClick=0;
 double zoomStep=0.2;
@@ -54,16 +59,26 @@ void cursorPositionCallback( GLFWwindow *window, double xPos, double yPos ){
 }
 
 void mouseButtonCallback( GLFWwindow *window, int button, int action, int mods ){
-  if( button==0 && action==GLFW_PRESS ){ mouseLeftClick=1; }
-  else if( button==0 && action==GLFW_RELEASE ){ mouseLeftClick=0; }
+  GLFWcursor* cursor;
+
+  if( button==0 && action==GLFW_PRESS ){
+    mouseLeftClick=1;
+    glfwSetCursor(window, glfwCreateStandardCursor(GLFW_HAND_CURSOR));
+  }
+  else if( button==0 && action==GLFW_RELEASE ){
+    mouseLeftClick=0;
+    glfwSetCursor(window, glfwCreateStandardCursor(GLFW_ARROW_CURSOR));
+  }
 
   if( button==1 && action==GLFW_PRESS ){
     corner_x1=mouseX;
     corner_y1=mouseY;
+    glfwSetCursor(window, glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR));
   }
   else if( button==1 && action==GLFW_RELEASE ){
     corner_x2=mouseX;
     corner_y2=mouseY;
+    glfwSetCursor(window, glfwCreateStandardCursor(GLFW_ARROW_CURSOR));
 
     horizontal+=-(corner_x2+corner_x1-WINDOWS_WIDTH)/WINDOWS_WIDTH/zoom1;
     vertical+=(corner_y2+corner_y1-WINDOWS_HEIGHT)/WINDOWS_HEIGHT/zoom2;
