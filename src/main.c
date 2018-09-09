@@ -113,17 +113,6 @@ int main(int argc, char *argv[]){
 
   getopts(argc, argv);
 
-  //convertendo pal para a struct que criei, pra poder usar o conversor;
-  for (int iii = 0; iii < NCOLORS; iii++){
-     RGB_pal[iii].r = pal[iii].r;
-     RGB_pal[iii].g = pal[iii].g;
-     RGB_pal[iii].b = pal[iii].b;
-  }
-  //cria a palette em HSV
-  // size_t ncolors = sizeof(RGB_pal)/sizeof(RGB_pal[0]);
-  RGB2HSV(RGB_pal,HSV_pal, NCOLORS);
-  HSV2RGB(RGB_pal,HSV_pal, NCOLORS);
-
   if (!glfwInit()){
     exit(EXIT_FAILURE);
   }
@@ -152,25 +141,31 @@ int main(int argc, char *argv[]){
     int width, height;
 
     glfwGetFramebufferSize(window, &width, &height);
-    ratio = (float) width / (float)height;
+    ratio = (float)width / (float)height;
     glViewport(0, 0, width, height);
 
     glLoadIdentity();
-    if(MODE==0 || MODE==1){ glScalef(zoom1,1,0); }
-    if(MODE==2 || MODE==3 || MODE==5){ glScalef(zoom1,zoom2,0); }
-    mouseTranslate();
-    glTranslatef(horizontal, vertical, 0);
+    if(MODE==0 || MODE==1){
+      glScalef(zoom1,1,0);
+      mouseTranslate();
+      glTranslatef(horizontal, 0, 0);
+    }
+    if(MODE==2 || MODE==3 || MODE==5){
+      glScalef(zoom1,zoom2,0);
+      mouseTranslate();
+      glTranslatef(horizontal, vertical, 0);
+    }
 
     if(para==0){ tempo++; }
 
     if(MODE==0){
-      gridMode(tempo,GRID, HSV_pal);
+      gridMode(tempo, GRID);
     }
     else if(MODE==1){
-      particleMode(tempo,GRID);
+      particleMode(tempo, GRID);
     }
     else if(MODE==2){
-      grid2dMode(tempo,GRID);
+      grid2dMode(tempo, GRID);
     }
     else if(MODE==3){
       particle2dMode(tempo, GRID);

@@ -35,7 +35,7 @@ void drawLineSegment(Vertex v1, Vertex v2, GLfloat width);
 void DrawCircle(double x0, double y0, double r);
 void drawGrid(GLfloat width, GLfloat height, GLfloat grid_width);
 
-void gridMode(int tempo, double **GRID, HSV_Color *hsv_pal);
+void gridMode(int tempo, double **GRID);
 void particleMode(int tempo, double **GRID);
 void grid2dMode(int tempo, double **GRID);
 void particle2dMode(int tempo, double **GRID);

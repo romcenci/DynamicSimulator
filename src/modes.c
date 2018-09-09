@@ -1,12 +1,10 @@
 #include "modes.h"
 
-void gridMode(int tempo, double **GRID, HSV_Color *hsv_pal){
+void gridMode(int tempo, double **GRID){
   int i,j,k;
   float cor;
   float yy;
   Vertex v;
-  HSV_Color hsv;
-  RGB_Color rgb;
   double r,g,b;
 
   for(i=0; i<L; i++){
@@ -26,10 +24,6 @@ void gridMode(int tempo, double **GRID, HSV_Color *hsv_pal){
 
       for(k=0; k<NCOLORS-1; k++){
 	if(GRID[j][i]>=(double)k/(NCOLORS-1) && GRID[j][i]<=(double)(k+1.)/(NCOLORS-1)){
-	  //v.r = pal[k].r+(pal[k+1].r-pal[k].r)*GRID[j][i];
-	  //v.g = pal[k].g+(pal[k+1].g-pal[k].g)*GRID[j][i];
-	  //v.b = pal[k].b+(pal[k+1].b-pal[k].b)*GRID[j][i];
-
 	  v.r = pal[k].r+(pal[k+1].r-pal[k].r)*(GRID[j][i]-(double)k/(NCOLORS-1.))/((double)1./(NCOLORS-1.));
 	  v.g = pal[k].g+(pal[k+1].g-pal[k].g)*(GRID[j][i]-(double)k/(NCOLORS-1.))/((double)1./(NCOLORS-1.));
 	  v.b = pal[k].b+(pal[k+1].b-pal[k].b)*(GRID[j][i]-(double)k/(NCOLORS-1.))/((double)1./(NCOLORS-1.));
