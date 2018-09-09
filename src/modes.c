@@ -26,9 +26,13 @@ void gridMode(int tempo, double **GRID, HSV_Color *hsv_pal){
 
       for(k=0; k<NCOLORS-1; k++){
 	if(GRID[j][i]>=(double)k/(NCOLORS-1) && GRID[j][i]<=(double)(k+1.)/(NCOLORS-1)){
-	  v.r = pal[k].r+(pal[k+1].r-pal[k].r)*GRID[j][i];
-	  v.g = pal[k].g+(pal[k+1].g-pal[k].g)*GRID[j][i];
-	  v.b = pal[k].b+(pal[k+1].b-pal[k].b)*GRID[j][i];
+	  //v.r = pal[k].r+(pal[k+1].r-pal[k].r)*GRID[j][i];
+	  //v.g = pal[k].g+(pal[k+1].g-pal[k].g)*GRID[j][i];
+	  //v.b = pal[k].b+(pal[k+1].b-pal[k].b)*GRID[j][i];
+
+	  v.r = pal[k].r+(pal[k+1].r-pal[k].r)*(GRID[j][i]-(double)k/(NCOLORS-1.))/((double)1./(NCOLORS-1.));
+	  v.g = pal[k].g+(pal[k+1].g-pal[k].g)*(GRID[j][i]-(double)k/(NCOLORS-1.))/((double)1./(NCOLORS-1.));
+	  v.b = pal[k].b+(pal[k+1].b-pal[k].b)*(GRID[j][i]-(double)k/(NCOLORS-1.))/((double)1./(NCOLORS-1.));
 	}
       }
       v.a = 1.0f;
@@ -88,10 +92,10 @@ void grid2dMode(int tempo, double **GRID){
       v.y = (j*(2./(L-1))-1);
       v.z = 0.0f;
       for(k=0; k<NCOLORS-1; k++){
-	if(GRID[i][j]>=(double)k/(NCOLORS-1) && GRID[i][j]<=(double)(k+1.)/(NCOLORS-1)){
-	  v.r = pal[k].r+(pal[k+1].r-pal[k].r)*GRID[i][j];
-	  v.g = pal[k].g+(pal[k+1].g-pal[k].g)*GRID[i][j];
-	  v.b = pal[k].b+(pal[k+1].b-pal[k].b)*GRID[i][j];
+	if(GRID[i][j]>=(double)k/(NCOLORS-1.) && GRID[i][j]<=(double)(k+1.)/(NCOLORS-1.)){
+	  v.r = pal[k].r+(pal[k+1].r-pal[k].r)*(GRID[i][j]-(double)k/(NCOLORS-1.))/((double)1./(NCOLORS-1.));
+	  v.g = pal[k].g+(pal[k+1].g-pal[k].g)*(GRID[i][j]-(double)k/(NCOLORS-1.))/((double)1./(NCOLORS-1.));
+	  v.b = pal[k].b+(pal[k+1].b-pal[k].b)*(GRID[i][j]-(double)k/(NCOLORS-1.))/((double)1./(NCOLORS-1.));
 	}
       }
       v.a = 1.0f;

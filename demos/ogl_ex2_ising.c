@@ -92,6 +92,7 @@ void plot(){
   //printf("p '-' u 1:2:3 w p pt 5 ps 0.7 pal\n");
   for(i=0; i<N; i++){
     printf("%d\n", s[i]);
+    //printf("%lf\n", (double)i/(double)N);
   }
   //printf("e\n");
 }
