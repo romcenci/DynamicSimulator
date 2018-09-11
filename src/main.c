@@ -146,7 +146,7 @@ int main(int argc, char *argv[]){
     glPushMatrix();
     
     if(MODE==0 || MODE==1){
-      glScalef(zoom,1,0);
+      glScalef(zoom,0.8,0);
       mouseTranslate();
       glTranslatef(horizontal, 0, 0);
     }
