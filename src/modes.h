@@ -8,6 +8,7 @@ extern int NCOLORS;
 extern int para;
 extern int WINDOWS_WIDTH;
 extern int WINDOWS_HEIGHT;
+extern double zoom;
 
 typedef struct {
     double h, s, v;

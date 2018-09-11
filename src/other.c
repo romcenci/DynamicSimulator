@@ -18,7 +18,7 @@ double corner_x1=0, corner_y1=0;
 double corner_x2=0, corner_y2=0;
 
 extern int para;
-extern double zoom1, zoom2;
+extern double zoom;
 extern double horizontal, vertical;
 extern int WINDOWS_HEIGHT, WINDOWS_WIDTH;
 
@@ -41,8 +41,8 @@ void screenshot(){
 void mouseTranslate(){
   if(mouseLeftClick==1){
     if(flag==1){
-      horizontal+=2*(mouseX-mouseXant)/WINDOWS_WIDTH/zoom1;
-      vertical+=2*(mouseYant-mouseY)/WINDOWS_HEIGHT/zoom2;
+      horizontal+=2*(mouseX-mouseXant)/WINDOWS_WIDTH/zoom;
+      vertical+=2*(mouseYant-mouseY)/WINDOWS_HEIGHT/zoom;
     }
     flag=1;
     mouseXant=mouseX;
@@ -70,22 +70,22 @@ void mouseButtonCallback( GLFWwindow *window, int button, int action, int mods )
     glfwSetCursor(window, glfwCreateStandardCursor(GLFW_ARROW_CURSOR));
   }
 
-  if( button==1 && action==GLFW_PRESS ){
-    corner_x1=mouseX;
-    corner_y1=mouseY;
-    glfwSetCursor(window, glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR));
-  }
-  else if( button==1 && action==GLFW_RELEASE ){
-    corner_x2=mouseX;
-    corner_y2=mouseY;
-    glfwSetCursor(window, glfwCreateStandardCursor(GLFW_ARROW_CURSOR));
+  /* if( button==1 && action==GLFW_PRESS ){ */
+  /*   corner_x1=mouseX; */
+  /*   corner_y1=mouseY; */
+  /*   glfwSetCursor(window, glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR)); */
+  /* } */
+  /* else if( button==1 && action==GLFW_RELEASE ){ */
+  /*   corner_x2=mouseX; */
+  /*   corner_y2=mouseY; */
+  /*   glfwSetCursor(window, glfwCreateStandardCursor(GLFW_ARROW_CURSOR)); */
 
-    horizontal+=-(corner_x2+corner_x1-WINDOWS_WIDTH)/WINDOWS_WIDTH/zoom1;
-    vertical+=(corner_y2+corner_y1-WINDOWS_HEIGHT)/WINDOWS_HEIGHT/zoom2;
+  /*   horizontal+=-(corner_x2+corner_x1-WINDOWS_WIDTH)/WINDOWS_WIDTH/zoom1; */
+  /*   vertical+=(corner_y2+corner_y1-WINDOWS_HEIGHT)/WINDOWS_HEIGHT/zoom2; */
 
-    zoom1+=(1+WINDOWS_WIDTH/fabs(corner_x2-corner_x1))*zoom1;
-    zoom2+=(1+WINDOWS_HEIGHT/fabs(corner_y2-corner_y1))*zoom2;
-  }
+  /*   zoom1+=(1+WINDOWS_WIDTH/fabs(corner_x2-corner_x1))*zoom1; */
+  /*   zoom2+=(1+WINDOWS_HEIGHT/fabs(corner_y2-corner_y1))*zoom2; */
+  /* } */
 }
 
 void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods ){
@@ -106,17 +106,14 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
   if (key == 65 && action == GLFW_PRESS){ // Letra a - autoscale
     horizontal=0;
     vertical=0;
-    zoom1=0.8;
-    zoom2=0.8;
+    zoom=0.8;
   }
 
   if (key == 45 && (action == GLFW_REPEAT || GLFW_PRESS)){ // Tecla -
-    zoom1-=zoomStep*zoom1;
-    zoom2-=zoomStep*zoom2;
+    zoom-=zoomStep*zoom;
   }
   if (key == 61 && (action == GLFW_REPEAT || GLFW_PRESS)){ // Tecla +
-    zoom1+=zoomStep*zoom1;
-    zoom2+=zoomStep*zoom2;
+    zoom+=zoomStep*zoom;
   }
 
   if (key == 83 && action == GLFW_PRESS){ // Letra s - screenshot
@@ -125,7 +122,6 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
 }
 
 void scrollCallback( GLFWwindow *window, double xOffset, double yOffset ){
-  zoom1+=yOffset*zoomStep*zoom1;
-  zoom2+=yOffset*zoomStep*zoom2;
+  zoom+=yOffset*zoomStep*zoom;
   glClear(GL_COLOR_BUFFER_BIT);
 }

@@ -6,7 +6,7 @@ int WINDOWS_HEIGHT=500;
 int WINDOWS_WIDTH=600;
 
 int para;
-double zoom1=0.8,zoom2=0.8;
+double zoom=0.8;
 double horizontal=0, vertical=0;
 
 int NCOLORS=2;
@@ -146,12 +146,12 @@ int main(int argc, char *argv[]){
     glPushMatrix();
     
     if(MODE==0 || MODE==1){
-      glScalef(zoom1,1,0);
+      glScalef(zoom,1,0);
       mouseTranslate();
       glTranslatef(horizontal, 0, 0);
     }
     if(MODE==2 || MODE==3 || MODE==5){
-      glScalef(zoom1,zoom2,0);
+      glScalef(zoom,zoom,0);
       mouseTranslate();
       glTranslatef(horizontal, vertical, 0);
     }

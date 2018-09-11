@@ -70,9 +70,10 @@ void particleMode(int tempo, double **GRID){
 
 void grid2dMode(int tempo, double **GRID){
   int i,j,k;
-  double cor;
+  double cor, size;
   Vertex v;
 
+  size=ceil(zoom*WINDOWS_WIDTH/L);
   glClear(GL_COLOR_BUFFER_BIT);
 
   for(j=0; j<L; j++){
@@ -101,7 +102,7 @@ void grid2dMode(int tempo, double **GRID){
 	}
       }
       v.a = 1.0f;
-      drawPoint(v,1000/L);
+      drawPoint(v,size);
     }
   }
 }
