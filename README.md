@@ -1,6 +1,6 @@
 # DynamicSimulator
 
-## Pre-requisitos:
+## Pré-requisitos:
 
 * Instalar glfw3:
 	- `sudo apt-get install libglfw3-dev`
@@ -47,6 +47,20 @@
 		
 	- 5: (2d) Posição fixa (Flechas. Ex: Modelo de Heisenberg)
 	<figure><img align=midle src="images/4.png" width="400"></figure>
+	
+## Gerador de paleta de cores:
+* Pré-requisito:
+	- `sudo apt-get install yad`
+	
+* Rodando:
+
+Quando executar o script `./ColorFileGen.sh`, aparecerá uma tela para escolha do número de cores:
+<figure><img align=midle src="images/Color1.png" width="200"></figure>
+
+Então, escolhe as cores:
+<figure><img align=midle src="images/Color2.png" width="200"></figure>
+
+O script irá gerar o arquivo color.txt, com as cores em formato hexadecimal.
 
 # DynamicSimulator-octave
 ## Uso:
