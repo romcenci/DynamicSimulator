@@ -18,7 +18,7 @@ void gridMode(int tempo, double **GRID){
   glClear(GL_COLOR_BUFFER_BIT);
   for(j=0;j < 600; j++){
     for(i=0; i<L; i++){
-      v.x = (i - L/2)/(1.1*L/2);
+      v.x = (i - L/2)/(1.1*L/2);   //<FIXME: Tem que mexer aqui pra ajustar dentro do canvas 
       v.y = (float) (-j+300.0f)/330.0f;
       v.z = 0.0f;
 
@@ -54,7 +54,7 @@ void particleMode(int tempo, double **GRID){
     for(i=0; i<L; i++){
       if(GRID[j][i]!=0){
 	cor = 1.0f;
-	v.x = (2*GRID[j][i]-1)/1.15;
+	v.x = (2*GRID[j][i]-1);
 	v.y = (float) (-j+300.0f)/330.0f;
 	v.z = 0.0f;
 	v.r = cor;
@@ -82,8 +82,16 @@ void grid2dMode(int tempo, double **GRID){
   	cor = (cor+1.0)/2.0;
   	GRID[i][j]=cor;
       }
-      v.x = (i*(2./(L-1))-1)*WINDOWS_HEIGHT/WINDOWS_WIDTH;
-      v.y = (j*(2./(L-1))-1);
+
+      if(WINDOWS_WIDTH >= WINDOWS_HEIGHT){
+	v.x = (i*(2./(L-1))-1)*WINDOWS_HEIGHT/WINDOWS_WIDTH;
+	v.y = (j*(2./(L-1))-1);
+      }
+      else if(WINDOWS_WIDTH < WINDOWS_HEIGHT){
+	v.x = (i*(2./(L-1))-1);
+	v.y = (j*(2./(L-1))-1)*WINDOWS_WIDTH/WINDOWS_HEIGHT;
+      }
+
       v.z = 0.0f;
       for(k=0; k<NCOLORS-1; k++){
 	if(GRID[i][j]>=(double)k/(NCOLORS-1.) && GRID[i][j]<=(double)(k+1.)/(NCOLORS-1.)){
@@ -113,8 +121,8 @@ void particle2dMode(int tempo, double **GRID){
       GRID[i][2]=r;
     }
     cor = 1.0;
-    v.x = (2*GRID[i][0]-1)/1.15*660/880;
-    v.y = (2*GRID[i][1]-1)/1.15;
+    v.x = (2*GRID[i][0]-1);
+    v.y = (2*GRID[i][1]-1);
     v.z = 0.0f;
     v.r = cor;
     v.g = cor;

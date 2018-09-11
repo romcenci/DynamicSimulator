@@ -106,8 +106,8 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
   if (key == 65 && action == GLFW_PRESS){ // Letra a - autoscale
     horizontal=0;
     vertical=0;
-    zoom1=1;
-    zoom2=1;
+    zoom1=0.8;
+    zoom2=0.8;
   }
 
   if (key == 45 && (action == GLFW_REPEAT || GLFW_PRESS)){ // Tecla -

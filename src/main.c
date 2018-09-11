@@ -2,11 +2,11 @@
 
 int L=1000;
 int MODE=0;
-int WINDOWS_HEIGHT=400;
-int WINDOWS_WIDTH=500;
+int WINDOWS_HEIGHT=500;
+int WINDOWS_WIDTH=600;
 
 int para;
-double zoom1=1,zoom2=1;
+double zoom1=0.8,zoom2=0.8;
 double horizontal=0, vertical=0;
 
 int NCOLORS=2;
@@ -104,8 +104,6 @@ int main(int argc, char *argv[]){
   GLFWwindow* window;
 
   pal=malloc(NCOLORS*sizeof(struct Color));
-  HSV_Color HSV_pal[NCOLORS];
-  RGB_Color RGB_pal[NCOLORS];
 
   pal[0].r=1.0; pal[1].r=0.0;
   pal[0].g=1.0; pal[1].g=0.0;
@@ -145,6 +143,8 @@ int main(int argc, char *argv[]){
     glViewport(0, 0, width, height);
 
     glLoadIdentity();
+    glPushMatrix();
+    
     if(MODE==0 || MODE==1){
       glScalef(zoom1,1,0);
       mouseTranslate();
@@ -176,6 +176,10 @@ int main(int argc, char *argv[]){
     else if(MODE==5){
       ArrowMode(tempo, GRID);
     }
+    glPopMatrix();
+
+    drawFrame();
+    
     glfwSwapBuffers(window);
     glfwPollEvents();
   }

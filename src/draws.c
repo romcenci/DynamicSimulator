@@ -2,6 +2,9 @@
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 
+extern int WINDOWS_WIDTH;
+extern int WINDOWS_HEIGHT;
+
 typedef struct{
   GLfloat x, y, z;
   GLfloat r, g, b, a;
@@ -29,21 +32,23 @@ void DrawCircle(double x0, double y0, double r){
   glBegin(GL_POLYGON);
   for(i=0; i <= 300; i++){
     double angle = 2 * M_PI * i / 300;
-    double x = r/880*cos(angle)-x0;
-    double y = r/660*sin(angle)-y0;
+    double x = r/WINDOWS_WIDTH*cos(angle)-x0;
+    double y = r/WINDOWS_HEIGHT*sin(angle)-y0;
     glVertex2d(x,y);
   }
   glEnd();
 }
+
 void drawLineSegment(Vertex v1, Vertex v2, GLfloat width) {
   glLineWidth(width);
   glBegin(GL_LINES);
-    glColor4f(v1.r, v1.g, v1.b, v1.a);
+  glColor4f(v1.r, v1.g, v1.b, v1.a);
   glVertex3f(v1.x, v1.y, v1.z);
   glColor4f(v2.r, v2.g, v2.b, v2.a);
   glVertex3f(v2.x, v2.y, v2.z);
   glEnd();
 }
+
 void DrawArrow(Vertex v1, Vertex v2, GLfloat width){
   int i;
   double theta = atan2((v2.y-v1.y),(v2.x-v1.x));
@@ -70,6 +75,25 @@ void DrawArrow(Vertex v1, Vertex v2, GLfloat width){
   glVertex3f(R, 0, v2.z);
   glColor4f(v2.r, v2.g, v2.b, v2.a);
   glVertex3f(R-headSize*R, 0.7*headSize*rho, v2.z);
+  glEnd();
+  glPopMatrix();
+}
+
+void drawFrame(){
+  glPushMatrix();
+  glTranslatef(-1, -1, 0);
+  glColor3f(0, 0, 0);
+  glRectf(0,   0,   2,   0.2);
+  glRectf(0,   0,   0.2, 2);
+  glRectf(1.8, 0,   2,   2);
+  glRectf(0,   1.8, 2,   2);
+  
+  glColor3f(1, 1, 1);
+  glBegin(GL_LINE_LOOP);
+  glVertex2f( 0.2, 0.2 );
+  glVertex2f( 0.2, 1.8 );
+  glVertex2f( 1.8, 1.8 );
+  glVertex2f( 1.8, 0.2 );
   glEnd();
   glPopMatrix();
 }

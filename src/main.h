@@ -34,6 +34,7 @@ void drawPointsDemo(int width, int height);
 void drawLineSegment(Vertex v1, Vertex v2, GLfloat width);
 void DrawCircle(double x0, double y0, double r);
 void drawGrid(GLfloat width, GLfloat height, GLfloat grid_width);
+void drawFrame();
 
 void gridMode(int tempo, double **GRID);
 void particleMode(int tempo, double **GRID);
