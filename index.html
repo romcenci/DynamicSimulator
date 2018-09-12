@@ -12,59 +12,85 @@
 <body>
 <div data-spy="scroll" data-target=".navbar" data-offset="50" >
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css">
+<link rel="stylesheet" href="style.css">
+<title>Title</title>
+</head>
+<body>
+<div class="container" data-spy="scroll" data-target=".navbar" data-offset="50" >
+<div class="row">
+    <div class="offset-sm-4 col-sm-4">
+            <h1>Dynamic Simulator</h1>
+    </div>
+</div>
 <!-- The navbar - The <a> elements are used to jump to a section in the scrollable area -->
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
-    <h1>Dynamic Simulator</h1>
-    <ul class="navbar-nav">
-        <li><a href="#section1">Section 1</a></li>
-        <li><a href="#section2">Section 1</a></li>
-        <li><a href="#section3">Section 1</a></li>
-        <li><a href="#section4">Section 1</a></li>
-    </ul>
-</nav>
+<div class="row">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+    
+        <ul class="navbar-nav">
+            <li><a href="#section1">Section 1</a></li>
+            <li><a href="#section2">Section 1</a></li>
+            <li><a href="#section3">Section 1</a></li>
+            <li><a href="#section4">Section 1</a></li>
+            ...
+        </ul>
+    </nav>
+</div>
 
+</div>
 <!-- Section 1 -->
-<div id="section1">
-    <h1>Section 1</h1>
-    <p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+<div class="row">
+    <div id="section1">
+        <h1>Section 1</h1>
+        <p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+    </div>
+    <div id="section2">
+        <h1>Section 1</h1>
+        <p>Try to scroll this page and look at the navigation bar while scrolling! Lorem ipsum dolor sit amet consectetur adipisicing
+            elit. Quasi est neque voluptatem beatae magnam. Alias, blanditiis, delectus fugiat ex porro earum aut unde facere
+            debitis neque molestias veniam, rem maiores? Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi officia
+            reprehenderit nesciunt quod eum dignissimos et quisquam magni modi delectus repudiandae, amet sapiente sequi placeat
+            eligendi, nisi voluptatem iure aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, tempora
+            consectetur. Totam, accusantium officia exercitationem quisquam quasi quo! Ipsam explicabo necessitatibus reprehenderit
+            tenetur voluptatibus accusantium deserunt quidem accusamus aut quae.
+    
+        </p>
+    </div>
+    <div id="section3">
+        <h1>Section 1</h1>
+        <p>Try to scroll this page and look at the navigation bar while scrolling! Lorem ipsum dolor sit amet consectetur adipisicing
+            elit. Quasi est neque voluptatem beatae magnam. Alias, blanditiis, delectus fugiat ex porro earum aut unde facere
+            debitis neque molestias veniam, rem maiores? Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi officia
+            reprehenderit nesciunt quod eum dignissimos et quisquam magni modi delectus repudiandae, amet sapiente sequi placeat
+            eligendi, nisi voluptatem iure aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, tempora
+            consectetur. Totam, accusantium officia exercitationem quisquam quasi quo! Ipsam explicabo necessitatibus reprehenderit
+            tenetur voluptatibus accusantium deserunt quidem accusamus aut quae.
+        </p>
+    </div>
+    <div id="section4">
+        <h1>Section 1</h1>
+        <p>Try to scroll this page and look at the navigation bar while scrolling! Lorem ipsum dolor sit amet consectetur adipisicing
+            elit. Quasi est neque voluptatem beatae magnam. Alias, blanditiis, delectus fugiat ex porro earum aut unde facere
+            debitis neque molestias veniam, rem maiores? Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi officia
+            reprehenderit nesciunt quod eum dignissimos et quisquam magni modi delectus repudiandae, amet sapiente sequi placeat
+            eligendi, nisi voluptatem iure aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, tempora
+            consectetur. Totam, accusantium officia exercitationem quisquam quasi quo! Ipsam explicabo necessitatibus reprehenderit
+            tenetur voluptatibus accusantium deserunt quidem accusamus aut quae.
+        </p>
+    </div>
+
 </div>
-<div id="section2">
-    <h1>Section 1</h1>
-    <p>Try to scroll this page and look at the navigation bar while scrolling!
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi est neque voluptatem beatae magnam. Alias, blanditiis, delectus fugiat ex porro earum aut unde facere debitis neque molestias veniam, rem maiores?
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi officia reprehenderit nesciunt quod eum dignissimos et quisquam magni modi delectus repudiandae, amet sapiente sequi placeat eligendi, nisi voluptatem iure aspernatur.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, tempora consectetur. Totam, accusantium officia exercitationem quisquam quasi quo! Ipsam explicabo necessitatibus reprehenderit tenetur voluptatibus accusantium deserunt quidem accusamus aut quae.
-
-    </p>
-</div>
-<div id="section3">
-    <h1>Section 1</h1>
-    <p>Try to scroll this page and look at the navigation bar while scrolling!
-         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi est neque voluptatem beatae magnam. Alias, blanditiis, delectus
-        fugiat ex porro earum aut unde facere debitis neque molestias veniam, rem maiores? Lorem ipsum dolor sit amet consectetur
-        adipisicing elit. Animi officia reprehenderit nesciunt quod eum dignissimos et quisquam magni modi delectus repudiandae,
-        amet sapiente sequi placeat eligendi, nisi voluptatem iure aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing
-        elit. Expedita, tempora consectetur. Totam, accusantium officia exercitationem quisquam quasi quo! Ipsam explicabo necessitatibus
-        reprehenderit tenetur voluptatibus accusantium deserunt quidem accusamus aut quae.
-    </p>
-</div>
-<div id="section4">
-    <h1>Section 1</h1>
-    <p>Try to scroll this page and look at the navigation bar while scrolling!
-         Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi est neque voluptatem beatae magnam. Alias, blanditiis, delectus
-        fugiat ex porro earum aut unde facere debitis neque molestias veniam, rem maiores? Lorem ipsum dolor sit amet consectetur
-        adipisicing elit. Animi officia reprehenderit nesciunt quod eum dignissimos et quisquam magni modi delectus repudiandae,
-        amet sapiente sequi placeat eligendi, nisi voluptatem iure aspernatur. Lorem ipsum dolor sit amet consectetur adipisicing
-        elit. Expedita, tempora consectetur. Totam, accusantium officia exercitationem quisquam quasi quo! Ipsam explicabo necessitatibus
-        reprehenderit tenetur voluptatibus accusantium deserunt quidem accusamus aut quae.
-    </p>
-</div>
 
 
 
 
-
-</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
