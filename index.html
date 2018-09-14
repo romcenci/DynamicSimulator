@@ -9,15 +9,18 @@
         crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css">
     <link rel="stylesheet" href="css/materia.min.css">
-    <!-- <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Black+Ops+One" /> -->
+    <link rel="stylesheet" href="styles/paraiso-light.css">
+    <script src="highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
     <title>DynamicSimulator</title>
     <style>
         code{
-            display: inline-block;
+            /* display: inline-block;
             font-family:'Courier New', Courier, monospace;
             color: black;
             background-color: rgb(231, 231, 231);
-            padding: 2px;
+            padding: 2px; */
         }
         html{
             height: 100%;
@@ -67,7 +70,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="navtop">
         <a class="navbar-brand" style="font-family: 'Courier New', Courier, monospace " href="#">
-           DynamicSimulator
+            DynamicSimulator
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -109,18 +112,27 @@
             </div>
             <div class="offset-md-2 col-md-10 col-sm-12 affix-top" id="scroll-content">
                 <div class="wrapper">
-                    <div data-spy="scroll" data-target="#spy" data-offset="100" style="overflow-y: scroll; height: 80vh; position: relative;"id="thescroll">
+                    <div data-spy="scroll" data-target="#spy" data-offset="100" style="overflow-y: scroll; height: 84vh; position: relative;"
+                        id="thescroll">
                         <section class="sec1">
                             <h4 id="section1">Section 1</h4>
                             <p>Here is a content for section 1.</p>
                             <p>
-                                <code>
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et
-                                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                                    nisi ut aliquip ex
-
-                                </code>
+                                <pre>
+                                    <code>
+&ltform&gt
+    &ltdiv class="input-group"&gt
+        &ltinput type="text" class="form-control" value="/path/to/foo/bar" placeholder="Some path" id="copy-input"&gt
+        &ltspan class="input-group-btn"&gt
+            &ltbutton class="btn btn-default" type="button" id="copy-button" data-toggle="tooltip" data-placement="button"
+            title="Copy to Clipboard"&gt
+                Copy
+            &lt/button&gt
+        &lt/span&gt
+    &lt/div&gt
+&lt/form&gt
+                                    </code>
+                                </pre>
                                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                                 incididunt ut labore et
                                 dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
