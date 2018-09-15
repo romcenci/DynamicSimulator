@@ -17,7 +17,7 @@
     <style>
         kbd {
 	    margin: 0px 0.1em;
-	    padding: 0.2em 0.8em;
+	    padding: 0.1em 0.6em;
 	    border-radius: 3px;
 	    border: 1px solid rgb(204, 204, 204);
 	    color: rgb(51, 51, 51);
@@ -129,7 +129,7 @@ Download</button>
                     <li class="nav-item"><a class="nav-link active" href="#inicio">Início</a></li>
                     <li class="nav-item"><a class="nav-link" href="#pre-requisitos">Pré-Requisitos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#rodar">Para Rodar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#section4">Fourth Section</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#interativo">Interativo</a></li>
                 </ul>
             </div>
             <div class="offset-md-2 col-md-10 col-sm-12 affix-top" id="scroll-content">
@@ -194,10 +194,39 @@ Download</button>
                         </section>
                         <hr>
                         <section>
-                            <kbd>Spacebar</kbd>
+                            <h3 id="interativo">Interativo:</h3>
+                                <ul>
+                                    <li><kbd>Spacebar</kbd> : Pausar</li>
+                                    <li><kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd>: Translação</li>
+                                    <li><kbd>-</kbd> <kbd>+</kbd> : Zoom</li>
+                                    <li><kbd>a</kbd> : Autoescala</li>
+                                    <li><kbd>s</kbd> : Screenshot</li>
+                                </ul>
                         </section>
-
-
+                        <section>
+                            <h3 id="opcoes">Opções:</h3>
+                            <ul>
+                                <li>
+                                    <p>-l : Tamanho do vetor (quantidade de partículas)</p>
+                                </li>
+                                <li>
+                                    <p>-c (--color) : Especifica arquivo com paleta de cores (formato hexadecimal 0xRRGGBB)</p>
+                                </li>
+                                <li>
+                                    <p>-h (--height) : Altura da tela</p>
+                                </li>
+                                <li>
+                                    <p>-w (--width) : Largura da tela</p>
+                                </li>
+                                <li>
+                                    <p>-m (--mode) : Modo de plot</p>
+                                    <ul>
+                                        <li>0: (1d) Rede fixa (Ex: dampedGKS)</li>
+                                        <img src="images/0.png" alt="" width="300px" height="300px">
+                                    </ul>
+                                </li>
+                            </ul>
+                        </section>
                         <section class="sec2">
                             <h4 id="section2">Section 2</h4>
                             <p>Here is a content for section 2.</p>
