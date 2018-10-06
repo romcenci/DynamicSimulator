@@ -100,21 +100,10 @@ int getopts(int argc, char *argv[]){
   }
 }
 
-int main(int argc, char *argv[]){
-  GLFWwindow* window;
+void configFile(){
   FILE *f1;
-
-  pal=malloc(NCOLORS*sizeof(struct Color));
-
-  pal[0].r=1.0; pal[1].r=0.0;
-  pal[0].g=1.0; pal[1].g=0.0;
-  pal[0].b=1.0; pal[1].b=0.0;
-
-  getopts(argc, argv);
-  if(argc==1){
-    f1=fopen("dsconfig","r");
+  if( f1=fopen("dsconfig","r") ){
     char arr[10];
-
     while(fscanf(f1,"%s:",arr) != EOF) {
       if (strstr(arr,"mode:")){
 	fscanf(f1,"%s",arr);
@@ -134,6 +123,19 @@ int main(int argc, char *argv[]){
       }
     }
   }
+}
+
+int main(int argc, char *argv[]){
+  GLFWwindow* window;
+
+  pal=malloc(NCOLORS*sizeof(struct Color));
+
+  pal[0].r=1.0; pal[1].r=0.0;
+  pal[0].g=1.0; pal[1].g=0.0;
+  pal[0].b=1.0; pal[1].b=0.0;
+
+  configFile();
+  getopts(argc, argv);
 
   if (!glfwInit()){
     exit(EXIT_FAILURE);
