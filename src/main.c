@@ -112,7 +112,7 @@ int main(int argc, char *argv[]){
 
   getopts(argc, argv);
   if(argc==1){
-    f1=fopen("config","r");
+    f1=fopen("dsconfig","r");
     char arr[10];
 
     while(fscanf(f1,"%s:",arr) != EOF) {
