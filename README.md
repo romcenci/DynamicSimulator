@@ -49,15 +49,22 @@
 	<figure><img align=midle src="images/4.png" width="400"></figure>
 
 ## Arquivo de configuração:
-Escolher as opções no arquivo `config`, e rodar o simulador sem nenhuma opção, apenas `./DynSim`.
-Exemplo de `config`:
+Escolher as opções no arquivo `dsconfig`, e rodar o simulador sem nenhuma opção, apenas `./DynSim`.
+Exemplo:
 ```
 mode:   3
 L:      200
 height: 500
 width:  500
 ```
+
+## Acessar de qualquer pasta:
+Pode-se adicionar a pasta do simulador a variável $PATH,o que possibilita acessá-lo de qualquer outra pasta, para isso basta rodar o seguinte comando:
+
+`echo 'export PATH=$PATH:/Caminho/para/o/DynamicSimulator' >> ~/.bash_aliases`
 	
+A partir dai, basta ter um arquivo dsconfig na pasta de cada projeto.
+
 ## Gerador de paleta de cores:
 * Pré-requisito:
 	- `sudo apt-get install yad`
