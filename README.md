@@ -47,6 +47,16 @@
 		
 	- 5: (2d) Posição fixa (Flechas. Ex: Modelo de Heisenberg)
 	<figure><img align=midle src="images/4.png" width="400"></figure>
+
+## Arquivo de configuração:
+Escolher as opções no arquivo `config`, e rodar o simulador sem nenhuma opção, apenas `./DynSim`.
+Exemplo de `config`:
+```
+mode:   3
+L:      200
+height: 500
+width:  500
+```
 	
 ## Gerador de paleta de cores:
 * Pré-requisito:
