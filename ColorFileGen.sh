@@ -18,6 +18,8 @@ if [[ $qtd =~ ^-?[0-9]+$ ]]; then
 	--button="Done:0" \
 	--separator="\n" \
 	| sed -e 's/#/0x/g' > color.txt
+
+    sed -i '/^$/d' color.txt
 else
     echo "Digite um número de cores válido."
 fi

@@ -126,7 +126,7 @@ double max(double *fi){
   int i;
 
   for(i=0;i<L;i++)
-    xmax = (fi[i]>xmax?fi[i]:xmax);
+    xmax = (fabs(fi[i])>xmax?fabs(fi[i]):xmax);
 
   return xmax;
 }

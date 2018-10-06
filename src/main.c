@@ -1,9 +1,9 @@
 #include "main.h"
 
-int L=1000;
-int MODE=0;
+int L=200;
+int MODE=3;
 int WINDOWS_HEIGHT=500;
-int WINDOWS_WIDTH=600;
+int WINDOWS_WIDTH=500;
 
 int para;
 double zoom=0.8;
@@ -95,13 +95,14 @@ int getopts(int argc, char *argv[]){
       break;
 
     default:
-      return 1;
+      break;
     }
   }
 }
 
 int main(int argc, char *argv[]){
   GLFWwindow* window;
+  FILE *f1;
 
   pal=malloc(NCOLORS*sizeof(struct Color));
 
@@ -110,6 +111,29 @@ int main(int argc, char *argv[]){
   pal[0].b=1.0; pal[1].b=0.0;
 
   getopts(argc, argv);
+  if(argc==1){
+    f1=fopen("config","r");
+    char arr[10];
+
+    while(fscanf(f1,"%s:",arr) != EOF) {
+      if (strstr(arr,"mode:")){
+	fscanf(f1,"%s",arr);
+	MODE=atoi(arr);
+      }
+      if (strstr(arr,"L:")){
+	fscanf(f1,"%s",arr);
+	L=atoi(arr);
+      }
+      if (strstr(arr,"width:")){
+	fscanf(f1,"%s",arr);
+	WINDOWS_WIDTH=atoi(arr);
+      }
+      if (strstr(arr,"height:")){
+	fscanf(f1,"%s",arr);
+	WINDOWS_HEIGHT=atoi(arr);
+      }
+    }
+  }
 
   if (!glfwInit()){
     exit(EXIT_FAILURE);

@@ -5,6 +5,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <string.h>
 #include "libbmp/libbmp.h"
 #define _USE_MATH_DEFINES
 
