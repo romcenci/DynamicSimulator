@@ -62,6 +62,7 @@ long int t;
 long double tempo = 0;
 int i=0,j=0,k=0,hc=0,hcc=0,L=0,M=0,N=0, I=0,J=0,K=0,a=0,b=0,c=0,ii,jj,kk;        //vizinhos
 int vxd=0,vxe=0,vyd=0,vye=0,vzd=0,vze=0,part=0;
+
 double ****mag={0},****eax={0},****d={0},****hex={0},****dw={0},****rr={0};
 double ***Kxx={0}, ***Kxy={0}, ***Kxz={0}, ***Kyy={0}, ***Kyz={0},***Kzz={0};
 double ****H_anis_u={0},****H_anis_c={0},****H_ef={0},****H_troca={0}, ****H_ext={0},****H_dip={0};

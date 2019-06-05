@@ -20,25 +20,16 @@ void gridMode(int tempo, double **GRID){
     for(i=0; i<L; i++){
       v.x = (i*(2./(L-1))-1);
       v.y = -(j*(2./(600.-1))-1);
-      
       v.z = 0.0f;
 
       for(k=0; k<NCOLORS-1; k++){
-	if(GRID[j][i]>=(double)k/(NCOLORS-1) && GRID[j][i]<=(double)(k+1.)/(NCOLORS-1)){
-	  kp=k;
+	if(GRID[j][i]>=(double)k/(NCOLORS-1.) && GRID[j][i]<=(double)(k+1.)/(NCOLORS-1.)){
+	  v.r = pal[k].r+(pal[k+1].r-pal[k].r)*(GRID[j][i]-(double)k/(NCOLORS-1.))/((double)1./(NCOLORS-1.));
+	  v.g = pal[k].g+(pal[k+1].g-pal[k].g)*(GRID[j][i]-(double)k/(NCOLORS-1.))/((double)1./(NCOLORS-1.));
+	  v.b = pal[k].b+(pal[k+1].b-pal[k].b)*(GRID[j][i]-(double)k/(NCOLORS-1.))/((double)1./(NCOLORS-1.));
 	}
       }
-
-      k=(int)(NCOLORS*0.99999*GRID[j][i]);
-      if(isnan(GRID[j][i])){
-	k=0;
-	printf("Deu nan\n");
-      }
       
-      v.r = pal[k].r+(pal[k+1].r-pal[k].r)*(GRID[j][i]-(double)k/(NCOLORS))*(NCOLORS);
-      v.g = pal[k].g+(pal[k+1].g-pal[k].g)*(GRID[j][i]-(double)k/(NCOLORS))*(NCOLORS);
-      v.b = pal[k].b+(pal[k+1].b-pal[k].b)*(GRID[j][i]-(double)k/(NCOLORS))*(NCOLORS);
-
       v.a = 1.0f;
       drawPoint(v,size);
     }
