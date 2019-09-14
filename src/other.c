@@ -30,6 +30,7 @@ void screenshot(){
     for (size_t x = 0; x < WINDOWS_WIDTH; x++){
       GLfloat array[3];
       glReadPixels(x, WINDOWS_HEIGHT-y, 1, 1, GL_RGB, GL_FLOAT, array);
+      //fprintf(stderr,"%lf %lf %lf\n", array[0], array[1], array[2]);
       bmp_pixel_init(&img.img_pixels[y][x], 254*array[0], 254*array[1], 254*array[2]);
     }
   }

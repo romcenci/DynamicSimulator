@@ -11,56 +11,16 @@ double horizontal=0, vertical=0;
 
 int NCOLORS=2;
 
-double **allocateGRID(){
-  int i,j;
-  double **GRID;
-
-  if(MODE==0 || MODE==1){
-    GRID=(double **)malloc(600*sizeof(double *));
-    for (i = 0; i < 600; ++i){
-      GRID[i]=(double *)malloc(L*sizeof(double));
-    }
-    return GRID;
-  }
-
-  else if(MODE==2){
-    GRID=(double **)malloc(L*sizeof(double *));
-    for (i = 0; i < L; ++i){
-      GRID[i]=(double *)malloc(L*sizeof(double));
-    }
-    return GRID;
-  }
-
-  else if(MODE==3){
-    GRID=(double **)malloc(L*sizeof(double *));
-    for (i = 0; i < L; ++i){
-      GRID[i]=(double *)malloc(3*sizeof(double));
-    }
-    return GRID;
-  }
-
-  else if(MODE==5){
-    GRID=(double **)malloc(L*L*sizeof(double *));
-    for (i = 0; i < L*L; ++i){
-      GRID[i]=(double *)malloc(3*sizeof(double));
-    }
-    return GRID;
-  }
-
-  else{
-    return 0;
-  }
-}
-
 int getopts(int argc, char *argv[]){
   while(1){
-    static struct option long_options[] = {
-      {"mode", required_argument, 0, 'm'},
-      {"height", required_argument, 0, 'h'},
-      {"width", required_argument, 0, 'w'},
-      {"color", required_argument, 0, 'c'},
-      {0, 0, 0, 0}
-    };
+    static struct option long_options[] =
+      {
+       {"mode", required_argument, 0, 'm'},
+       {"height", required_argument, 0, 'h'},
+       {"width", required_argument, 0, 'w'},
+       {"color", required_argument, 0, 'c'},
+       {0, 0, 0, 0}
+      };
 
     // getopt_long stores the option index here.
     int option_index = 0;
@@ -129,7 +89,6 @@ int main(int argc, char *argv[]){
   GLFWwindow* window;
 
   pal=malloc(NCOLORS*sizeof(struct Color));
-
   pal[0].r=1.0; pal[1].r=0.0;
   pal[0].g=1.0; pal[1].g=0.0;
   pal[0].b=1.0; pal[1].b=0.0;
@@ -156,61 +115,210 @@ int main(int argc, char *argv[]){
   glfwSetKeyCallback( window, keyCallback );
   glfwSetScrollCallback( window, scrollCallback );
 
-  double **GRID;
-  GRID=allocateGRID();
-
   int tempo = 0;
-  while (!glfwWindowShouldClose(window)){
-    float ratio;
-    int width, height;
+  float ratio;
+  int width, height;
 
-    glfwGetFramebufferSize(window, &width, &height);
-    ratio = (float)width / (float)height;
-    glViewport(0, 0, width, height);
+  ////////////////////////////////////////////////////////////////////
 
-    glLoadIdentity();
-    glPushMatrix();
+  if(MODE==0){
+    int i;
+    double **Grid;
+    Grid=(double **)malloc(600*sizeof(double *));
+    for (i = 0; i < 600; ++i){
+      Grid[i]=(double *)malloc(L*sizeof(double));
+    }    
     
-    if(MODE==0 || MODE==1){
+    while (!glfwWindowShouldClose(window)){
+      glfwGetFramebufferSize(window, &width, &height);
+      ratio = (float)width / (float)height;
+      glViewport(0, 0, width, height);
+
+      glLoadIdentity();
+      glPushMatrix();
+    
       glScalef(zoom,0.8,0);
       mouseTranslate();
       glTranslatef(horizontal, 0, 0);
+
+      if(para==0){ tempo++; }
+
+      gridMode(tempo, Grid);
+      glPopMatrix();
+
+      drawFrame();
+    
+      glfwSwapBuffers(window);
+      glfwPollEvents();
     }
-    if(MODE==2 || MODE==3 || MODE==5){
+    free(Grid);
+  }
+
+  ////////////////////////////////////////////////////////////////////
+  
+  else if(MODE==1){
+    int i;
+    double **Particles;
+    Particles = (double **)malloc(600*sizeof(double *));
+    for (i = 0; i < 600; ++i){
+      Particles[i]=(double *)malloc(L*sizeof(double));
+    }
+
+    while (!glfwWindowShouldClose(window)){
+      glfwGetFramebufferSize(window, &width, &height);
+      ratio = (float)width / (float)height;
+      glViewport(0, 0, width, height);
+
+      glLoadIdentity();
+      glPushMatrix();
+    
+      glScalef(zoom,0.8,0);
+      mouseTranslate();
+      glTranslatef(horizontal, 0, 0);
+
+      if(para==0){ tempo++; }
+
+      particleMode(tempo, Particles);
+      glPopMatrix();
+
+      drawFrame();
+    
+      glfwSwapBuffers(window);
+      glfwPollEvents();
+    }
+    free(Particles);
+  }
+  
+  ////////////////////////////////////////////////////////////////////
+
+  else if(MODE==2){
+    int i;
+    double **Grid;
+    Grid=(double **)malloc(L*sizeof(double *));
+    for (i = 0; i < L; ++i){
+      Grid[i]=(double *)malloc(L*sizeof(double));
+    }
+    while (!glfwWindowShouldClose(window)){
+      glfwGetFramebufferSize(window, &width, &height);
+      ratio = (float)width / (float)height;
+      glViewport(0, 0, width, height);
+
+      glLoadIdentity();
+      glPushMatrix();
+
       glScalef(zoom,zoom,0);
       mouseTranslate();
       glTranslatef(horizontal, vertical, 0);
-    }
 
-    if(para==0){ tempo++; }
+      if(para==0){ tempo++; }
 
-    if(MODE==0){
-      gridMode(tempo, GRID);
-    }
-    else if(MODE==1){
-      particleMode(tempo, GRID);
-    }
-    else if(MODE==2){
-      grid2dMode(tempo, GRID);
-    }
-    else if(MODE==3){
-      particle2dMode(tempo, GRID);
-    }
-    else if(MODE==4){
-      SpectreMode(tempo);
-    }
-    else if(MODE==5){
-      ArrowMode(tempo, GRID);
-    }
-    glPopMatrix();
+      grid2dMode(tempo, Grid);
+      glPopMatrix();
 
-    drawFrame();
+      drawFrame();
     
-    glfwSwapBuffers(window);
-    glfwPollEvents();
+      glfwSwapBuffers(window);
+      glfwPollEvents();
+    }
+    free(Grid);
   }
 
-  free(GRID);
+  ////////////////////////////////////////////////////////////////////
+
+  else if(MODE==3){
+    int i;
+    double **Particles=(double **)malloc(L*sizeof(double *));
+    for (i = 0; i < L; ++i){
+      Particles[i]=(double *)malloc(3*sizeof(double));
+    }
+    while (!glfwWindowShouldClose(window)){
+      glfwGetFramebufferSize(window, &width, &height);
+      ratio = (float)width / (float)height;
+      glViewport(0, 0, width, height);
+
+      glLoadIdentity();
+      glPushMatrix();
+
+      glScalef(zoom,zoom,0);
+      mouseTranslate();
+      glTranslatef(horizontal, vertical, 0);
+
+      if(para==0){ tempo++; }
+
+      particle2dMode(tempo, Particles);
+      glPopMatrix();
+
+      drawFrame();
+    
+      glfwSwapBuffers(window);
+      glfwPollEvents();
+    }
+    free(Particles);
+  }
+
+  ////////////////////////////////////////////////////////////////////
+
+  else if(MODE==4){
+    double **Grid;
+    while (!glfwWindowShouldClose(window)){
+      glfwGetFramebufferSize(window, &width, &height);
+      ratio = (float)width / (float)height;
+      glViewport(0, 0, width, height);
+
+      glLoadIdentity();
+      glPushMatrix();
+
+      if(para==0){ tempo++; }
+
+      SpectreMode(tempo, Grid);
+      glPopMatrix();
+
+      drawFrame();
+    
+      glfwSwapBuffers(window);
+      glfwPollEvents();
+    }
+    
+    free(Grid);
+  }
+
+  ////////////////////////////////////////////////////////////////////
+  
+  else if(MODE==5){
+    int i;
+    double **Grid;
+    Grid=(double **)malloc(L*L*sizeof(double *));
+    for (i = 0; i < L*L; ++i){
+      Grid[i]=(double *)malloc(3*sizeof(double));
+    }
+    while (!glfwWindowShouldClose(window)){
+      glfwGetFramebufferSize(window, &width, &height);
+      ratio = (float)width / (float)height;
+      glViewport(0, 0, width, height);
+
+      glLoadIdentity();
+      glPushMatrix();
+
+      glScalef(zoom,zoom,0);
+      mouseTranslate();
+      glTranslatef(horizontal, vertical, 0);
+
+      if(para==0){ tempo++; }
+
+      ArrowMode(tempo, Grid);
+      glPopMatrix();
+
+      drawFrame();
+    
+      glfwSwapBuffers(window);
+      glfwPollEvents();
+    }
+
+    free(Grid);
+  }
+
+  ////////////////////////////////////////////////////////////////////
+  
   free(pal);
   glfwDestroyWindow(window);
   glfwTerminate();
