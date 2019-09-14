@@ -26,12 +26,11 @@ void screenshot(){
   bmp_img img;
   bmp_img_init_df(&img, WINDOWS_WIDTH, WINDOWS_HEIGHT);
 
+  GLfloat *array = malloc(3*WINDOWS_WIDTH*WINDOWS_HEIGHT*sizeof(GLfloat));
+  glReadPixels(0, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT, GL_RGB, GL_FLOAT, array);
   for (size_t y = 0; y < WINDOWS_HEIGHT; y++){
     for (size_t x = 0; x < WINDOWS_WIDTH; x++){
-      GLfloat array[3];
-      glReadPixels(x, WINDOWS_HEIGHT-y, 1, 1, GL_RGB, GL_FLOAT, array);
-      //fprintf(stderr,"%lf %lf %lf\n", array[0], array[1], array[2]);
-      bmp_pixel_init(&img.img_pixels[y][x], 254*array[0], 254*array[1], 254*array[2]);
+      bmp_pixel_init(&img.img_pixels[y][x], 254*array[0+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3], 254*array[1+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3], 254*array[2+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3]);
     }
   }
 
