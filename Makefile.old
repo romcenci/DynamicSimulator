@@ -24,17 +24,6 @@ src/other.o: src/other.c
 src/main: src/main.c
 	gcc src/main.c -lm -lGL -lglfw -o DynSim src/libbmp/libbmp.o src/colors.o src/draws.o src/modes.o src/other.o
 
-#----- Install
-PREFIX = /usr/local
-.PHONY: install
-install: DynSim
-	mkdir -p $(DESTDIR)$(PREFIX)/bin
-	cp $< $(DESTDIR)$(PREFIX)/bin/DynSim
-
-.PHONY: uninstall
-uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/bin/DynSim
-
 #----- Demos
 $(dlist:.c=.out): %.out: %.c $(wildcard %.h)
 	gcc $< -O3 -lm -lfftw3 -o $(basename $<).out

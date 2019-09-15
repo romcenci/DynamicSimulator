@@ -7,16 +7,17 @@ void gridMode(int tempo, double **GRID){
   Vertex v;
   double r,g,b, size;
 
-  for(i=0; i<L; i++){
-    if(para==0){
+  if(para==0){
+    for(i=0; i<L; i++){
       scanf("%f\n", &cor);
       GRID[tempo%600][i] = (cor+1.)/2.0;
     }
   }
   
   size=ceil(zoom*WINDOWS_WIDTH/L);
-  glClear(GL_COLOR_BUFFER_BIT);
-  for(j=0;j < 600; j++){
+  //glClear(GL_COLOR_BUFFER_BIT);
+  //for(j=0;j < 600; j++){
+  j=tempo%600;
     for(i=0; i<L; i++){
       v.x = (i*(2./(L-1))-1);
       v.y = -(j*(2./(600.-1))-1);
@@ -33,7 +34,7 @@ void gridMode(int tempo, double **GRID){
       v.a = 1.0f;
       drawPoint(v,size);
     }
-  }
+    //}
 }
 
 void particleMode(int tempo, double **GRID){
