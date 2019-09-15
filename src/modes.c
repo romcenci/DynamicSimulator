@@ -15,9 +15,9 @@ void gridMode(int tempo, double **GRID){
   }
   
   size=ceil(zoom*WINDOWS_WIDTH/L);
-  //glClear(GL_COLOR_BUFFER_BIT);
-  //for(j=0;j < 600; j++){
-  j=tempo%600;
+  glClear(GL_COLOR_BUFFER_BIT);
+  for(j=0;j < 600; j++){
+    //j=tempo%600;
     for(i=0; i<L; i++){
       v.x = (i*(2./(L-1))-1);
       v.y = -(j*(2./(600.-1))-1);
@@ -34,7 +34,7 @@ void gridMode(int tempo, double **GRID){
       v.a = 1.0f;
       drawPoint(v,size);
     }
-    //}
+  }
 }
 
 void particleMode(int tempo, double **GRID){
