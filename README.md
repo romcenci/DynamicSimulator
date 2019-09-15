@@ -1,6 +1,6 @@
 # DynamicSimulator
 
-## Dependências e instruções:
+## Dependências e instruções de instalação:
 * Instalar glfw3:
 	- `$ sudo apt-get install libglfw3-dev`
 * Clonar o repositório com:
