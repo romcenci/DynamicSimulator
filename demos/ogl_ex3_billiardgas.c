@@ -1,164 +1,201 @@
-// 0.157*raio = ps
-
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <time.h>
 
-#define raio 40
 #define N 50
-#define dt 0.1
+#define L 1.0
+#define R 0.028
+#define dt 0.002
 
-#define width 1000
-#define height 1000
+typedef struct {
+  double x, y, vx, vy;
+} particle;
 
-#define xRandom (double)rand() / RAND_MAX *(width - raio)
-#define yRandom (double)rand() / RAND_MAX *(height - raio)
-#define velRandom                                                              \
-  (double)rand() / RAND_MAX > 0.5 ? (double)rand() / RAND_MAX * 10             \
-                                  : -(double)rand() / RAND_MAX * 10
+void init(particle *p){
+  int i, j;
+  int condition=0;
+  double dist, mindist;
 
-int i, j;
-double x[N];
-double y[N];
-double vx[N];
-double vy[N];
-
-double dvx, dvy, dx, dy, vtemp;
-double th;
-
-int flag[N][N];
-int flagBound[N];
-int flg[N];
-
-void init() {
-  for (i = 0; i < N; i++) {
-    for (j = 0; j < N; j++) {
-      flag[i][j] = 0;
-    }
-    flagBound[i] = 0;
+  for(i=0; i<N; i++){
+    p[i].vx = (double)rand()/RAND_MAX*2.-1.;
+    p[i].vy = (double)rand()/RAND_MAX*2.-1.;
   }
+  
+  // enquanto todas as partículas não estiverem sem overlap
+  while( condition == 0 ){
+    // sorteia a posição da primeira partícula
+    p[0].x = (double)rand()/RAND_MAX*(L-2*R)+R;
+    p[0].y = (double)rand()/RAND_MAX*(L-2*R)+R;
+    for(i=1; i<N; i++){
+      // sorteia a posição de uma partícula
+      p[i].x = (double)rand()/RAND_MAX*(L-2*R)+R;
+      p[i].y = (double)rand()/RAND_MAX*(L-2*R)+R;
 
-  for (i = 0; i < N; i++) {
-    while (flg[i] < N - 1) {
-      x[i] = (double)rand() / RAND_MAX * (width - raio);
-      y[i] = (double)rand() / RAND_MAX * (height - raio);
-      flg[i] = 0;
-      for (j = 0; j < N; j++) {
-        if (sqrt((x[i] - x[j]) * (x[i] - x[j]) +
-                 (y[i] - y[j]) * (y[i] - y[j])) > 2.5 * raio) {
-          flg[i]++;
-        }
+      // mede a distancia min até uma partícula já escolhida
+      mindist = 100;
+      for(j=0; j<i; j++){
+  	dist = sqrt(pow(p[i].x-p[j].x, 2)+pow(p[i].y-p[j].y, 2));
+  	if (mindist > dist) {
+  	  mindist = dist;
+  	}
       }
-    }
 
-    /* vx[i]=2; */
-    /* vy[i]=2; */
-    vx[i] = velRandom;
-    vy[i] = velRandom;
-  }
-}
-
-void update() {
-  for (i = 0; i < N; i++) {
-    x[i] += vx[i] * dt;
-    y[i] += vy[i] * dt;
-  }
-}
-
-void rotate(int k, double th) {
-  double ux, uy;
-
-  ux = vx[k];
-  uy = vy[k];
-
-  vx[k] = cos(th) * ux + sin(th) * uy;
-  vy[k] = -sin(th) * ux + cos(th) * uy;
-}
-
-void boundCollision() {
-  for (i = 0; i < N; i++) { // Restaura flag de parede
-    if (flagBound[i] == 1) {
-      if (x[i] > 0 && x[i] < width && y[i] > 0 && y[i] < height) {
-        flagBound[i] = 0;
+      // se a dist min até uma part for < 2R -> RECOMEÇAR
+      if (mindist < 2.*R) {
+  	condition = 0;
+  	break;
       }
-    }
-  }
-  for (i = 0; i < N; i++) { // Boundary
-    if (flagBound[i] == 0) {
-      if (x[i] + raio >= width || x[i] - raio <= 0) {
-        vx[i] = -vx[i];
-        flagBound[i] = 1;
-      }
-      if (y[i] + raio >= height || y[i] - raio <= 0) {
-        vy[i] = -vy[i];
-        flagBound[i] = 1;
+      else {
+  	condition = 1;
       }
     }
   }
 }
 
-void collision() {
-  for (i = 0; i < N; i++) { // Restaura flag de colisão x1
-    for (j = 0; j < N; j++) {
-      if (flag[i][j] == 1) {
-        if (sqrt((x[i] - x[j]) * (x[i] - x[j]) +
-                 (y[i] - y[j]) * (y[i] - y[j])) > 2 * raio) {
-          flag[i][j] = 0;
-        }
+double next_wall(particle *p, int *disk, int *dir){
+  int i;
+  double delt, dtmin=1000.;
+  
+  // tempo min para colisão na parede
+  for(i=0; i<N; i++){
+    // direção x e indo para direita
+    if(p[i].vx > 0){
+      delt = (L-R-p[i].x)/p[i].vx;
+      if(dtmin > delt){
+	dtmin = delt;
+	*disk = i;
+	*dir = 0;
+      }
+    }
+    // direção x e indo para esquerda
+    else if(p[i].vx < 0){
+      delt = (p[i].x-R)/(-p[i].vx);
+      if(dtmin > delt){
+	dtmin = delt;
+	*disk = i;
+	*dir = 0;
+      }
+    }
+    
+    // direção y e indo para direita
+    if(p[i].vy > 0){
+      delt = (L-R-p[i].y)/p[i].vy;
+      if(dtmin > delt){
+	dtmin = delt;
+	*disk = i;
+	*dir = 1;
+      }
+    }
+    // direção y e indo para esquerda
+    else if(p[i].vy < 0){
+      delt = (p[i].y-R)/fabs(p[i].vy);
+      if(dtmin > delt){
+	dtmin = delt;
+	*disk = i;
+	*dir = 1;
       }
     }
   }
-  for (i = 0; i < N; i++) { // Colisão
-    for (j = 0; j < i; j++) {
-      if (flag[i][j] == 0) {
-        if (sqrt((x[i] - x[j]) * (x[i] - x[j]) +
-                 (y[i] - y[j]) * (y[i] - y[j])) < 2 * raio) {
-          dvx = vx[i] - vx[j];
-          dvy = vy[i] - vy[j];
 
-          dx = x[i] - x[j];
-          dy = y[i] - y[j];
+  return dtmin;
+}
+double next_pair(particle *p, int *disk1, int *disk2){
+  int i, j;
+  double d, dx, dy, dv, dvx, dvy;
+  double scal, ups, delt, dtmin=1000;
+  
+  for(i=0; i<N; i++){
+    for(j=0; j<i; j++){
+      dx = p[i].x-p[j].x;
+      dy = p[i].y-p[j].y;
+      d  = dx*dx+dy*dy;
+      
+      dvx = p[i].vx-p[j].vx;
+      dvy = p[i].vy-p[j].vy;
+      dv  = dvx*dvx+dvy*dvy;
 
-          th = atan2(dy, dx);
-          rotate(i, th);
-          rotate(j, th);
-
-          vtemp = vx[j];
-          vx[j] = vx[i];
-          vx[i] = vtemp;
-
-          rotate(i, -th);
-          rotate(j, -th);
-
-          flag[i][j] = 1;
-        }
+      scal = dvx*dx+dvy*dy;
+      ups  = scal*scal-dv*(d-4.*R*R);
+      if(ups>0 && scal<0){
+	delt = -(scal+sqrt(ups))/dv;
+	if(dtmin > delt){
+	  dtmin = delt;
+	  *disk1 = i;
+	  *disk2 = j;
+	}
       }
     }
   }
+
+  return dtmin;
 }
 
-void plot() {
-  for (i = 0; i < N; i++) {
-    printf("%lf %lf %lf\n", x[i] / width, y[i] / height, (double)raio);
-  }
-}
-
-int main(int argc, char *argv[]) {
-  double t;
+int main(int argc, char *argv[]){
+  int i, ev, col_disk, col_disk1, col_disk2, col_dir;
+  double dtwall, dtpair, t, next_event, next_t, remain_t;
+  double d, dx, dy, dv, dvx, dvy;
+  particle p[N];
 
   srand(time(0));
+  init(p);
 
-  init();
+  dtwall = next_wall(p, &col_disk, &col_dir);
+  dtpair = next_pair(p, &col_disk1, &col_disk2);
+  (dtwall < dtpair) ? (next_event = dtwall) : (next_event = dtpair);
+  while(t<100){
+    next_t = t+dt;
+    // se o próximo evento for no próximo passo dt
+    while(t+next_event <= next_t){
+      t += next_event;
 
-  for (t = 0; t < 100; t += dt) {
-    update();
+      // atualiza as posições conforme com o dt do proximo evento
+      for(i=0; i<N; i++){
+	p[i].x += p[i].vx*next_event;
+	p[i].y += p[i].vy*next_event;
+      }
 
-    boundCollision();
-    collision();
+      // atualiza as velocidades
+      if(dtwall < dtpair){
+	if(col_dir == 0)
+	  p[col_disk].vx*=-1;
+	else
+	  p[col_disk].vy*=-1;
+      }
+      else{
+	dx = p[col_disk1].x-p[col_disk2].x;
+	dy = p[col_disk1].y-p[col_disk2].y;
+	d  = sqrt(dx*dx+dy*dy);
+      
+	dvx = p[col_disk1].vx-p[col_disk2].vx;
+	dvy = p[col_disk1].vy-p[col_disk2].vy;
+	dv  = sqrt(dvx*dvx+dvy*dvy);
 
-    plot();
+	p[col_disk1].vx -= dx/d*(dvx*dx+dvy*dy)/d;
+	p[col_disk1].vy -= dy/d*(dvx*dx+dvy*dy)/d;
+	p[col_disk2].vx += dx/d*(dvx*dx+dvy*dy)/d;
+	p[col_disk2].vy += dy/d*(dvx*dx+dvy*dy)/d;
+      }
+
+      // checa as próximas colisões, tanto de partícula-muro quanto partícula-partícula
+      dtwall = next_wall(p, &col_disk, &col_dir);
+      dtpair = next_pair(p, &col_disk1, &col_disk2);
+      (dtwall < dtpair) ? (next_event = dtwall) : (next_event = dtpair);
+    }
+
+    remain_t = next_t-t;
+    for(i=0; i<N; i++){
+      p[i].x += p[i].vx*remain_t;
+      p[i].y += p[i].vy*remain_t;
+    }
+    t += remain_t;
+    next_event -= remain_t;
+
+    // imprime
+    for(i=0; i<N; i++){
+      printf("%lf %lf %lf\n", p[i].x, p[i].y, R*1000);
+    }
   }
-
+  
   return 0;
 }

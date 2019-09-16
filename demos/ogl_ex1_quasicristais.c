@@ -34,12 +34,12 @@ double min(double x, double y){
   return (fabs(x)<fabs(y) ? x : y);
 }
 
-#define L 5 // Volume
-#define N 500 // Número de particulas
+#define L 2 // Volume
+#define N 200 // Número de particulas
 #define alfa 3 // Gaussiana
 #define R 0.1 // Escala potencial
 #define eps 0.0333 // Escala potencial
-#define dt 0.001// 0.001
+#define dt 0.0002// 0.001
 
 void update(double *x, double T){
   int i, j;
@@ -80,7 +80,7 @@ int main(int argc, char **argv){
   srand(time(0));
   for(i=0; i<N; i++){x[i]=(double)rand()/RAND_MAX*L;}
 
-  for(k=0; k<1000; k++){
+  for(k=0; k<10000; k++){
     update(x, T);
 
     for(i=0; i<N; i++){
