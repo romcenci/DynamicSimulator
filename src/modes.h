@@ -9,6 +9,7 @@ extern int para;
 extern int WINDOWS_WIDTH;
 extern int WINDOWS_HEIGHT;
 extern double zoom;
+extern GLFWwindow *window;
 
 typedef struct { double h, s, v; } HSV_Color;
 

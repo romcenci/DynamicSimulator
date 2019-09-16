@@ -7,7 +7,7 @@
 #define alpha (0.22f)
 #define waveq 0.8f
 #define timeprinter 300
-#define maxwindows 1
+#define maxwindows 1000
 #define num_cel 10
 #define M 1000
 #define N 1

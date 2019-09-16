@@ -13,7 +13,8 @@ void gridMode(int tempo, double **GRID) {
       GRID[tempo % 600][i] = (cor + 1.) / 2.0;
     }
   }
-  // printf("%d\n", scanf_flag);
+  if (scanf_flag == -1)
+    glfwSetWindowShouldClose(window, 1);
 
   if (ceil(zoom * WINDOWS_WIDTH / L) > ceil(zoom * WINDOWS_HEIGHT / 600)) {
     size = ceil(zoom * WINDOWS_WIDTH / L);
@@ -57,14 +58,17 @@ void particleMode(int tempo, double **GRID) {
   int i, j;
   float cor;
   float yy, xx;
+  int scanf_flag;
   Vertex v;
 
   for (i = 0; i < L; i++) {
     if (para == 0) {
-      scanf("%f\n", &xx);
+      scanf_flag = scanf("%f\n", &xx);
     }
     GRID[tempo % 600][i] = xx;
   }
+  if (scanf_flag == -1)
+    glfwSetWindowShouldClose(window, 1);
 
   yy = (float)(-(tempo % 600) + 300.0f) / 330.0f;
   glClear(GL_COLOR_BUFFER_BIT);
@@ -89,6 +93,8 @@ void particleMode(int tempo, double **GRID) {
 void grid2dMode(int tempo, double **GRID) {
   int i, j, k;
   double cor, size, alfa1, alfa2;
+  int scanf_flag;
+
   Vertex v;
 
   size = ceil(zoom * WINDOWS_WIDTH / L);
@@ -105,7 +111,7 @@ void grid2dMode(int tempo, double **GRID) {
   for (j = 0; j < L; j++) {
     for (i = 0; i < L; i++) {
       if (para == 0) {
-        scanf("%lf\n", &cor);
+        scanf_flag = scanf("%lf\n", &cor);
         cor = (cor + 1.0) / 2.0;
         GRID[i][j] = cor;
       }
@@ -135,18 +141,22 @@ void grid2dMode(int tempo, double **GRID) {
       drawPoint(v, size);
     }
   }
+  if (scanf_flag == -1)
+    glfwSetWindowShouldClose(window, 1);
 }
 
 void particle2dMode(int tempo, double **GRID) {
   int i;
   double cor, xx, yy, r;
+  int scanf_flag;
+
   Vertex v;
 
   glClear(GL_COLOR_BUFFER_BIT);
 
   for (i = 0; i < L; i++) {
     if (para == 0) {
-      scanf("%lf %lf %lf\n", &xx, &yy, &r);
+      scanf_flag = scanf("%lf %lf %lf\n", &xx, &yy, &r);
       GRID[i][0] = xx;
       GRID[i][1] = yy;
       GRID[i][2] = r;
@@ -161,12 +171,15 @@ void particle2dMode(int tempo, double **GRID) {
     v.a = 1.0f;
     DrawCircle(v.x, v.y, GRID[i][2] + 3);
   }
+  if (scanf_flag == -1)
+    glfwSetWindowShouldClose(window, 1);
 }
 
 void ArrowMode(int tempo, double **GRID) {
   int i, j;
   double xx, yy, zz;
   double length, cor;
+  int scanf_flag;
 
   Vertex v1, v2;
   length = (600.0 / (2.0 * L)) / 660.0;
@@ -176,7 +189,7 @@ void ArrowMode(int tempo, double **GRID) {
   for (i = 0; i < L; i++) {
     for (j = 0; j < L; j++) {
       if (para == 0) {
-        scanf("%lf %lf %lf\n", &xx, &yy, &zz);
+        scanf_flag = scanf("%lf %lf %lf\n", &xx, &yy, &zz);
         GRID[i + L * j][0] = xx;
         GRID[i + L * j][1] = yy;
         GRID[i + L * j][2] = zz;
@@ -201,15 +214,19 @@ void ArrowMode(int tempo, double **GRID) {
       DrawArrow(v1, v2, 2.0f);
     }
   }
+  if (scanf_flag == -1)
+    glfwSetWindowShouldClose(window, 1);
 }
 
 void SpectreMode() {
   int pos, t;
   float value;
+  int scanf_flag;
+
   double cor = 1.0;
   Vertex v1, v2;
   int Lk = (800 / 2 + 1);
-  scanf("%d\t%f", &pos, &value);
+  scanf_flag = scanf("%d\t%f", &pos, &value);
   v1.x = (2.0 * pos / Lk) - 1.0f;
   v1.y = (value);
   v1.z = 0.0f;

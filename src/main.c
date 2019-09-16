@@ -1,5 +1,7 @@
 #include "main.h"
 
+GLFWwindow *window;
+
 int L = 200;
 int MODE = 3;
 int WINDOWS_HEIGHT = 500;
@@ -118,7 +120,6 @@ void configFile() {
 }
 
 int main(int argc, char *argv[]) {
-  GLFWwindow *window;
 
   pal = malloc(NCOLORS * sizeof(struct Color));
   pal[1].r = 1.0;
