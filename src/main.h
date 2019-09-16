@@ -1,34 +1,29 @@
 #include <GLFW/glfw3.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <getopt.h>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include <getopt.h>
-#include <string.h>
+
 #include "libbmp/libbmp.h"
 #define _USE_MATH_DEFINES
 
-typedef struct {
-    double h, s, v;
-} HSV_Color;
+typedef struct { double h, s, v; } HSV_Color;
+
+typedef struct { double r, g, b; } RGB_Color;
 
 typedef struct {
-  double r, g, b;
-} RGB_Color;
-
-typedef struct{
   GLfloat x, y, z;
   GLfloat r, g, b, a;
 } Vertex;
 
-typedef struct{
-  GLfloat x, y, z;
-} Data;
+typedef struct { GLfloat x, y, z; } Data;
 
-struct Color{
+struct Color {
   double r, g, b;
-} *pal;
+} * pal;
 
 void drawPoint(Vertex v1, GLfloat size);
 void drawPointsDemo(int width, int height);
@@ -44,15 +39,16 @@ void particle2dMode(int tempo, double **GRID);
 void SpectreMode();
 void ArrowMode(int tempo, double **GRID);
 
-void cursorPositionCallback( GLFWwindow *window, double xPos, double yPos );
-void mouseButtonCallback( GLFWwindow *window, int button, int action, int mods );
-void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods );
-void scrollCallback( GLFWwindow *window, double xOffset, double yOffset );
+void cursorPositionCallback(GLFWwindow *window, double xPos, double yPos);
+void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
+void keyCallback(GLFWwindow *window, int key, int scancode, int action,
+                 int mods);
+void scrollCallback(GLFWwindow *window, double xOffset, double yOffset);
 void mouseTranslate();
 void screenshot();
 
 int readColorFile(char *optarg);
-double min(double num1,double num2);
-double max(double num1,double num2);
+double min(double num1, double num2);
+double max(double num1, double num2);
 void RGB2HSV(RGB_Color *rgb_pal, HSV_Color *hsv_pal, int ncolors);
 void HSV2RGB(RGB_Color *rgb_pal, HSV_Color *hsv_pal, int ncolors);

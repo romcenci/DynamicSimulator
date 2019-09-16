@@ -1,8 +1,8 @@
 #include <GLFW/glfw3.h>
-#include <stdio.h>
 #include <math.h>
-#include "libbmp/libbmp.h"
+#include <stdio.h>
 
+#include "libbmp/libbmp.h"
 extern int L;
 extern int NCOLORS;
 extern int para;
@@ -10,26 +10,20 @@ extern int WINDOWS_WIDTH;
 extern int WINDOWS_HEIGHT;
 extern double zoom;
 
-typedef struct {
-    double h, s, v;
-} HSV_Color;
+typedef struct { double h, s, v; } HSV_Color;
 
-typedef struct {
+typedef struct { double r, g, b; } RGB_Color;
+
+struct Color {
   double r, g, b;
-} RGB_Color;
+} * pal;
 
-struct Color{
-  double r, g, b;
-} *pal;
-
-typedef struct{
+typedef struct {
   GLfloat x, y, z;
   GLfloat r, g, b, a;
 } Vertex;
 
-typedef struct{
-  GLfloat x, y, z;
-} Data;
+typedef struct { GLfloat x, y, z; } Data;
 
 void drawPoint(Vertex v1, GLfloat size);
 void drawPointsDemo(int width, int height);
