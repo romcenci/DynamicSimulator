@@ -16,6 +16,8 @@ double mouseX, mouseY;
 double mouseXant, mouseYant;
 double corner_x1=0, corner_y1=0;
 double corner_x2=0, corner_y2=0;
+int count_scr=0;
+int count_gif=0;
 
 extern int para;
 extern double zoom;
@@ -24,6 +26,8 @@ extern int WINDOWS_HEIGHT, WINDOWS_WIDTH;
 
 void screenshot(){
   bmp_img img;
+  char nome[50];
+  
   bmp_img_init_df(&img, WINDOWS_WIDTH, WINDOWS_HEIGHT);
 
   GLfloat *array = malloc(3*WINDOWS_WIDTH*WINDOWS_HEIGHT*sizeof(GLfloat));
@@ -34,9 +38,32 @@ void screenshot(){
     }
   }
 
-  bmp_img_write(&img, "screenshot.bmp");
+  sprintf(nome, "screenshot_%04d.bmp", count_scr);
+  bmp_img_write(&img, nome);
+  count_scr++;
   bmp_img_free(&img);
 }
+
+void animation_frame(){
+  bmp_img img;
+  char nome[50];
+  
+  bmp_img_init_df(&img, WINDOWS_WIDTH, WINDOWS_HEIGHT);
+
+  GLfloat *array = malloc(3*WINDOWS_WIDTH*WINDOWS_HEIGHT*sizeof(GLfloat));
+  glReadPixels(0, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT, GL_RGB, GL_FLOAT, array);
+  for (size_t y = 0; y < WINDOWS_HEIGHT; y++){
+    for (size_t x = 0; x < WINDOWS_WIDTH; x++){
+      bmp_pixel_init(&img.img_pixels[y][x], 254*array[0+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3], 254*array[1+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3], 254*array[2+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3]);
+    }
+  }
+
+  sprintf(nome, "anim_%04d.bmp", count_gif);
+  bmp_img_write(&img, nome);
+  count_gif++;
+  bmp_img_free(&img);
+}
+
 
 void mouseTranslate(){
   if(mouseLeftClick==1){

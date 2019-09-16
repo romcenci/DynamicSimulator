@@ -9,6 +9,8 @@ int WINDOWS_WIDTH = 500;
 int NCOLORS = 2;
 int COLOR_BOX = 0;
 
+int gif_flag=0, gif_framerate=10;
+
 int para;
 double zoom = 0.8;
 double horizontal = 0, vertical = 0;
@@ -21,13 +23,15 @@ int getopts(int argc, char *argv[]) {
         {"width", required_argument, 0, 'w'},
         {"color", required_argument, 0, 'c'},
         {"colorbox", required_argument, 0, 'b'},
+        {"gif", no_argument, 0, 'g'},
+        {"gif_framerate", required_argument, 0, 'f'},
         {0, 0, 0, 0}};
 
     // getopt_long stores the option index here.
     int option_index = 0;
 
     int c =
-        getopt_long(argc, argv, "l:m:h:w:c:b:", long_options, &option_index);
+        getopt_long(argc, argv, "l:m:h:w:c:b:gf:", long_options, &option_index);
 
     // Detect the end of the options.
     if (c == -1) {
@@ -71,6 +75,14 @@ int getopts(int argc, char *argv[]) {
       if (strcmp(strdup(optarg), "left") == 0) {
         COLOR_BOX = 4;
       }
+      break;
+
+    case 'g':
+      gif_flag = 1;
+      break;
+
+    case 'f':
+      gif_framerate = atoi(optarg);
       break;
 
     default:
@@ -202,6 +214,13 @@ int main(int argc, char *argv[]) {
 
       glfwSwapBuffers(window);
       glfwPollEvents();
+
+      if(gif_flag==1 && tempo%gif_framerate==0){
+	animation_frame();
+      }
+    }
+    if(gif_flag==1){
+      system("convert -delay 5 -loop 0 *.bmp animation.gif 2> /dev/null; rm anim_*.bmp");
     }
     free(Grid);
   }
@@ -239,6 +258,12 @@ int main(int argc, char *argv[]) {
 
       glfwSwapBuffers(window);
       glfwPollEvents();
+      if(gif_flag==1 && tempo%gif_framerate==0){
+	animation_frame();
+      }
+    }
+    if(gif_flag==1){
+      system("convert -delay 5 -loop 0 *.bmp animation.gif 2> /dev/null; rm anim_*.bmp");
     }
     free(Particles);
   }
@@ -288,6 +313,13 @@ int main(int argc, char *argv[]) {
 
       glfwSwapBuffers(window);
       glfwPollEvents();
+
+      if(gif_flag==1 && tempo%gif_framerate==0){
+	animation_frame();
+      }
+    }
+    if(gif_flag==1){
+      system("convert -delay 5 -loop 0 *.bmp animation.gif 2> /dev/null; rm anim_*.bmp");
     }
     free(Grid);
   }
@@ -323,6 +355,12 @@ int main(int argc, char *argv[]) {
 
       glfwSwapBuffers(window);
       glfwPollEvents();
+      if(gif_flag==1 && tempo%gif_framerate==0){
+	animation_frame();
+      }
+    }
+    if(gif_flag==1){
+      system("convert -delay 5 -loop 0 *.bmp animation.gif 2> /dev/null; rm anim_*.bmp");
     }
     free(Particles);
   }
@@ -350,6 +388,12 @@ int main(int argc, char *argv[]) {
 
       glfwSwapBuffers(window);
       glfwPollEvents();
+      if(gif_flag==1 && tempo%gif_framerate==0){
+	animation_frame();
+      }
+    }
+    if(gif_flag==1){
+      system("convert -delay 5 -loop 0 *.bmp animation.gif 2> /dev/null; rm anim_*.bmp");
     }
 
     free(Grid);
@@ -387,6 +431,12 @@ int main(int argc, char *argv[]) {
 
       glfwSwapBuffers(window);
       glfwPollEvents();
+      if(gif_flag==1 && tempo%gif_framerate==0){
+	animation_frame();
+      }
+    }
+    if(gif_flag==1){
+      system("convert -delay 5 -loop 0 *.bmp animation.gif 2> /dev/null; rm anim_*.bmp");
     }
 
     free(Grid);

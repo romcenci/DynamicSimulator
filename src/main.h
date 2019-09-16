@@ -46,6 +46,7 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action,
 void scrollCallback(GLFWwindow *window, double xOffset, double yOffset);
 void mouseTranslate();
 void screenshot();
+void animation_frame();
 
 int readColorFile(char *optarg);
 double min(double num1, double num2);

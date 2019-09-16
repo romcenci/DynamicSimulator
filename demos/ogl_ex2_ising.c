@@ -22,7 +22,7 @@
 #define XNN 1
 #define YNN L
 
-#define MC 100000
+#define MC 1000
 
 int s[N];
 double prob[5];
