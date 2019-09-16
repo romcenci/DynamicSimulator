@@ -4,12 +4,12 @@ int L=200;
 int MODE=3;
 int WINDOWS_HEIGHT=500;
 int WINDOWS_WIDTH=500;
+int NCOLORS=2;
+int COLOR_BOX=0;
 
 int para;
 double zoom=0.8;
 double horizontal=0, vertical=0;
-
-int NCOLORS=2;
 
 int getopts(int argc, char *argv[]){
   while(1){
@@ -19,13 +19,14 @@ int getopts(int argc, char *argv[]){
        {"height", required_argument, 0, 'h'},
        {"width", required_argument, 0, 'w'},
        {"color", required_argument, 0, 'c'},
+       {"colorbox", required_argument, 0, 'b'},
        {0, 0, 0, 0}
       };
 
     // getopt_long stores the option index here.
     int option_index = 0;
 
-    int c = getopt_long(argc, argv, "l:m:h:w:c:", long_options, &option_index);
+    int c = getopt_long(argc, argv, "l:m:h:w:c:b:", long_options, &option_index);
 
     // Detect the end of the options.
     if (c == -1) { break; }
@@ -54,6 +55,13 @@ int getopts(int argc, char *argv[]){
       NCOLORS=readColorFile(optarg);
       break;
 
+    case 'b':
+      if(strcmp(strdup(optarg), "top")    == 0){ COLOR_BOX=1; }
+      if(strcmp(strdup(optarg), "right")  == 0){ COLOR_BOX=2; }
+      if(strcmp(strdup(optarg), "bottom") == 0){ COLOR_BOX=3; }
+      if(strcmp(strdup(optarg), "left")   == 0){ COLOR_BOX=4; }
+      break;
+      
     default:
       break;
     }
@@ -80,6 +88,13 @@ void configFile(){
       if (strstr(arr,"height:")){
 	fscanf(f1,"%s",arr);
 	WINDOWS_HEIGHT=atoi(arr);
+      }
+      if (strstr(arr,"colorbox:")){
+	fscanf(f1,"%s",arr);
+	if(strcmp(arr, "top")    == 0){ COLOR_BOX=1; }
+	if(strcmp(arr, "right")  == 0){ COLOR_BOX=2; }
+	if(strcmp(arr, "bottom") == 0){ COLOR_BOX=3; }
+	if(strcmp(arr, "left")   == 0){ COLOR_BOX=4; }
       }
     }
   }
@@ -123,6 +138,11 @@ int main(int argc, char *argv[]){
 
   if(MODE==0){
     int i;
+    double offset_x, offset_y;
+    if(COLOR_BOX==1){ offset_y=-0.075; }
+    if(COLOR_BOX==2){ offset_x=-0.075; }
+    if(COLOR_BOX==3){ offset_y=0.075; }
+    if(COLOR_BOX==4){ offset_x=0.075; }
     double **Grid;
     Grid=(double **)malloc(600*sizeof(double *));
     for (i = 0; i < 600; ++i){
@@ -139,7 +159,7 @@ int main(int argc, char *argv[]){
     
       glScalef(zoom,0.8,0);
       mouseTranslate();
-      glTranslatef(horizontal, 0, 0);
+      glTranslatef(horizontal+offset_x, offset_y, 0);
 
       if(para==0){ tempo++; }
 
@@ -193,6 +213,11 @@ int main(int argc, char *argv[]){
 
   else if(MODE==2){
     int i;
+    double offset_x, offset_y;
+    if(COLOR_BOX==1){ offset_y=-0.075; }
+    if(COLOR_BOX==2){ offset_x=-0.075; }
+    if(COLOR_BOX==3){ offset_y=0.075; }
+    if(COLOR_BOX==4){ offset_x=0.075; }
     double **Grid;
     Grid=(double **)malloc(L*sizeof(double *));
     for (i = 0; i < L; ++i){
@@ -208,7 +233,7 @@ int main(int argc, char *argv[]){
 
       glScalef(zoom,zoom,0);
       mouseTranslate();
-      glTranslatef(horizontal, vertical, 0);
+      glTranslatef(horizontal+offset_x, vertical+offset_y, 0);
 
       if(para==0){ tempo++; }
 
