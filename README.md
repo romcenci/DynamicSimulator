@@ -36,6 +36,10 @@
 
 * -b (--colorbox=right/left/top/bottom) : Nos modos 0 e 2 mostra a paleta de cores ao lado
 
+* -g (--gif) : Gerar gif
+
+* -f (--gif_framerate=NUM) : Framerate do gif gerado
+
 * -m (--mode) : Modo de plot
 	- 0: (1d) Rede fixa (Ex: dampedGKS)
 	<figure><img align=midle src="images/modo0.gif" width="300"></figure>
@@ -51,7 +55,6 @@
 		
 	- 5: (2d) Posição fixa (Flechas. Ex: Modelo de Heisenberg)
 	<figure><img align=midle src="images/4.png" width="300"></figure>
-	
 
 ## Arquivo de configuração:
 Escolher as opções no arquivo `dsconfig`, e rodar o simulador sem nenhuma opção, apenas `./DynSim`.
