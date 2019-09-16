@@ -33,22 +33,25 @@
 * -h (--height) : Altura da tela
 	
 * -w (--width) : Largura da tela
-	
+
+* -b (--colorbox=right/left/top/bottom) : Nos modos 0 e 2 mostra a paleta de cores ao lado
+
 * -m (--mode) : Modo de plot
 	- 0: (1d) Rede fixa (Ex: dampedGKS)
-	<figure><img align=midle src="images/0.png" width="400"></figure>
+	<figure><img align=midle src="images/0.png" width="300"></figure>
 		
 	- 1: (1d) Posição variável (Granular. Ex: Quasicristal)		
-	<figure><img align=midle src="images/1.png" width="400"></figure>
+	<figure><img align=midle src="images/1.png" width="300"></figure>
 		
 	- 2: (2d) Posição fixa (Ex: Ising 2d)		
-	<figure><img align=midle src="images/2.png" width="400"></figure>
+	<figure><img align=midle src="images/2.png" width="300"></figure>
 		
 	- 3: (2d) Posição variável (Granular. Ex: Gás de bilhar)
-	<figure><img align=midle src="images/3.png" width="400"></figure>
+	<figure><img align=midle src="images/3.png" width="300"></figure>
 		
 	- 5: (2d) Posição fixa (Flechas. Ex: Modelo de Heisenberg)
-	<figure><img align=midle src="images/4.png" width="400"></figure>
+	<figure><img align=midle src="images/4.png" width="300"></figure>
+	
 
 ## Arquivo de configuração:
 Escolher as opções no arquivo `dsconfig`, e rodar o simulador sem nenhuma opção, apenas `./DynSim`.
@@ -58,6 +61,7 @@ mode:   3
 L:      200
 height: 500
 width:  500
+colorbox: right
 ```
 
 ## Gerador de paleta de cores:
