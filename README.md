@@ -4,7 +4,7 @@
 * Instalar glfw3:
 	- `$ sudo apt-get install libglfw3-dev`
 * Clonar o repositório com:
-	- `$ git clone --recursive https://github.com/romcenci/DynamicSimulator.git`
+	- `$ git clone https://github.com/romcenci/DynamicSimulator.git`
 * E então para instalar basta entrar na pasta DynamicSimulator e digitar os seguintes comandos:
 	- `$ make`
 	- `# sudo make install`
