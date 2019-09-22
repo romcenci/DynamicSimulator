@@ -1,4 +1,4 @@
-all: src/libbmp/libbmp.o src/colors.o src/draws.o src/modes.o src/other.o src/main
+all: src/colors.o src/draws.o src/modes.o src/other.o src/main
 
 .PHONY: demos
 dlist = $(wildcard demos/*.c)
@@ -6,9 +6,6 @@ dlistpp = $(wildcard demos/*.cpp)
 demos: $(dlist:.c=.out) $(dlistpp:.cpp=.out)
 
 #----- C
-src/libbmp/libbmp.o: src/libbmp/libbmp.c
-	gcc -c src/libbmp/libbmp.c -o src/libbmp/libbmp.o
-
 src/colors.o: src/colors.c
 	gcc -c src/colors.c -lm -lGL -lglfw -o src/colors.o
 
@@ -45,7 +42,6 @@ $(dlistpp:.cpp=.out): %.out: %.cpp $(wildcard %.h)
 #----- Clean
 clean:
 	rm -f demos/*.out
-	rm -f src/libbmp/libbmp.o
 	rm -f src/colors.o
 	rm -f src/draws.o
 	rm -f src/modes.o

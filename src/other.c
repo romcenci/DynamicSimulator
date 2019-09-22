@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "libbmp/libbmp.h"
 #include <GLFW/glfw3.h>
+#include <string.h>
 
 #define	GLFW_ARROW_CURSOR 0x00036001
 #define GLFW_HAND_CURSOR 0x00036004
@@ -25,43 +25,115 @@ extern double horizontal, vertical;
 extern int WINDOWS_HEIGHT, WINDOWS_WIDTH;
 
 void screenshot(){
-  bmp_img img;
+  FILE *f;
+  int x, y;
+  int r, g, b;
+  unsigned char *img = NULL;
+  int filesize = 54 + 3*WINDOWS_WIDTH*WINDOWS_HEIGHT;
   char nome[50];
-  
-  bmp_img_init_df(&img, WINDOWS_WIDTH, WINDOWS_HEIGHT);
 
   GLfloat *array = malloc(3*WINDOWS_WIDTH*WINDOWS_HEIGHT*sizeof(GLfloat));
   glReadPixels(0, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT, GL_RGB, GL_FLOAT, array);
-  for (size_t y = 0; y < WINDOWS_HEIGHT; y++){
-    for (size_t x = 0; x < WINDOWS_WIDTH; x++){
-      bmp_pixel_init(&img.img_pixels[y][x], 254*array[0+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3], 254*array[1+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3], 254*array[2+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3]);
+  
+  img = (unsigned char *)malloc(3*WINDOWS_WIDTH*WINDOWS_HEIGHT);
+  memset(img,0,3*WINDOWS_WIDTH*WINDOWS_HEIGHT);
+  for(int i=0; i<WINDOWS_WIDTH; i++){
+    for(int j=0; j<WINDOWS_HEIGHT; j++){
+      x=i; y=(WINDOWS_HEIGHT-1)-j;
+      r=254*array[0+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3];
+      g=254*array[1+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3];
+      b=254*array[2+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3];
+      if (r > 255) r=255;
+      if (g > 255) g=255;
+      if (b > 255) b=255;
+      img[(x+y*WINDOWS_WIDTH)*3+2] = (unsigned char)(r);
+      img[(x+y*WINDOWS_WIDTH)*3+1] = (unsigned char)(g);
+      img[(x+y*WINDOWS_WIDTH)*3+0] = (unsigned char)(b);
     }
   }
-
+  unsigned char bmpfileheader[14] = {'B','M', 0,0,0,0, 0,0, 0,0, 54,0,0,0};
+  unsigned char bmpinfoheader[40] = {40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, 24,0};
+  unsigned char bmppad[3] = {0,0,0};
+  bmpfileheader[ 2] = (unsigned char)(filesize    );
+  bmpfileheader[ 3] = (unsigned char)(filesize>> 8);
+  bmpfileheader[ 4] = (unsigned char)(filesize>>16);
+  bmpfileheader[ 5] = (unsigned char)(filesize>>24);
+  bmpinfoheader[ 4] = (unsigned char)(WINDOWS_WIDTH);
+  bmpinfoheader[ 5] = (unsigned char)(WINDOWS_WIDTH>> 8);
+  bmpinfoheader[ 6] = (unsigned char)(WINDOWS_WIDTH>>16);
+  bmpinfoheader[ 7] = (unsigned char)(WINDOWS_WIDTH>>24);
+  bmpinfoheader[ 8] = (unsigned char)(WINDOWS_HEIGHT);
+  bmpinfoheader[ 9] = (unsigned char)(WINDOWS_HEIGHT>> 8);
+  bmpinfoheader[10] = (unsigned char)(WINDOWS_HEIGHT>>16);
+  bmpinfoheader[11] = (unsigned char)(WINDOWS_HEIGHT>>24);
+  
   sprintf(nome, "screenshot_%04d.bmp", count_scr);
-  bmp_img_write(&img, nome);
+  f = fopen(nome,"wb");
+  fwrite(bmpfileheader,1,14,f);
+  fwrite(bmpinfoheader,1,40,f);
+  for(int i=0; i<WINDOWS_HEIGHT; i++){
+    fwrite(img+(WINDOWS_WIDTH*(WINDOWS_HEIGHT-i-1)*3),3,WINDOWS_WIDTH,f);
+    fwrite(bmppad,1,(4-(WINDOWS_WIDTH*3)%4)%4,f);
+  }
+  free(img);
+  fclose(f);
   count_scr++;
-  bmp_img_free(&img);
 }
 
 void animation_frame(){
-  bmp_img img;
+  FILE *f;
+  int x, y;
+  int r, g, b;
+  unsigned char *img = NULL;
+  int filesize = 54 + 3*WINDOWS_WIDTH*WINDOWS_HEIGHT;
   char nome[50];
-  
-  bmp_img_init_df(&img, WINDOWS_WIDTH, WINDOWS_HEIGHT);
 
   GLfloat *array = malloc(3*WINDOWS_WIDTH*WINDOWS_HEIGHT*sizeof(GLfloat));
   glReadPixels(0, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT, GL_RGB, GL_FLOAT, array);
-  for (size_t y = 0; y < WINDOWS_HEIGHT; y++){
-    for (size_t x = 0; x < WINDOWS_WIDTH; x++){
-      bmp_pixel_init(&img.img_pixels[y][x], 254*array[0+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3], 254*array[1+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3], 254*array[2+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3]);
+  
+  img = (unsigned char *)malloc(3*WINDOWS_WIDTH*WINDOWS_HEIGHT);
+  memset(img,0,3*WINDOWS_WIDTH*WINDOWS_HEIGHT);
+  for(int i=0; i<WINDOWS_WIDTH; i++){
+    for(int j=0; j<WINDOWS_HEIGHT; j++){
+      x=i; y=(WINDOWS_HEIGHT-1)-j;
+      r=254*array[0+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3];
+      g=254*array[1+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3];
+      b=254*array[2+x*3+(WINDOWS_HEIGHT-1-y)*WINDOWS_WIDTH*3];
+      if (r > 255) r=255;
+      if (g > 255) g=255;
+      if (b > 255) b=255;
+      img[(x+y*WINDOWS_WIDTH)*3+2] = (unsigned char)(r);
+      img[(x+y*WINDOWS_WIDTH)*3+1] = (unsigned char)(g);
+      img[(x+y*WINDOWS_WIDTH)*3+0] = (unsigned char)(b);
     }
   }
-
+  unsigned char bmpfileheader[14] = {'B','M', 0,0,0,0, 0,0, 0,0, 54,0,0,0};
+  unsigned char bmpinfoheader[40] = {40,0,0,0, 0,0,0,0, 0,0,0,0, 1,0, 24,0};
+  unsigned char bmppad[3] = {0,0,0};
+  bmpfileheader[ 2] = (unsigned char)(filesize    );
+  bmpfileheader[ 3] = (unsigned char)(filesize>> 8);
+  bmpfileheader[ 4] = (unsigned char)(filesize>>16);
+  bmpfileheader[ 5] = (unsigned char)(filesize>>24);
+  bmpinfoheader[ 4] = (unsigned char)(WINDOWS_WIDTH);
+  bmpinfoheader[ 5] = (unsigned char)(WINDOWS_WIDTH>> 8);
+  bmpinfoheader[ 6] = (unsigned char)(WINDOWS_WIDTH>>16);
+  bmpinfoheader[ 7] = (unsigned char)(WINDOWS_WIDTH>>24);
+  bmpinfoheader[ 8] = (unsigned char)(WINDOWS_HEIGHT);
+  bmpinfoheader[ 9] = (unsigned char)(WINDOWS_HEIGHT>> 8);
+  bmpinfoheader[10] = (unsigned char)(WINDOWS_HEIGHT>>16);
+  bmpinfoheader[11] = (unsigned char)(WINDOWS_HEIGHT>>24);
+  
   sprintf(nome, "anim_%04d.bmp", count_gif);
-  bmp_img_write(&img, nome);
+  f = fopen(nome,"wb");
+  fwrite(bmpfileheader,1,14,f);
+  fwrite(bmpinfoheader,1,40,f);
+  for(int i=0; i<WINDOWS_HEIGHT; i++){
+    fwrite(img+(WINDOWS_WIDTH*(WINDOWS_HEIGHT-i-1)*3),3,WINDOWS_WIDTH,f);
+    fwrite(bmppad,1,(4-(WINDOWS_WIDTH*3)%4)%4,f);
+  }
+  free(img);
+  fclose(f);
   count_gif++;
-  bmp_img_free(&img);
 }
 
 

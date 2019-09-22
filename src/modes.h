@@ -2,7 +2,6 @@
 #include <math.h>
 #include <stdio.h>
 
-#include "libbmp/libbmp.h"
 extern int L;
 extern int NCOLORS;
 extern int para;

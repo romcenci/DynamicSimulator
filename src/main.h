@@ -7,7 +7,6 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "libbmp/libbmp.h"
 #define _USE_MATH_DEFINES
 
 typedef struct { double h, s, v; } HSV_Color;
