@@ -46,19 +46,19 @@
 
 * -m (--mode) : Modo de plot
 	- 0: (1d) Rede fixa (Ex: dampedGKS)
-	<figure><img align=midle src="images/modo0.gif" width="300"></figure>
+	<figure><img align=midle src="images/modo0.gif" width="350"></figure>
 		
 	- 1: (1d) Posição variável (Granular. Ex: Quasicristal)		
-	<figure><img align=midle src="images/modo1.gif" width="300"></figure>
+	<figure><img align=midle src="images/modo1.gif" width="350"></figure>
 		
 	- 2: (2d) Posição fixa (Ex: Ising 2d)		
-	<figure><img align=midle src="images/modo2.gif" width="300"></figure>
+	<figure><img align=midle src="images/modo2.gif" width="350"></figure>
 	
 	- 3: (2d) Posição variável (Granular. Ex: Gás de bilhar)
-	<figure><img align=midle src="images/modo3.gif" width="300"></figure>
+	<figure><img align=midle src="images/modo3.gif" width="350"></figure>
 		
 	- 5: (2d) Posição fixa (Flechas. Ex: Modelo de Heisenberg)
-	<figure><img align=midle src="images/4.png" width="300"></figure>
+	<figure><img align=midle src="images/4.png" width="350"></figure>
 
 ## Arquivo de configuração:
 Escolher as opções no arquivo `dsconfig`, e rodar o simulador sem nenhuma opção, apenas `./DynSim`.
