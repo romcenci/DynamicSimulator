@@ -1,0 +1,61 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" (C) Copyright 2019 Rômulo Cenci <romcenci@gmail.com>,
+.\"
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH dynsim SECTION "September 23 2019"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+.B "dynsim (DynamicSimulator)"
+.RI "- is an open source project for helping with visualization and simulation of physical systems."
+.SH SYNOPSIS
+.RI "./program |"
+.B dynsim
+.RI [ options ]...
+.SH DESCRIPTION
+.B dynsim
+.RI "is a program writen in C and use OpenGL and GLFW to create a window that shows the simulation, the data for the program are passed by the pipe '|' program, mostly present on linux systems. For now, are 5 modes of visualization, one-dimensional mode that shows a grid with color scale, one one-dimensional mode with particles, a two-dimensional mode of grid, and a two-dimensional mode of circles (particles), and for addition we are working on a mode of arrows, for systems like the Heisenberg model."
+.SH OPTIONS
+.TP
+.BI "\-m, \-\-mode[=" 0/1/2/3 "]"
+Choose the mode
+.TP
+.B \-l
+Vector size/Number of particle
+.TP
+.B \-h, \-\-height
+Screen height
+.TP
+.B \-w, \-\-width
+Screen width
+.TP
+.B \-c, \-\-color
+Specifies file color palette (hexadecimal format 0xRRGGBB)
+.TP
+.BI "\-b, \-\-colorbox[=" right/left/top/bottom "]"
+In modes 0 and 2 shows the color palette at the position
+.TP
+.B \-g, \-\-gif
+Generate gif
+.TP
+.BI "\-f, \-\-gif_framerate=" NUM
+Screen width
+.SH FILES
+.TP
+.RI "" "dsconfig"
+When DynamicSimulator runs, it looks at this file in the folder of the program from when dynsim is called and run with the configurations set in this file.
+.SH SEE ALSO
+.TP
+.RI "For a full documentation see our github repo at " "https://github.com/romcenci/DynamicSimulator"
