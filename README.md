@@ -23,10 +23,10 @@
 	
 ## Para rodar:
 * Sintaxe:
-	- `./a.out | ./DynSim -OPÇÕES`		
+	- `./a.out | ./dynsim -OPÇÕES`		
 * Exemplo:
 	- `make demos`
-	- `./demos/ogl_ex2_ising.out | ./DynSim -m 2 -l 300 --height 600 --width 800 --color color.txt`
+	- `./demos/ogl_ex2_ising.out | ./dynsim -m 2 -l 300 --height 600 --width 800 --color color.txt`
 		
 ## Interativo:
 * <kbd>Spacebar</kbd> : Pausar
@@ -67,7 +67,7 @@
 	<figure><img align=midle src="images/4.png" width="350"></figure>
 
 ## Arquivo de configuração:
-Escolher as opções no arquivo `dsconfig`, e rodar o simulador sem nenhuma opção, apenas `./DynSim`.
+Escolher as opções no arquivo `dsconfig`, e rodar o simulador sem nenhuma opção, apenas `./dynsim`.
 Exemplo:
 ```
 mode:   3
