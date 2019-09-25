@@ -1,9 +1,15 @@
 # DynamicSimulator
 
 ## Instalação:
+
 ### Distribuições Debian-based:
 * `$ wget https://github.com/romcenci/DynamicSimulator/releases/download/v1.0.0/dynsim_1.0.0-1_amd64.deb`
 * `# apt install ./dynsim_1.0.0-1_amd64.deb`
+
+### Distribuições Arch-based:
+* `$ wget https://github.com/romcenci/DynamicSimulator/releases/download/v1.0.0/dynsim-1.0.0-1-x86_64.pkg.tar.xz`
+* `# pacman -U dynsim-1.0.0-1-x86_64.pkg.tar.xz`
+
 ### Instalação manual:
 * Instalar glfw3:
 	- `$ sudo apt-get install libglfw3-dev`
