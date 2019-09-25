@@ -19,18 +19,18 @@ src/other.o: src/other.c
 	gcc -c src/other.c -lm -lGL -lglfw -o src/other.o
 
 src/main: src/main.c
-	gcc src/main.c -lm -lGL -lglfw -o DynSim src/colors.o src/draws.o src/modes.o src/other.o
+	gcc src/main.c -lm -lGL -lglfw -o dynsim src/colors.o src/draws.o src/modes.o src/other.o
 
 #----- Install
 PREFIX = /usr/local
 .PHONY: install
-install: DynSim
+install: dynsim
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
-	cp $< $(DESTDIR)$(PREFIX)/bin/DynSim
+	cp $< $(DESTDIR)$(PREFIX)/bin/dynsim
 
 .PHONY: uninstall
 uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/bin/DynSim
+	rm -f $(DESTDIR)$(PREFIX)/bin/dynsim
 
 #----- Demos
 $(dlist:.c=.out): %.out: %.c $(wildcard %.h)
@@ -46,4 +46,4 @@ clean:
 	rm -f src/draws.o
 	rm -f src/modes.o
 	rm -f src/other.o
-	rm -f DynSim
+	rm -f dynsim
