@@ -154,11 +154,13 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
   glfwMakeContextCurrent(window);
-  glEnable(GL_POINT_SMOOTH);
-  glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+  /* glEnable(GL_POINT_SMOOTH); */
+  /* glHint(GL_POINT_SMOOTH_HINT, GL_NICEST); */
+  /* glEnable(GL_BLEND); */
+  /* glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); */
+  glEnable(GL_POINTS);
+  
   glfwSetCursorPosCallback(window, cursorPositionCallback);
   glfwSetMouseButtonCallback(window, mouseButtonCallback);
   glfwSetKeyCallback(window, keyCallback);
