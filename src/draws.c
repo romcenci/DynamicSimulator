@@ -85,7 +85,7 @@ void DrawArrow(Vertex v1, Vertex v2, GLfloat width) {
 
 void drawFrame() {
   int i;
-
+  
   if (COLOR_BOX == 0 || MODE == 1 || MODE == 3) {
     glPushMatrix();
     glTranslatef(-1, -1, 0);

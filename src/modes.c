@@ -70,14 +70,13 @@ void particleMode(int tempo, double **GRID) {
   if (scanf_flag == -1)
     glfwSetWindowShouldClose(window, 1);
 
-  yy = (float)(-(tempo % 600) + 300.0f) / 330.0f;
   glClear(GL_COLOR_BUFFER_BIT);
   for (j = 0; j < 600; j++) {
     for (i = 0; i < L; i++) {
       if (GRID[j][i] != 0) {
         cor = 1.0f;
         v.x = (2 * GRID[j][i] - 1);
-        v.y = (float)(-j + 300.0f) / 330.0f;
+        v.y = (float)(-j + 300.0f) / 300.0f;
         v.z = 0.0f;
         v.r = cor;
         v.g = cor;
