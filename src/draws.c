@@ -56,8 +56,7 @@ void DrawArrow(Vertex v1, Vertex v2, GLfloat width) {
   int i;
   double theta = atan2((v2.y - v1.y), (v2.x - v1.x));
   double R = sqrt(pow(v2.y - v1.y, 2) + pow(v2.x - v1.x, 2));
-  double rho =
-      sqrt(pow(v2.y - v1.y, 2) + pow(v2.x - v1.x, 2) + pow(v2.z - v1.z, 2));
+  double rho = sqrt(pow(v2.y - v1.y, 2) + pow(v2.x - v1.x, 2) + pow(v2.z - v1.z, 2));
   double headSize = 0.5;
 
   glPushMatrix();
@@ -114,83 +113,33 @@ void drawFrame() {
   glEnd();
 
   // Draw the colorbox
-  glTranslatef(offset_x, offset_y, 0);
-  if(COLOR_BOX == 1){
-    glBegin(GL_QUADS);
-    for (i = 0; i < NCOLORS - 1; i++) {
-      glColor3f(pal[i].r, pal[i].g, pal[i].b);
-      glVertex3f((1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 1.85, 0);
-      glVertex3f((1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 1.95, 0);
-      glColor3f(pal[i + 1].r, pal[i + 1].g, pal[i + 1].b);
-      glVertex3f((1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 1.95, 0);
-      glVertex3f((1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 1.85, 0);
-    }
-    glEnd();
-    glColor3f(1, 1, 1);
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(0.2, 1.85);
-    glVertex2f(1.8, 1.85);
-    glVertex2f(1.8, 1.95);
-    glVertex2f(0.2, 1.95);
-    glEnd();
+  glTranslatef(((COLOR_BOX+1)%2)*(-(offset_x/0.075-1.0)/2.*(2*0.825)-0.825), (COLOR_BOX%2)*(-(offset_y/0.075-1.0)/2.*(1.725-0.075)-1.725)+((COLOR_BOX+1)%2)*(-0.9), 0.0);
+
+  double angle = ((COLOR_BOX+1)%2)*90.;
+  glPushMatrix();
+
+  glTranslatef(1.0, 1.9, 0.0);
+  glRotatef(angle, 0., 0., 1.);
+  glTranslatef(-1.0, -1.9, 0.0);
+
+  glBegin(GL_QUADS);
+  for (i = 0; i < NCOLORS - 1; i++) {
+    glColor3f(pal[i].r, pal[i].g, pal[i].b);
+    glVertex3f((1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 1.85, 0);
+    glVertex3f((1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 1.95, 0);
+    glColor3f(pal[i + 1].r, pal[i + 1].g, pal[i + 1].b);
+    glVertex3f((1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 1.95, 0);
+    glVertex3f((1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 1.85, 0);
   }
-  else if(COLOR_BOX == 2){
-    glBegin(GL_QUADS);
-    for (i = 0; i < NCOLORS - 1; i++) {
-      glColor3f(pal[i].r, pal[i].g, pal[i].b);
-      glVertex3f(1.85, (1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 0);
-      glVertex3f(1.95, (1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 0);
-      glColor3f(pal[i + 1].r, pal[i + 1].g, pal[i + 1].b);
-      glVertex3f(1.95, (1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 0);
-      glVertex3f(1.85, (1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 0);
-    }
-    glEnd();
-    glColor3f(1, 1, 1);
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(1.85, 0.2);
-    glVertex2f(1.85, 1.8);
-    glVertex2f(1.95, 1.8);
-    glVertex2f(1.95, 0.2);
-    glEnd();
-  }
-  else if (COLOR_BOX == 3) {
-    glBegin(GL_QUADS);
-    for (i = 0; i < NCOLORS - 1; i++) {
-      glColor3f(pal[i].r, pal[i].g, pal[i].b);
-      glVertex3f((1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 0.15, 0);
-      glVertex3f((1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 0.05, 0);
-      glColor3f(pal[i + 1].r, pal[i + 1].g, pal[i + 1].b);
-      glVertex3f((1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 0.05, 0);
-      glVertex3f((1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 0.15, 0);
-    }
-    glEnd();
-    glColor3f(1, 1, 1);
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(0.2, 0.15);
-    glVertex2f(1.8, 0.15);
-    glVertex2f(1.8, 0.05);
-    glVertex2f(0.2, 0.05);
-    glEnd();
-  }
-  else if (COLOR_BOX == 4) {
-    glBegin(GL_QUADS);
-    for (i = 0; i < NCOLORS - 1; i++) {
-      glColor3f(pal[i].r, pal[i].g, pal[i].b);
-      glVertex3f(0.15, (1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 0);
-      glVertex3f(0.05, (1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 0);
-      glColor3f(pal[i + 1].r, pal[i + 1].g, pal[i + 1].b);
-      glVertex3f(0.05, (1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 0);
-      glVertex3f(0.15, (1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 0);
-    }
-    glEnd();
-    glColor3f(1, 1, 1);
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(0.15, 0.2);
-    glVertex2f(0.15, 1.8);
-    glVertex2f(0.05, 1.8);
-    glVertex2f(0.05, 0.2);
-    glEnd();
-  }
+  glEnd();
+  glColor3f(1, 1, 1);
+  glBegin(GL_LINE_LOOP);
+  glVertex2f(0.2, 1.85);
+  glVertex2f(1.8, 1.85);
+  glVertex2f(1.8, 1.95);
+  glVertex2f(0.2, 1.95);
+  glEnd();
+  glPopMatrix();
   
   glPopMatrix();
 }
