@@ -2,7 +2,7 @@
 
 GLFWwindow *window;
 
-int L = 200;
+int L = 300;
 int MODE = 3;
 int WINDOWS_HEIGHT = 500;
 int WINDOWS_WIDTH = 500;
@@ -22,7 +22,7 @@ int getopts(int argc, char *argv[]) {
         {"height", required_argument, 0, 'h'},
         {"width", required_argument, 0, 'w'},
         {"color", required_argument, 0, 'c'},
-        {"colorbox", required_argument, 0, 'b'},
+        {"colorbox", optional_argument, 0, 'b'},
         {"gif", no_argument, 0, 'g'},
         {"gif_framerate", required_argument, 0, 'f'},
         {0, 0, 0, 0}};
@@ -31,7 +31,7 @@ int getopts(int argc, char *argv[]) {
     int option_index = 0;
 
     int c =
-        getopt_long(argc, argv, "l:m:h:w:c:b:gf:", long_options, &option_index);
+        getopt_long(argc, argv, "l:m:h:w:c:b::gf:", long_options, &option_index);
 
     // Detect the end of the options.
     if (c == -1) {
@@ -63,17 +63,22 @@ int getopts(int argc, char *argv[]) {
       break;
 
     case 'b':
-      if (strcmp(strdup(optarg), "top") == 0) {
-        COLOR_BOX = 1;
+      if(optarg){
+	if (strcmp(strdup(optarg), "top") == 0) {
+	  COLOR_BOX = 1;
+	}
+	if (strcmp(strdup(optarg), "right") == 0) {
+	  COLOR_BOX = 2;
+	}
+	if (strcmp(strdup(optarg), "bottom") == 0) {
+	  COLOR_BOX = 3;
+	}
+	if (strcmp(strdup(optarg), "left") == 0) {
+	  COLOR_BOX = 4;
+	}
       }
-      if (strcmp(strdup(optarg), "right") == 0) {
-        COLOR_BOX = 2;
-      }
-      if (strcmp(strdup(optarg), "bottom") == 0) {
+      else{
         COLOR_BOX = 3;
-      }
-      if (strcmp(strdup(optarg), "left") == 0) {
-        COLOR_BOX = 4;
       }
       break;
 

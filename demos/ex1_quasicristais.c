@@ -34,12 +34,12 @@ double min(double x, double y){
   return (fabs(x)<fabs(y) ? x : y);
 }
 
-#define L 5 // Volume
-#define N 500 // Número de particulas
+#define L 2 // Volume
+#define N 300 // Número de particulas
 #define alfa 3 // Gaussiana
 #define R 0.1 // Escala potencial
 #define eps 0.0333 // Escala potencial
-#define dt 0.001// 0.001
+#define dt 0.0002// 0.001
 
 void update(double *x, double T){
   int i, j;
@@ -69,18 +69,19 @@ int main(int argc, char **argv){
   double x[N], T;
   FILE *f1;
 
-  if(argc==2){
-    T=atof(argv[1]);
-  }
-  else{
-    printf("Digite no formato ./a.out \"Temperatura\"\n");
-    return 1;
-  }
-    
+  /* if(argc==2){ */
+  /*   T=atof(argv[1]); */
+  /* } */
+  /* else{ */
+  /*   printf("Digite no formato ./a.out \"Temperatura\"\n"); */
+  /*   return 1; */
+  /* } */
+  T=0.03;
+  
   srand(time(0));
   for(i=0; i<N; i++){x[i]=(double)rand()/RAND_MAX*L;}
 
-  for(k=0; k<1000; k++){
+  for(k=0; k<10000; k++){
     update(x, T);
 
     for(i=0; i<N; i++){
