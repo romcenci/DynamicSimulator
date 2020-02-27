@@ -56,8 +56,7 @@ void DrawArrow(Vertex v1, Vertex v2, GLfloat width) {
   int i;
   double theta = atan2((v2.y - v1.y), (v2.x - v1.x));
   double R = sqrt(pow(v2.y - v1.y, 2) + pow(v2.x - v1.x, 2));
-  double rho =
-      sqrt(pow(v2.y - v1.y, 2) + pow(v2.x - v1.x, 2) + pow(v2.z - v1.z, 2));
+  double rho = sqrt(pow(v2.y - v1.y, 2) + pow(v2.x - v1.x, 2) + pow(v2.z - v1.z, 2));
   double headSize = 0.5;
 
   glPushMatrix();
@@ -85,159 +84,62 @@ void DrawArrow(Vertex v1, Vertex v2, GLfloat width) {
 
 void drawFrame() {
   int i;
+  double offset_x, offset_y;
   
-  if (COLOR_BOX == 0 || MODE == 1 || MODE == 3) {
-    glPushMatrix();
-    glTranslatef(-1, -1, 0);
-    glColor3f(0, 0, 0);
-    glRectf(0, 0, 2, 0.2);
-    glRectf(0, 0, 0.2, 2);
-    glRectf(1.8, 0, 2, 2);
-    glRectf(0, 1.8, 2, 2);
+  glPushMatrix();
+  glTranslatef(-1, -1, 0);
 
-    glColor3f(1, 1, 1);
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(0.2, 0.2);
-    glVertex2f(0.2, 1.8);
-    glVertex2f(1.8, 1.8);
-    glVertex2f(1.8, 0.2);
-    glEnd();
-    glPopMatrix();
-  } else {
-    glPushMatrix();
-    glTranslatef(-1, -1, 0);
-    if (COLOR_BOX == 1) {
-      glTranslatef(0, -0.075, 0);
-      glColor3f(0, 0, 0);
-      glRectf(0, 0, 2, 0.2);
-      glRectf(0, 0, 0.2, 2);
-      glRectf(1.8, 0, 2, 2);
-      glRectf(0, 1.8, 2, 2.075);
-      glColor3f(1, 1, 1);
-      glBegin(GL_LINE_LOOP);
-      glVertex2f(0.2, 0.2);
-      glVertex2f(0.2, 1.8);
-      glVertex2f(1.8, 1.8);
-      glVertex2f(1.8, 0.2);
-      glEnd();
-
-      glBegin(GL_QUADS);
-      for (i = 0; i < NCOLORS - 1; i++) {
-        glColor3f(pal[i].r, pal[i].g, pal[i].b);
-        glVertex3f((1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 1.85, 0);
-        glVertex3f((1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 1.95, 0);
-        glColor3f(pal[i + 1].r, pal[i + 1].g, pal[i + 1].b);
-        glVertex3f((1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 1.95, 0);
-        glVertex3f((1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 1.85, 0);
-      }
-      glEnd();
-      glColor3f(1, 1, 1);
-      glBegin(GL_LINE_LOOP);
-      glVertex2f(0.2, 1.85);
-      glVertex2f(1.8, 1.85);
-      glVertex2f(1.8, 1.95);
-      glVertex2f(0.2, 1.95);
-    }
-
-    else if (COLOR_BOX == 2) {
-      glTranslatef(-0.075, 0, 0);
-      glColor3f(0, 0, 0);
-      glRectf(0, 0, 2, 0.2);
-      glRectf(0, 0, 0.2, 2);
-      glRectf(1.8, 0, 2.075, 2);
-      glRectf(0, 1.8, 2, 2);
-      glColor3f(1, 1, 1);
-      glBegin(GL_LINE_LOOP);
-      glVertex2f(0.2, 0.2);
-      glVertex2f(0.2, 1.8);
-      glVertex2f(1.8, 1.8);
-      glVertex2f(1.8, 0.2);
-      glEnd();
-
-      glBegin(GL_QUADS);
-      for (i = 0; i < NCOLORS - 1; i++) {
-        glColor3f(pal[i].r, pal[i].g, pal[i].b);
-        glVertex3f(1.85, (1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 0);
-        glVertex3f(1.95, (1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 0);
-        glColor3f(pal[i + 1].r, pal[i + 1].g, pal[i + 1].b);
-        glVertex3f(1.95, (1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 0);
-        glVertex3f(1.85, (1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 0);
-      }
-      glEnd();
-      glColor3f(1, 1, 1);
-      glBegin(GL_LINE_LOOP);
-      glVertex2f(1.85, 0.2);
-      glVertex2f(1.85, 1.8);
-      glVertex2f(1.95, 1.8);
-      glVertex2f(1.95, 0.2);
-    }
-
-    if (COLOR_BOX == 3) {
-      glTranslatef(0, 0.075, 0);
-      glColor3f(0, 0, 0);
-      glRectf(0, -0.075, 2, 0.2);
-      glRectf(0, 0, 0.2, 2);
-      glRectf(1.8, 0, 2, 2);
-      glRectf(0, 1.8, 2, 2);
-      glColor3f(1, 1, 1);
-      glBegin(GL_LINE_LOOP);
-      glVertex2f(0.2, 0.2);
-      glVertex2f(0.2, 1.8);
-      glVertex2f(1.8, 1.8);
-      glVertex2f(1.8, 0.2);
-      glEnd();
-
-      glBegin(GL_QUADS);
-      for (i = 0; i < NCOLORS - 1; i++) {
-        glColor3f(pal[i].r, pal[i].g, pal[i].b);
-        glVertex3f((1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 0.15, 0);
-        glVertex3f((1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 0.05, 0);
-        glColor3f(pal[i + 1].r, pal[i + 1].g, pal[i + 1].b);
-        glVertex3f((1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 0.05, 0);
-        glVertex3f((1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 0.15, 0);
-      }
-      glEnd();
-      glColor3f(1, 1, 1);
-      glBegin(GL_LINE_LOOP);
-      glVertex2f(0.2, 0.15);
-      glVertex2f(1.8, 0.15);
-      glVertex2f(1.8, 0.05);
-      glVertex2f(0.2, 0.05);
-    }
-
-    else if (COLOR_BOX == 4) {
-      glTranslatef(0.075, 0, 0);
-      glColor3f(0, 0, 0);
-      glRectf(0, 0, 2, 0.2);
-      glRectf(-0.075, 0, 0.2, 2);
-      glRectf(1.8, 0, 2, 2);
-      glRectf(0, 1.8, 2, 2);
-      glColor3f(1, 1, 1);
-      glBegin(GL_LINE_LOOP);
-      glVertex2f(0.2, 0.2);
-      glVertex2f(0.2, 1.8);
-      glVertex2f(1.8, 1.8);
-      glVertex2f(1.8, 0.2);
-      glEnd();
-
-      glBegin(GL_QUADS);
-      for (i = 0; i < NCOLORS - 1; i++) {
-        glColor3f(pal[i].r, pal[i].g, pal[i].b);
-        glVertex3f(0.15, (1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 0);
-        glVertex3f(0.05, (1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 0);
-        glColor3f(pal[i + 1].r, pal[i + 1].g, pal[i + 1].b);
-        glVertex3f(0.05, (1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 0);
-        glVertex3f(0.15, (1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 0);
-      }
-      glEnd();
-      glColor3f(1, 1, 1);
-      glBegin(GL_LINE_LOOP);
-      glVertex2f(0.15, 0.2);
-      glVertex2f(0.15, 1.8);
-      glVertex2f(0.05, 1.8);
-      glVertex2f(0.05, 0.2);
-    }
-    glEnd();
-    glPopMatrix();
+  offset_x = ((COLOR_BOX+1)%2)*(COLOR_BOX-3.)*0.075;
+  offset_y = (COLOR_BOX%2)*(COLOR_BOX-2.)*0.075;
+  if(COLOR_BOX == 0 || MODE == 1 || MODE == 3){
+    offset_x = 0;
+    offset_y = 0;
   }
+
+  // Black rectangles to make the borders
+  glColor3f(0, 0, 0);
+  glRectf(0, 0, 2, 0.2+offset_y);
+  glRectf(0, 0, 0.2+offset_x, 2);
+  glRectf(1.8+offset_x, 0, 2, 2);
+  glRectf(0, 1.8+offset_y, 2, 2);
+
+  // White line in contour
+  glColor3f(1, 1, 1);
+  glBegin(GL_LINE_LOOP);
+  glVertex2f(0.2+offset_x, 0.2+offset_y);
+  glVertex2f(0.2+offset_x, 1.8+offset_y);
+  glVertex2f(1.8+offset_x, 1.8+offset_y);
+  glVertex2f(1.8+offset_x, 0.2+offset_y);
+  glEnd();
+
+  // Draw the colorbox
+  glTranslatef(((COLOR_BOX+1)%2)*(-(offset_x/0.075-1.0)/2.*(2*0.825)-0.825), (COLOR_BOX%2)*(-(offset_y/0.075-1.0)/2.*(1.725-0.075)-1.725)+((COLOR_BOX+1)%2)*(-0.9), 0.0);
+
+  double angle = ((COLOR_BOX+1)%2)*90.;
+  glPushMatrix();
+
+  glTranslatef(1.0, 1.9, 0.0);
+  glRotatef(angle, 0., 0., 1.);
+  glTranslatef(-1.0, -1.9, 0.0);
+
+  glBegin(GL_QUADS);
+  for (i = 0; i < NCOLORS - 1; i++) {
+    glColor3f(pal[i].r, pal[i].g, pal[i].b);
+    glVertex3f((1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 1.85, 0);
+    glVertex3f((1.8 - 0.2) * i / (NCOLORS - 1) + 0.2, 1.95, 0);
+    glColor3f(pal[i + 1].r, pal[i + 1].g, pal[i + 1].b);
+    glVertex3f((1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 1.95, 0);
+    glVertex3f((1.8 - 0.2) * (i + 1) / (NCOLORS - 1) + 0.2, 1.85, 0);
+  }
+  glEnd();
+  glColor3f(1, 1, 1);
+  glBegin(GL_LINE_LOOP);
+  glVertex2f(0.2, 1.85);
+  glVertex2f(1.8, 1.85);
+  glVertex2f(1.8, 1.95);
+  glVertex2f(0.2, 1.95);
+  glEnd();
+  glPopMatrix();
+  
+  glPopMatrix();
 }
