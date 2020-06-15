@@ -207,6 +207,7 @@ int main(int argc, char *argv[]) {
       glPushMatrix();
 
       mouseTranslate();
+      glTranslatef(0, -0.05, 0);
       glTranslatef(horizontal + offset_x, offset_y, 0);
       glScalef(zoom, 0.8, 0);
 
@@ -251,6 +252,7 @@ int main(int argc, char *argv[]) {
       glPushMatrix();
 
       mouseTranslate();
+      glTranslatef(0, -0.05, 0);
       glTranslatef(horizontal, 0, 0);
       glScalef(zoom, 0.8, 0);
 
@@ -306,6 +308,7 @@ int main(int argc, char *argv[]) {
       glPushMatrix();
 
       mouseTranslate();
+      glTranslatef(0, -0.05, 0);
       glTranslatef(horizontal + offset_x, vertical + offset_y, 0);
       glScalef(zoom, zoom, 0);
 
@@ -348,6 +351,7 @@ int main(int argc, char *argv[]) {
       glPushMatrix();
 
       mouseTranslate();
+      glTranslatef(0, -0.05, 0);
       glTranslatef(horizontal, vertical, 0);
       glScalef(zoom, zoom, 0);
 

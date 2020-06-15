@@ -3,9 +3,9 @@
 #include <math.h>
 #include <time.h>
 
-#define N 200
+#define N 300
 #define L 1.0
-#define R 0.028
+#define R 0.004
 #define dt 0.002
 
 typedef struct {
