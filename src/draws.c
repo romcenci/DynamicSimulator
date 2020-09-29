@@ -8,9 +8,10 @@ extern int COLOR_BOX;
 extern int NCOLORS;
 extern int MODE;
 
-struct Color {
-  double r, g, b;
-} * pal;
+extern struct Color { double r, g, b; } *pal;
+/* struct Color { */
+/*   double r, g, b; */
+/* } * pal; */
 
 typedef struct {
   GLfloat x, y, z;

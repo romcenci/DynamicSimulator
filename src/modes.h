@@ -14,9 +14,10 @@ typedef struct { double h, s, v; } HSV_Color;
 
 typedef struct { double r, g, b; } RGB_Color;
 
-struct Color {
-  double r, g, b;
-} * pal;
+extern struct Color { double r, g, b; } *pal;
+/* struct Color { */
+/*   double r, g, b; */
+/* } * pal; */
 
 typedef struct {
   GLfloat x, y, z;

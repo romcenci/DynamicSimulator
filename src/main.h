@@ -20,9 +20,10 @@ typedef struct {
 
 typedef struct { GLfloat x, y, z; } Data;
 
-struct Color {
-  double r, g, b;
-} * pal;
+extern struct Color { double r, g, b; } *pal;
+/* struct Color { */
+/*   double r, g, b; */
+/* } * pal; */
 
 void drawPoint(Vertex v1, GLfloat size);
 void drawPointsDemo(int width, int height);
