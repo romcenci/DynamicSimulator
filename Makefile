@@ -19,7 +19,7 @@ src/other.o: src/other.c
 	gcc -c src/other.c -lm -lGL -lglfw -o src/other.o
 
 src/main: src/main.c
-	gcc src/main.c -lm -lGL -lglfw -o dynsim src/colors.o src/draws.o src/modes.o src/other.o
+	gcc src/main.c -lGL -lglfw -o dynsim src/colors.o src/draws.o src/modes.o src/other.o -lm
 
 #----- Install
 PREFIX = /usr/local
