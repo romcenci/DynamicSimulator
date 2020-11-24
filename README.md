@@ -14,7 +14,7 @@
 * `cd dynsim`
 * `makepkg -si`
 
-### Instalação manual:
+### Instalação manual (qualquer OS):
 * Instalar glfw3:
 	- `$ sudo apt-get install libglfw3-dev`
 * Clonar o repositório com:
