@@ -27,10 +27,12 @@ PREFIX = /usr/local
 install: dynsim
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	cp $< $(DESTDIR)$(PREFIX)/bin/dynsim
+	cp docs/dynsim.1.gz $(DESTDIR)/usr/share/man/man1/
 
 .PHONY: uninstall
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/dynsim
+	rm -f $(DESTDIR)/usr/share/man/man1/dynsim.1.gz
 
 #----- Demos
 $(dlist:.c=.out): %.out: %.c $(wildcard %.h)
