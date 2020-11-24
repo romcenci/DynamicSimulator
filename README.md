@@ -7,7 +7,11 @@
 * `# apt install ./dynsim_1.0.0-1_amd64.deb`
 
 ### Distribuições Arch-based:
-* `$ yaourt -S dynsim`
+* `$ yay -s dynsim`
+`yay` pode ser substituído por qualquer AUR helper de sua escolha ou ainda:
+* `git clone https://aur.archlinux.org/dynsim.git`
+* `cd dynsim`
+* `makepkg -si`
 
 ### Instalação manual:
 * Instalar glfw3:
