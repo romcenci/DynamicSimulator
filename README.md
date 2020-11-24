@@ -8,6 +8,7 @@
 
 ### Distribuições Arch-based:
 * `$ yay -s dynsim`
+
 `yay` pode ser substituído por qualquer AUR helper de sua escolha ou ainda:
 * `git clone https://aur.archlinux.org/dynsim.git`
 * `cd dynsim`
