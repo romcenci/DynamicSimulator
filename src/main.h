@@ -9,18 +9,31 @@
 
 #define _USE_MATH_DEFINES
 
-typedef struct { double h, s, v; } HSV_Color;
+typedef struct
+{
+  double h, s, v;
+} HSV_Color;
 
-typedef struct { double r, g, b; } RGB_Color;
+typedef struct
+{
+  double r, g, b;
+} RGB_Color;
 
-typedef struct {
+typedef struct
+{
   GLfloat x, y, z;
   GLfloat r, g, b, a;
 } Vertex;
 
-typedef struct { GLfloat x, y, z; } Data;
+typedef struct
+{
+  GLfloat x, y, z;
+} Data;
 
-extern struct Color { double r, g, b; } *pal;
+extern struct Color
+{
+  double r, g, b;
+} *pal;
 /* struct Color { */
 /*   double r, g, b; */
 /* } * pal; */
@@ -36,6 +49,8 @@ void gridMode(int tempo, double **GRID);
 void particleMode(int tempo, double **GRID);
 void grid2dMode(int tempo, double **GRID);
 void particle2dMode(int tempo, double **GRID);
+void particle2dMode_noGrid(int tempo, int n_part);
+
 void SpectreMode();
 void ArrowMode(int tempo, double **GRID);
 

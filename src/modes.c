@@ -1,14 +1,17 @@
 #include "modes.h"
 
-void gridMode(int tempo, double **GRID) {
+void gridMode(int tempo, double **GRID)
+{
   int i, j, k, kp;
   float cor;
   float yy;
   Vertex v;
   double r, g, b, size;
   int scanf_flag;
-  if (para == 0) {
-    for (i = 0; i < L; i++) {
+  if (para == 0)
+  {
+    for (i = 0; i < L; i++)
+    {
       scanf_flag = scanf("%f\n", &cor);
       GRID[tempo % 600][i] = (cor + 1.) / 2.0;
     }
@@ -16,23 +19,30 @@ void gridMode(int tempo, double **GRID) {
   if (scanf_flag == -1)
     glfwSetWindowShouldClose(window, 1);
 
-  if (ceil(zoom * WINDOWS_WIDTH / L) > ceil(zoom * WINDOWS_HEIGHT / 600)) {
+  if (ceil(zoom * WINDOWS_WIDTH / L) > ceil(zoom * WINDOWS_HEIGHT / 600))
+  {
     size = ceil(zoom * WINDOWS_WIDTH / L);
-  } else {
+  }
+  else
+  {
     size = ceil(zoom * WINDOWS_HEIGHT / 600);
   }
 
   glClear(GL_COLOR_BUFFER_BIT);
-  for (j = 0; j < 600; j++) {
+  for (j = 0; j < 600; j++)
+  {
     // j=tempo%600;
-    for (i = 0; i < L; i++) {
+    for (i = 0; i < L; i++)
+    {
       v.x = (i * (2. / (L - 1)) - 1);
       v.y = -(j * (2. / (600. - 1)) - 1);
       v.z = 0.0f;
 
-      for (k = 0; k < NCOLORS - 1; k++) {
+      for (k = 0; k < NCOLORS - 1; k++)
+      {
         if (GRID[j][i] >= (double)k / (NCOLORS - 1.) &&
-            GRID[j][i] <= (double)(k + 1.) / (NCOLORS - 1.)) {
+            GRID[j][i] <= (double)(k + 1.) / (NCOLORS - 1.))
+        {
           v.r = pal[k].r +
                 (pal[k + 1].r - pal[k].r) *
                     (GRID[j][i] - (double)k / (NCOLORS - 1.)) /
@@ -54,15 +64,18 @@ void gridMode(int tempo, double **GRID) {
   }
 }
 
-void particleMode(int tempo, double **GRID) {
+void particleMode(int tempo, double **GRID)
+{
   int i, j;
   float cor;
   float yy, xx;
   int scanf_flag;
   Vertex v;
 
-  for (i = 0; i < L; i++) {
-    if (para == 0) {
+  for (i = 0; i < L; i++)
+  {
+    if (para == 0)
+    {
       scanf_flag = scanf("%f\n", &xx);
     }
     GRID[tempo % 600][i] = xx;
@@ -71,9 +84,12 @@ void particleMode(int tempo, double **GRID) {
     glfwSetWindowShouldClose(window, 1);
 
   glClear(GL_COLOR_BUFFER_BIT);
-  for (j = 0; j < 600; j++) {
-    for (i = 0; i < L; i++) {
-      if (GRID[j][i] != 0) {
+  for (j = 0; j < 600; j++)
+  {
+    for (i = 0; i < L; i++)
+    {
+      if (GRID[j][i] != 0)
+      {
         cor = 1.0f;
         v.x = (2 * GRID[j][i] - 1);
         v.y = (float)(-j + 300.0f) / 300.0f;
@@ -89,7 +105,8 @@ void particleMode(int tempo, double **GRID) {
   }
 }
 
-void grid2dMode(int tempo, double **GRID) {
+void grid2dMode(int tempo, double **GRID)
+{
   int i, j, k;
   double cor, size, alfa1, alfa2;
   int scanf_flag;
@@ -99,17 +116,23 @@ void grid2dMode(int tempo, double **GRID) {
   size = ceil(zoom * WINDOWS_WIDTH / L);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  if (WINDOWS_WIDTH >= WINDOWS_HEIGHT) {
+  if (WINDOWS_WIDTH >= WINDOWS_HEIGHT)
+  {
     alfa1 = (double)WINDOWS_HEIGHT / WINDOWS_WIDTH;
     alfa2 = 1.;
-  } else if (WINDOWS_WIDTH < WINDOWS_HEIGHT) {
+  }
+  else if (WINDOWS_WIDTH < WINDOWS_HEIGHT)
+  {
     alfa1 = 1.;
     alfa2 = (double)WINDOWS_WIDTH / WINDOWS_HEIGHT;
   }
 
-  for (j = 0; j < L; j++) {
-    for (i = 0; i < L; i++) {
-      if (para == 0) {
+  for (j = 0; j < L; j++)
+  {
+    for (i = 0; i < L; i++)
+    {
+      if (para == 0)
+      {
         scanf_flag = scanf("%lf\n", &cor);
         cor = (cor + 1.0) / 2.0;
         GRID[i][j] = cor;
@@ -119,9 +142,11 @@ void grid2dMode(int tempo, double **GRID) {
       v.y = (j * (2. / (L - 1)) - 1) * alfa2;
 
       v.z = 0.0f;
-      for (k = 0; k < NCOLORS - 1; k++) {
+      for (k = 0; k < NCOLORS - 1; k++)
+      {
         if (GRID[i][j] >= (double)k / (NCOLORS - 1.) &&
-            GRID[i][j] <= (double)(k + 1.) / (NCOLORS - 1.)) {
+            GRID[i][j] <= (double)(k + 1.) / (NCOLORS - 1.))
+        {
           v.r = pal[k].r +
                 (pal[k + 1].r - pal[k].r) *
                     (GRID[i][j] - (double)k / (NCOLORS - 1.)) /
@@ -144,7 +169,8 @@ void grid2dMode(int tempo, double **GRID) {
     glfwSetWindowShouldClose(window, 1);
 }
 
-void particle2dMode(int tempo, double **GRID) {
+void particle2dMode(int tempo, double **GRID)
+{
   int i;
   double cor, xx, yy, r;
   int scanf_flag;
@@ -153,8 +179,10 @@ void particle2dMode(int tempo, double **GRID) {
 
   glClear(GL_COLOR_BUFFER_BIT);
 
-  for (i = 0; i < L; i++) {
-    if (para == 0) {
+  for (i = 0; i < L; i++)
+  {
+    if (para == 0)
+    {
       scanf_flag = scanf("%lf %lf %lf\n", &xx, &yy, &r);
       GRID[i][0] = xx;
       GRID[i][1] = yy;
@@ -174,7 +202,38 @@ void particle2dMode(int tempo, double **GRID) {
     glfwSetWindowShouldClose(window, 1);
 }
 
-void ArrowMode(int tempo, double **GRID) {
+void particle2dMode_noGrid(int tempo, int n_part)
+{
+  int i;
+  double cor, xx, yy, r;
+  int scanf_flag;
+
+  Vertex v;
+
+  glClear(GL_COLOR_BUFFER_BIT);
+
+  for (i = 0; i < n_part; i++)
+  {
+    if (para == 0)
+    {
+      scanf_flag = scanf("%lf %lf %lf\n", &xx, &yy, &r);
+    }
+    cor = 1.0;
+    v.x = (2 * xx - 1);
+    v.y = (2 * yy - 1);
+    v.z = 0.0f;
+    v.r = cor;
+    v.g = cor;
+    v.b = cor;
+    v.a = 1.0f;
+    DrawCircle(v.x, v.y, r + 3);
+  }
+  if (scanf_flag == -1)
+    glfwSetWindowShouldClose(window, 1);
+}
+
+void ArrowMode(int tempo, double **GRID)
+{
   int i, j;
   double xx, yy, zz;
   double length, cor;
@@ -185,9 +244,12 @@ void ArrowMode(int tempo, double **GRID) {
   cor = 1.0f;
   glClear(GL_COLOR_BUFFER_BIT);
 
-  for (i = 0; i < L; i++) {
-    for (j = 0; j < L; j++) {
-      if (para == 0) {
+  for (i = 0; i < L; i++)
+  {
+    for (j = 0; j < L; j++)
+    {
+      if (para == 0)
+      {
         scanf_flag = scanf("%lf %lf %lf\n", &xx, &yy, &zz);
         GRID[i + L * j][0] = xx;
         GRID[i + L * j][1] = yy;
@@ -217,7 +279,8 @@ void ArrowMode(int tempo, double **GRID) {
     glfwSetWindowShouldClose(window, 1);
 }
 
-void SpectreMode() {
+void SpectreMode()
+{
   int pos, t;
   float value;
   int scanf_flag;
@@ -235,7 +298,8 @@ void SpectreMode() {
   v1.a = 1.0f;
   glClear(GL_COLOR_BUFFER_BIT);
 
-  for (t = 1; t < Lk; t++) {
+  for (t = 1; t < Lk; t++)
+  {
     scanf("%d", &pos);
     scanf("%f", &value);
     v2.x = (2.0f * t / Lk) - 1.0f;
